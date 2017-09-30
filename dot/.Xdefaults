@@ -1,0 +1,14 @@
+URxvt.urgentOnBell: false
+URxvt.multichar_encoding: utf-8
+URxvt.depth: 32
+URxvt.background: [90]black
+URxvt.foreground: white
+URxvt.colorBD: yellow
+URxvt.colorUL: green
+URxvt.scrollBar: False
+
+URxvt.font: xft:YaHei Consolas Hybrid:size=13
+!URxvt.font: xft:Ubuntu Mono:size=13
+!URxvt.font: xft:Consolas:size=13
+!URxvt.font: xft:Source Code Pro:size=13
+!URxvt.font: xft:xos4 Terminus:size=14
