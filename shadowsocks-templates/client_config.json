@@ -1,0 +1,13 @@
+{
+  "auto_start":true,
+  "direct_cn":false,
+  "download_speed":7149381,
+  "password_md5":"",
+  "protocal":"udp",
+  "proxy_password_md5":"",
+  "recent_address_list":["ip_addr(domain name)"],
+  "server_address":"ip_addr(domain name)",
+  "server_port":130,
+  "socks5_port":1083,
+  "upload_speed":7149381
+}

@@ -1,0 +1,9 @@
+{
+    "map_list":
+    [{
+        "dst_address":"ip_addr(domain name)",
+        "dst_port":8388,
+        "listen_port":44444,
+        "name":"shadowsocks(persional)"
+    }]
+}
