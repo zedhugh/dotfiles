@@ -1,0 +1,9 @@
+app-editors/emacs
+dev-python/flake8
+dev-python/jedi
+dev-util/global
+dev-vcs/git
+media-fonts/source-pro
+net-libs/nodejs
+sys-apps/the_silver_searcher
+x11-misc/xdg-utils

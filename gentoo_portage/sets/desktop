@@ -1,0 +1,14 @@
+app-arch/engrampa
+app-arch/p7zip
+app-i18n/fcitx-configtool
+app-i18n/fcitx-sunpinyin
+app-text/zathura-meta
+lxde-base/lxdm
+media-fonts/droid
+media-fonts/noto
+media-gfx/gpicview
+media-sound/pavucontrol
+media-video/smplayer
+www-plugins/adobe-flash
+x11-base/xorg-x11
+x11-misc/pcmanfm
