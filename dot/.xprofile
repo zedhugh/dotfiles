@@ -1,3 +1,5 @@
+#!/usr/bin/env sh
+
 #xrandr --output HDMI-1 --same-as LVDS-1
 
 export GTK_IM_MODULE=fcitx
@@ -19,7 +21,7 @@ export XMODIFIERS="@im=fcitx"
 # stardict -h & > /dev/null &2 > /dev/null
 # sudo sslocal -d start -p 443 -s zedhugh.me -k BlsEYioG1w > /dev/null
 
-cd /home/zedhugh/tcpspeed_client
-sudo java -jar tcpspeed_client.jar -b &
-cd
-sudo service shadowsocks.client start
+#cd /home/zedhugh/tcpspeed_client
+#sudo java -jar tcpspeed_client.jar -b &
+#cd
+#sudo service shadowsocks.client start
