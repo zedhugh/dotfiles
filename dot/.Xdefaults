@@ -6,9 +6,17 @@ URxvt.foreground: white
 URxvt.colorBD: yellow
 URxvt.colorUL: green
 URxvt.scrollBar: False
+URxvt.scrollTtyOutput: False
+URxvt.scrollTtyKeypress: True
+URxvt.scrollstyle: plain
+URxvt.scrollWithBuffer: True
+! best savelines for large history
+! lines and multi-term
+URxvt.saveLines: 1000000
 
-URxvt.font: xft:YaHei Consolas Hybrid:size=13
-!URxvt.font: xft:Ubuntu Mono:size=13
-!URxvt.font: xft:Consolas:size=13
-!URxvt.font: xft:Source Code Pro:size=13
-!URxvt.font: xft:xos4 Terminus:size=14
+! URxvt.font: xft:YaHei Consolas Hybrid:size=13
+URxvt.font: xft:Microsoft Yahei:size=13
+! URxvt.font: xft:Ubuntu Mono:size=13
+! URxvt.font: xft:Consolas:size=13
+! URxvt.font: xft:Source Code Pro:size=13
+! URxvt.font: xft:xos4 Terminus:size=14
