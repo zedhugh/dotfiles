@@ -1,32 +1,13 @@
 {
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "extends": "eslint:recommended",
-  "rules": {
-    "no-console": "off",
-    "no-unused-vars": "warn",
-    "semi": ["error", "always"]
-  },
   "env": {
     "browser": true,
-    "jquery": true,
-    "node": true,
-    "es6": true,
-    "mocha": true
+    "node": true
   },
-  "plugins": [
-    "react"
-  ],
-  "globals": {
-    "cc": false,
-    "CC_EDITOR": false,
-    "CC_DEV": false,
-    "CC_JSB": false,
-    "_ccsg": false
+  "extends": "airbnb",
+  "rules": {
+    "comma-dangle": [2, "never"],
+    "spaced-comment": "off",
+    "quotes": ["error", "double"],
+    "react/jsx-filename-extension": "off"
   }
 }
