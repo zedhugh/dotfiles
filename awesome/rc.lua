@@ -71,7 +71,7 @@ awful.util.terminal = terminal
 -- ❶❷❸❹❺❻❼❽❾❿ ➊➋➌➍➎➏➐➑➒➓
 awful.util.tagnames = { "➊ term", "➋ web", "➌ doc", "➍ media", "➎ VirtualBox", "➏ others" }
 awful.layout.layouts = {
-    awful.layout.suit.tile,
+    awful.layout.suit.fair.horizontal,
     awful.layout.suit.floating,
     awful.layout.suit.tile.bottom,
     awful.layout.suit.fair,
@@ -424,7 +424,13 @@ globalkeys = awful.util.table.join(
     -- User programs
     -- awful.key({ modkey }, "e", function () awful.spawn(gui_editor) end),
     awful.key({ modkey }, "e", function () awful.spawn("pcmanfm") end),
-    awful.key({ modkey }, "q", function () awful.spawn(browser) end),
+    -- awful.key({ modkey }, "q", function () awful.spawn(browser) end),
+    awful.key({ modkey }, "q", function ()
+          local matcher = function (c)
+             return awful.rules.match(c, {class = "Firefox"})
+          end
+          awful.client.run_or_raise("firefox", matcher)
+    end),
 
     -- Default
     --[[ Menubar
@@ -542,11 +548,10 @@ clientbuttons = awful.util.table.join(
     awful.button({ modkey }, 1, awful.mouse.client.move),
     awful.button({ modkey }, 3, awful.mouse.client.resize))
 
--- load the 'run or raise' function
-local ror = require("aweror")
+local pravitekeys = require("pravitekeys")
 
--- generate and add the 'run or raise' key bindings to the globalkeys table
-globalkeys = awful.util.table.join(globalkeys, ror.genkeys(altkey))
+-- add the pravite key bindings to the globalkeys table
+globalkeys = awful.util.table.join(globalkeys, pravitekeys)
 
 -- Set keys
 root.keys(globalkeys)
@@ -571,7 +576,7 @@ awful.rules.rules = {
 
     -- Titlebars
     { rule_any = { type = { "dialog", "normal" } },
-      properties = { titlebars_enabled = true } },
+      properties = { titlebars_enabled = false } },
 
     -- Set Firefox to always map on the second tag on screen 1.
     { rule = { class = "Firefox" },
