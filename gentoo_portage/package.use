@@ -15,14 +15,15 @@ media-sound/alsa-utils bat
 net-misc/curl threads
 net-misc/iputils -caps -filecaps
 sys-apps/the_silver_searcher lzma
-sys-apps/util-linux static-libs
+sys-apps/util-linux static-libs tty-helpers
+sys-boot/grub mount
 sys-process/cronie anacron
 x11-terms/rxvt-unicode 256-color blink fading-colors unicode3 pixbuf
 
 # nodejs
-#net-libs/nodejs -ssl
+net-libs/nodejs icu inspector
 dev-libs/openssl -bindist
-net-misc/openssh -bindist
+net-misc/openssh libedit -bindist
 
 
 # java environment
@@ -47,18 +48,25 @@ kde-apps/akonadi sqlite -mysql
 kde-frameworks/kdelibs plasma
 kde-plasma/plasma-meta -sddm
 media-libs/libsdl2 gles
-media-libs/mesa gles2 wayland xa
+media-libs/mesa gles2 xa
 media-libs/phonon -vlc
 media-sound/pulseaudio gnome
 sys-libs/zlib minizip
-x11-drivers/nvidia-drivers wayland
 
 # php
-app-eselect/eselect-php apache2
-dev-lang/php cgi curl fpm ftp gd imap mysql mysqli pdo postgres sockets sqlite apache2
+dev-lang/php cgi curl fpm ftp gd imap mysql mysqli pdo postgres sockets sqlite
 
 # networkmanage
 app-crypt/pinentry gnome-keyring
 gnome-extra/nm-applet -modemmanager
 net-misc/networkmanager connection-sharing -modemmanager
 net-wireless/wpa_supplicant ap
+
+# uswgi
+www-servers/uwsgi cgi python
+
+# emacs
+app-editors/emacs dynamic-loading gfile gsettings gzip-el imagemagick libxml2 m17n-lib sound source toolkit-scroll-bars wide-int
+app-editors/emacs-vcs dynamic-loading gfile gsettings gzip-el imagemagick libxml2 m17n-lib sound source toolkit-scroll-bars wide-int
+dev-libs/libxml2 icu
+media-libs/harfbuzz icu
