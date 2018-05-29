@@ -1,0 +1,65 @@
+#+title: awesome tips
+
+* run and raise
+
+  1. This feature need files: 'aweror.lua' and 'ror.lua'.
+  2. Put this two files at the same path with 'rc.lua'.
+  3. add the follow code to the end of 'keybinding' section in 'rc.lua'.
+  #+BEGIN_SRC lua
+    -- load the 'run or raise' function
+    local ror = require("aweror")
+
+    -- generate and add the 'run or raise' key bindings to the globalkeys table
+    globalkeys = awful.util.table.join(globalkeys, ror.genkeys(altkey))
+
+    -- Set keys
+    root.keys(globalkeys)
+  #+END_SRC
+  
+* signal
+
+  turn off energy saving when some window is fullscreen
+  #+BEGIN_SRC lua
+    local fullscreened_clients = {}
+
+    local function remove_client(tabl, c)
+      local index = awful.util.table.hasitem(tabl, c)
+      if index then
+        table.remove(tabl, index)
+        if #tabl == 0 then
+          awful.util.spawn("xset s on")
+          awful.util.spawn("xset +dpms")
+        end
+      end
+    end
+
+    client.connect_signal("property::fullscreen",
+                          function(c)
+                            if c.fullscreen then
+                              table.insert(fullscreened_clients, c)
+                              if #fullscreened_clients == 1 then
+                                awful.util.spawn("xset s off")
+                                awful.util.spawn("xset -dpms")
+                              end
+                            else
+                              remove_client(fullscreened_clients, c)
+                            end
+                          end
+    )
+
+    client.connect_signal("unmanage",
+                          function(c)
+                            if c.fullscreen then
+                              remove_client(fullscreened_clients, c)
+                            end
+                          end
+    )
+  #+END_SRC
+
+* test
+
+  | gd | bd | sum |
+  |----+----+-----|
+  |  3 |  7 |   7 |
+  |  4 |  3 |  12 |
+  #+TBLFM: @2$3=@3$1+@3$2::@3$3=@3$1*@3$2
