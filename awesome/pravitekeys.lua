@@ -11,6 +11,11 @@ end
 
 
 pravitekeys = awful.util.table.join(
+   awful.key({ altkey, "Control" }, "a",
+      function ()
+         run_or_raise("android-studio", {class = "jetbrains-studio"})
+   end),
+
    awful.key({ altkey, "Control" }, "f",
       function ()
          run_or_raise("firefox", {class = "Firefox"})
