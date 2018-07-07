@@ -41,7 +41,7 @@ app-text/poppler qt5
 dev-libs/libdbusmenu-qt qt5
 dev-qt/qtcore icu
 dev-qt/qtwayland egl
-dev-qt/qtgui egl
+dev-qt/qtgui egl tuio
 dev-qt/qtnetwork -bindist
 dev-qt/qtopengl egl
 kde-apps/akonadi sqlite -mysql
