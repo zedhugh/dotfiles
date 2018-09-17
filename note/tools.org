@@ -1,0 +1,81 @@
+#+title: 各种开发工具配置
+#+author: Zedhugh Chen
+
+* Indium
+
+  Indium是一个可以在Emacs里直接调试运行在Chrome中的JavaScript的软件。
+
+  感觉双屏用这个软件应该会很爽。安装使用步骤如下：
+
+  1. 安装服务端
+
+     #+BEGIN_SRC shell
+       npm install -g indium
+     #+END_SRC
+
+  2. 安装Emacs客服端
+
+     #+BEGIN_SRC emacs-lisp
+       ;; 直接从melpa源里安装
+       (require-package 'indium)
+
+       ;; 配置
+       (require 'indium)
+       (add-hook 'js-mode-hook 'indium-interaction-mode)
+     #+END_SRC
+
+  3. indium配置文件：.indium.json
+
+     #+BEGIN_SRC json
+       {
+         "configurations": [
+           {
+             "name": "Indium Demo",
+             "type": "chrome",
+             "host": "0.0.0.0",
+             "post": 9222,
+             "url": "http://0.0.0.0:3000"
+           }
+         ]
+       }
+     #+END_SRC
+
+     配置项说明：
+
+     name: 随便起一个就好
+
+     type: Chrome调试直接写chrome就行了，其他参考[[https://indium.readthedocs.io/en/latest/setup.html][Indium Setup]]
+
+     host: 本地调试地址
+
+     port: Chrome的调试协议端口号，和项目无关，和Chrome的启动参数有关
+
+     url: 项目的首页地址，按项目设置
+
+  4. 启动Chrome
+
+     在命令行里启动chrome的时候带上参数
+
+     #+BEGIN_SRC shell
+       chrome --remote-debugging-port=9222
+     #+END_SRC
+
+     在gentoo里面，自己编译的chromium中，有个配置文件/etc/chromium/default，
+
+     其中有 /CHROMIUM FLAGS/ 配置项，将其设置为上面启动参数的内容即可。即：
+
+     #+BEGIN_SRC conf
+       CHROMIUM_FLAGS="--remote-debugging-port=9222"
+     #+END_SRC
+
+  5. 开始调试
+
+     在要调试的JavaScript文件中执行Emacs命令indium-connect即可开始调试
+
+     #+BEGIN_SRC emacs-lisp
+       (indium-connect)
+     #+END_SRC
+
+     用快捷键或Indium插件提供的命令加入断点，即可开始愉快的调试了。
+
+     更多用法参考[[https://indium.readthedocs.io/en/latest/index.html][Indium手册]]。
