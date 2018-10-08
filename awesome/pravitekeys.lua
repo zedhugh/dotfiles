@@ -13,17 +13,17 @@ end
 
 pravitekeys = awful.util.table.join(
    -- if app is running, raise it, otherwise launch it
-   awful.key({ altkey, "Control" }, "a",
+   awful.key({ modkey }, "a",
       function ()
          run_or_raise("android-studio", {class = "jetbrains-studio"})
    end),
 
-   awful.key({ altkey, "Control" }, "f",
+   awful.key({ modkey }, "q",
       function ()
-         run_or_raise("firefox", {class = "Firefox"})
+         run_or_raise("firefox", {class = "Nightly"})
    end),
 
-   awful.key({ altkey, "Control" }, "v",
+   awful.key({ modkey, "Shift" }, "v",
       function ()
          run_or_raise("VirtualBox", {class = "VirtualBox"})
    end),
@@ -33,12 +33,12 @@ pravitekeys = awful.util.table.join(
          run_or_raise("urxvtc", {class = "URxvt"})
    end),
 
-   awful.key({ altkey, "Control" }, "e",
+   awful.key({ modkey }, "e",
       function ()
          run_or_raise("emacs", {class = "Emacs"})
    end),
 
-   awful.key({ altkey, "Shift" }, "e",
+   awful.key({ modkey, "Shift" }, "e",
       function ()
          run_or_raise("pcmanfm", {class = "Pcmanfm"})
    end),
@@ -49,7 +49,7 @@ pravitekeys = awful.util.table.join(
          os.execute(string.format("amixer set %s 1%%+", beautiful.volume.channel))
          beautiful.volume.update()
    end),
-   awful.key({ altkey }, "Up",
+   awful.key({ modkey }, "Up",
       function ()
          os.execute(string.format("amixer set %s 1%%+", beautiful.volume.channel))
          beautiful.volume.update()
@@ -59,7 +59,7 @@ pravitekeys = awful.util.table.join(
          os.execute(string.format("amixer set %s 1%%-", beautiful.volume.channel))
          beautiful.volume.update()
    end),
-   awful.key({ altkey }, "Down",
+   awful.key({ modkey }, "Down",
       function ()
          os.execute(string.format("amixer set %s 1%%-", beautiful.volume.channel))
          beautiful.volume.update()
@@ -70,7 +70,7 @@ pravitekeys = awful.util.table.join(
                                      or beautiful.volume.channel))
          beautiful.volume.update()
    end),
-   awful.key({ altkey }, "m",
+   awful.key({ modkey, "Shift" }, "m",
       function ()
          os.execute(string.format("amixer set %s toggle", beautiful.volume.togglechannel
                                      or beautiful.volume.channel))
