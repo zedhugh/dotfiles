@@ -79,3 +79,19 @@
    用快捷键或 =Indium= 插件提供的命令加入断点，即可开始愉快的调试了。
 
    更多用法参考[[https://indium.readthedocs.io/en/latest/index.html][Indium手册]]。
+
+* Input method
+  有时候输入法在 =firefox= 中不工作，这是因为设置不对造成的，通过查询资料，最终
+  在 =[[https://wiki.archlinux.org/index.php/Smart_Common_Input_Method][archwiki]]= 中找到方法，将 =.xprofile= 文件中的
+  #+BEGIN_SRC bash
+    export XMODIFIERS=@im=SCIM
+    export GTK_IM_MODULE="scim"
+    export QT_IM_MODULE="scim"
+  #+END_SRC
+  改成
+  #+BEGIN_SRC bash
+    export XMODIFIERS=@im=SCIM
+    export GTK_IM_MODULE="xim"
+    export QT_IM_MODULE="scim"
+  #+END_SRC
+  即可解决该问题。
