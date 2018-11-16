@@ -18,8 +18,15 @@ var rules = [
             "^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?wikipedia\\.org"
         ], 
         [
-            "*twitter.com*", 
-            "*youtube.com*"
+            "*twitter.com*",
+            "*youtube.com*",
+            "*google-analytics.com*",
+            "*melpa.org*",
+            "*reddit.com*",
+            "*redditmedia.com*",
+            "*quantserve.com*",
+            "*redd.it*",
+            "*redditstatic.com*"
         ]
     ], 
     [
