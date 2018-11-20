@@ -95,3 +95,14 @@
     export QT_IM_MODULE="scim"
   #+END_SRC
   即可解决该问题。
+
+* 双系统时间问题
+  =Linux= 和 =Windows= 双系统时区不统一的问题，该问题是因为兩个系统的时区标准
+  不同， =Windows= 系统显示的是 =BIOS= 时间， =Linux= 则是将 =BIOS= 时间作为
+  =UTC= 时间，具体显示的是各个地区的时间。
+  解决办法为，修改注册表，使 =Windows= 也采用与 =Linux= 相同的时间策略，修改
+  代码为
+  #+BEGIN_SRC bat
+    Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v
+    RealTimeIsUniversal /t REG_DWORD /d 1
+  #+END_SRC
