@@ -2,11 +2,16 @@
 
 #xrandr --output HDMI-1 --same-as LVDS-1
 
-export GTK_IM_MODULE=fcitx
-export QT_IM_MODULE=fcitx
-export XMODIFIERS="@im=fcitx"
+eval "$(dbus-launch --sh-syntax --exit-with-session)"
 
-#xcompmgr -c &
+export XMODIFIERS=@im=SCIM
+export GTK_IM_MODULE="xim"
+export QT_IM_MODULE="scim"
+scim -d
+
+# xcompmgr -c &
+# nm-applet &
+
 #fcitx -d & > /dev/null
 #sogou-qimpanel & > /dev/null
 
@@ -16,8 +21,7 @@ export XMODIFIERS="@im=fcitx"
 # export SSH_AUTH_SOCK
 # export GPG_AGENT_INFO
 
-#nm-applet &
-#/usr/libexec/polkit-gnome-authentication-agent-1 &
+/usr/libexec/polkit-gnome-authentication-agent-1 &
 # stardict -h & > /dev/null &2 > /dev/null
 # sudo sslocal -d start -p 443 -s zedhugh.me -k BlsEYioG1w > /dev/null
 

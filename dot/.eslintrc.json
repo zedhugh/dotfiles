@@ -1,18 +1,19 @@
 {
-  "env": {
-    "browser": true,
-    "node": true
-  },
-  "extends": "airbnb",
-  "rules": {
-    "comma-dangle": [2, "never"],
-    "spaced-comment": "off",
-    "quotes": "off",
-    "indent": "off",
-    "func-names": "off",
-    "no-console": "off",
-    "no-plusplus": "off",
-    "wrap-iife": ["error", "any"],
-    "react/jsx-filename-extension": "off"
-  }
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "extends": "airbnb",
+    "rules": {
+        "comma-dangle": [2, "never"],
+        "spaced-comment": "off",
+        "quotes": "off",
+        "indent": "off",
+        "func-names": "off",
+        "no-console": "off",
+        "no-plusplus": "off",
+        "no-param-reassign": "off",
+        "wrap-iife": ["error", "any"],
+        "react/jsx-filename-extension": "off"
+    }
 }
