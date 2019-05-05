@@ -106,3 +106,8 @@
     Reg add HKLM\SYSTEM\CurrentControlSet\Control\TimeZoneInformation /v
     RealTimeIsUniversal /t REG_DWORD /d 1
   #+END_SRC
+
+* Firefox播放网易云音乐问题
+  不知道从哪个版本开始，Firefox播放网易云音乐的声音很奇怪，通过网络查询，
+  是 =MSE= 的问题，在浏览器这中禁用 =MSE= 即可！禁用方法:
+  1. about:config -> media.mediasource.enable 改成 false 即可
