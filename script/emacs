@@ -1,0 +1,7 @@
+#!/bin/sh
+
+unset XMODIFIERS
+unset GTK_IM_MODULE
+unset QT_IM_MODULE
+
+/usr/bin/emacs $@
