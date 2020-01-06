@@ -1,13 +1,12 @@
-
 --[[
-                                       
-     Awesome WM configuration template 
-     github.com/copycat-killer         
-                                       
+
+     Awesome WM configuration template
+     github.com/lcpz
+
 --]]
 
 -- {{{ Required libraries
-local awesome, client, screen, tag = awesome, client, screen, tag
+local awesome, client, mouse, screen, tag = awesome, client, mouse, screen, tag
 local ipairs, string, os, table, tostring, tonumber, type = ipairs, string, os, table, tostring, tonumber, type
 
 local gears         = require("gears")
@@ -20,15 +19,20 @@ local lain          = require("lain")
 --local menubar       = require("menubar")
 local freedesktop   = require("freedesktop")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+                      require("awful.hotkeys_popup.keys")
+local my_table      = awful.util.table or gears.table -- 4.{0,1} compatibility
 -- }}}
 
 -- {{{ Error handling
+-- Check if awesome encountered an error during startup and fell back to
+-- another config (This code will only ever execute for the fallback config)
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
                      title = "Oops, there were errors during startup!",
                      text = awesome.startup_errors })
 end
 
+-- Handle runtime errors after startup
 do
     local in_error = false
     awesome.connect_signal("debug::error", function (err)
@@ -44,18 +48,26 @@ end
 -- }}}
 
 -- {{{ Autostart windowless processes
+
+-- This function will run once every time Awesome is started
 local function run_once(cmd_arr)
     for _, cmd in ipairs(cmd_arr) do
-        findme = cmd
-        firstspace = cmd:find(" ")
-        if firstspace then
-            findme = cmd:sub(0, firstspace-1)
-        end
-        awful.spawn.with_shell(string.format("pgrep -u $USER -x %s > /dev/null || (%s)", findme, cmd))
+        awful.spawn.with_shell(string.format("pgrep -u $USER -fx '%s' > /dev/null || (%s)", cmd, cmd))
     end
 end
 
-run_once({ "urxvtd", "unclutter -root", "fcitx -d", "/usr/libexec/polkit-gnome-authentication-agent-1 &", "xcompmgr -c" })
+run_once({ "urxvtd", "unclutter -root" }) -- entries must be separated by commas
+
+-- This function implements the XDG autostart specification
+--[[
+awful.spawn.with_shell(
+    'if (xrdb -query | grep -q "^awesome\\.started:\\s*true$"); then exit; fi;' ..
+    'xrdb -merge <<< "awesome.started:true";' ..
+    -- list each of your autostart commands, followed by ; inside single quotes, followed by ..
+    'dex --environment Awesome --autostart --search-paths "$XDG_CONFIG_DIRS/autostart:$XDG_CONFIG_HOME/autostart"' -- https://github.com/jceb/dex
+)
+--]]
+
 -- }}}
 
 -- {{{ Variable definitions
@@ -579,8 +591,8 @@ awful.rules.rules = {
       properties = { titlebars_enabled = false } },
 
     -- Set Firefox to always map on the second tag on screen 1.
-    { rule = { class = "Nightly" },
-      properties = { screen = 1, tag = screen[1].tags[2] } },
+    { rule = { class = "Firefox" },
+      properties = { screen = 1, tag = screen[1].tags[2] }, maximized = true },
 
     { rule = { class = "mpv"},
       properties = { screen = 1, tag = screen[1].tags[4], switchtotag = true, fullscreen = true } },
@@ -589,7 +601,7 @@ awful.rules.rules = {
       properties = { screen = 1, tag = screen[1].tags[5] } },
 
     { rule = { class = "Emacs" },
-      properties = { screen = 1, tag = screen[1].tags[3] } },
+      properties = { screen = 1, tag = screen[2].tags[3] } },
 
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
