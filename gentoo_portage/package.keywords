@@ -1,1 +1,2 @@
-#app-editors/emacs-vcs **
+app-editors/emacs **
+dev-util/android-studio -~amd64

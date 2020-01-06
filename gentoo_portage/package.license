@@ -1,4 +1,9 @@
-app-arch/rar RAR
 app-emulation/virtualbox-bin PUEL
+dev-db/mongodb SSPL-1
+net-misc/teamviewer TeamViewer
 www-client/google-chrome google-chrome
 www-plugins/adobe-flash AdobeFlash-11.x
+
+app-arch/p7zip unRAR
+x11-drivers/nvidia-drivers NVIDIA-r2
+sys-kernel/linux-firmware no-source-code linux-fw-redistributable

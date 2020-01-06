@@ -1,37 +1,47 @@
 # abi
-x11-libs/libX11 abi_x86_32
-x11-libs/libXext abi_x86_32
-x11-libs/libvdpau abi_x86_32
-sys-libs/zlib abi_x86_32
-x11-libs/libxcb abi_x86_32
-dev-libs/libpthread-stubs abi_x86_32
-x11-libs/libXau abi_x86_32
-x11-libs/libXdmcp abi_x86_32
-x11-base/xcb-proto abi_x86_32
+# dev-libs/glib abi_x86_32
+# dev-libs/libffi abi_x86_32
+# dev-libs/libpcre abi_x86_32
+# dev-libs/libpthread-stubs abi_x86_32
+# dev-util/pkgconfig abi_x86_32
+# sys-apps/attr abi_x86_32
+# sys-apps/util-linux abi_x86_32
+# sys-libs/zlib abi_x86_32
+# virtual/libffi abi_x86_32
+# virtual/libiconv abi_x86_32
+# virtual/libintl abi_x86_32
+# virtual/pkgconfig abi_x86_32
+# x11-libs/libX11 abi_x86_32
+# x11-libs/libXau abi_x86_32
+# x11-libs/libXdmcp abi_x86_32
+# x11-libs/libXext abi_x86_32
+# x11-libs/libvdpau abi_x86_32
+# x11-libs/libxcb abi_x86_32
+# x11-base/xcb-proto abi_x86_32
 
 app-text/xmlto text
 dev-lang/python sqlite
+dev-libs/gmp static-libs
 dev-libs/libpcre2 pcre16
 media-libs/mesa -vaapi -gallium
 net-misc/openssh libedit
 sys-apps/util-linux static-libs
 sys-boot/grub mount
+#sys-devel/binutils gold default-gold
 
-# network
-app-crypt/pinentry gnome-keyring
-gnome-extra/nm-applet -modemmanager
-net-misc/networknamager connection-sharing -modemmanager
-net-wireless/wpa_supplicant ap
+# nvidia driver
+x11-drivers/nvidia-drivers -abi_x86_32
 
 # terminal
+x11-terms/xterm sixel truetype xinerama
 x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 
 # uswgi
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs dynamic-loading gfile gsettings gzip-el imagemagick libxml2 m17n-lib sound source wide-int
-app-editors/emacs-vcs dynamic-loading gfile gsettings gzip-el imagemagick libxml2 m17n-lib sound source wide-int
+app-editors/emacs dynamic-loading gfile gsettings gzip-el imagemagick json libxml2 m17n-lib sound source wide-int
+app-editors/emacs-vcs cairo dynamic-loading gfile gsettings gzip-el harfbuzz imagemagick json libxml2 m17n-lib sound source wide-int
 
 # p7zip
 app-arch/p7zip rar -wxwidgets
@@ -51,4 +61,11 @@ dev-ml/lablgl glut
 sys-libs/ncurses:5 tinfo
 
 # firefox
-www-client/firefox -system-libvpx -system-sqlite
+www-client/firefox -system-av1 -system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite -system-webp
+www-client/firefox-bin -pulseaudio
+
+# pdf
+app-text/mupdf -opengl
+
+# postgresql
+dev-db/postgresql python
