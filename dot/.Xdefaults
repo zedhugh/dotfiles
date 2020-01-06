@@ -1,7 +1,7 @@
 URxvt.urgentOnBell: false
 URxvt.multichar_encoding: utf-8
 URxvt.depth: 32
-URxvt.background: black
+URxvt.background: [80]black
 URxvt.foreground: white
 URxvt.colorBD: yellow
 URxvt.colorUL: green
@@ -14,15 +14,18 @@ URxvt.scrollWithBuffer: True
 ! lines and multi-term
 URxvt.saveLines: 1000000
 
-URxvt.font: xft:Operator Mono Book:size=14,\
+URxvt.font: xft:Sarasa Mono SC:size=14,\
+xft:Operator Mono Book:size=14,\
 xft:Source Code Pro:size=14,\
+xft:Microsoft Yahei:size=14,\
 xft:xos4 Terminus:size=14\,
 xft:Consolas:size=14,\
 xft:YaHei Consolas Hybrid:size=14,\
-xft:Microsoft Yahei:size=14
 
-XTerm*background: black
-XTerm*foreground: white
-XTerm*faceName: Operator Mono:style=Book:size=14
-XTerm*faceNameDoublesize: YaHei Consolas Hybrid:size=14
-XTerm*forceBoxChars: true
+! XTerm*background: white
+! XTerm*foreground: black
+! ! XTerm*faceName: xft:Operator Mono:style=Book:size=14
+! ! XTerm*faceNameDoublesize: xft:YaHei Consolas Hybrid:size=14
+! XTerm*faceName: xft:SaraSa Mono SC:size=14
+! XTerm*faceSize: 14
+! XTerm*forceBoxChars: true

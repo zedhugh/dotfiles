@@ -1,3 +1,18 @@
 [user]
 	name = Zedhugh Chen
 	email = zedhugh@gmail.com
+	signingKey = 18FAC9D5FA1616E7
+[github]
+	user = zedhugh
+[alias]
+    co = checkout
+    ci = commit
+    st = status
+    br = branch
+    hist = log --pretty=format:'%h %ad | %s%d [%ad]' --graph --date=short
+    type = cat-file -t
+    dump = cat-file -p
+[commit]
+	gpgSign = true
+[diff "gpg"]
+	textconv = gpg --no-tty --decrypt

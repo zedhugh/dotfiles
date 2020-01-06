@@ -1,19 +1,19 @@
 {
-    "env": {
-        "browser": true,
-        "node": true
-    },
-    "extends": "airbnb",
-    "rules": {
-        "comma-dangle": [2, "never"],
-        "spaced-comment": "off",
-        "quotes": "off",
-        "indent": "off",
-        "func-names": "off",
-        "no-console": "off",
-        "no-plusplus": "off",
-        "no-param-reassign": "off",
-        "wrap-iife": ["error", "any"],
-        "react/jsx-filename-extension": "off"
-    }
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-typescript"
+  ],
+  "rules": {
+    "comma-dangle": [2, "never"],
+    "no-console": "off",
+    "no-plusplus": "off",
+    "no-multi-spaces": "off",
+    "react/jsx-filename-extension": "off",
+    "@typescript-eslint/camelcase": "off"
+  }
 }

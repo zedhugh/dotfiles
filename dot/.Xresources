@@ -1,0 +1,34 @@
+Xcursor.theme: Adwaita
+Xcursor.size: 24
+
+Xft.dpi: 96
+! Xft.antialias: true
+! Xft.rgba: rgb
+! Xft.hinting: true
+! Xft.hintstyle: hintslight
+! Xft.autohint: false
+! Xft.lcdfilter: lcddefault
+
+! xterm设置
+XTerm.termName: xterm-256color
+XTerm*background: black
+XTerm*foreground: white
+XTerm*xftAntialias: true
+XTerm*faceName: xft:SaraSa Mono SC:antialias=True:size=14
+XTerm*forceBoxChars: true
+
+! Alt键设置
+XTerm*metaSendsEscape: true
+XTerm*eightBitInput: false
+
+XTerm*saveLines: 1000000
+XTerm*selectToClipboard: true
+! XTerm*faceName: xft:Operator Mono:style=Book:size=14
+! XTerm*faceNameDoublesize: xft:YaHei Consolas Hybrid:size=14
+! XTerm*faceSize: 14
+
+XTerm*scrollKey: true
+XTerm*scrollTtyOutput: false
+XTerm*buffered: true
+XTerm*multiScroll: true
+XTerm*fastScroll: true
