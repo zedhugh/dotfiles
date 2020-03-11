@@ -33,15 +33,14 @@ sys-boot/grub mount
 x11-drivers/nvidia-drivers -abi_x86_32
 
 # terminal
-x11-terms/xterm sixel truetype xinerama
+x11-terms/xterm sixel xinerama
 x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 
 # uswgi
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs dynamic-loading gfile gsettings gzip-el imagemagick json libxml2 m17n-lib sound source wide-int
-app-editors/emacs-vcs cairo dynamic-loading gfile gsettings gzip-el harfbuzz imagemagick json libxml2 m17n-lib sound source wide-int
+app-editors/emacs cairo dynamic-loading gfile gsettings gzip-el harfbuzz json libxml2 m17n-lib sound source wide-int
 
 # p7zip
 app-arch/p7zip rar -wxwidgets
