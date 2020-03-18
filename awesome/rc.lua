@@ -81,32 +81,86 @@ local browser      = "firefox"
 
 awful.util.terminal = terminal
 -- ❶❷❸❹❺❻❼❽❾❿ ➊➋➌➍➎➏➐➑➒➓
-awful.util.tagnames = { "➊ term", "➋ web", "➌ doc", "➍ media", "➎ VirtualBox", "➏ others" }
-awful.layout.layouts = {
-    awful.layout.suit.fair.horizontal,
-    awful.layout.suit.floating,
-    awful.layout.suit.tile.bottom,
-    awful.layout.suit.fair,
-    awful.layout.suit.floating,
-    awful.layout.suit.tile.top,
-    -- awful.layout.suit.fair,
-    -- awful.layout.suit.fair.horizontal,
-    -- awful.layout.suit.spiral,
-    -- awful.layout.suit.spiral.dwindle,
-    -- awful.layout.suit.max,
-    -- awful.layout.suit.max.fullscreen,
-    -- awful.layout.suit.magnifier,
-    -- awful.layout.suit.corner.nw,
-    -- awful.layout.suit.corner.ne,
-    -- awful.layout.suit.corner.sw,
-    -- awful.layout.suit.corner.se,
-    -- lain.layout.cascade,
-    -- lain.layout.cascade.tile,
-    -- lain.layout.centerwork,
-    -- lain.layout.centerwork.horizontal,
-    -- lain.layout.termfair,
-    -- lain.layout.termfair.center,
-}
+-- 支持的窗口布局
+-- { awful.layout.suit.fair.horizontal,
+--   awful.layout.suit.floating,
+--   awful.layout.suit.tile.bottom,
+--   awful.layout.suit.fair,
+--   awful.layout.suit.floating,
+--   awful.layout.suit.tile.top,
+--   awful.layout.suit.fair,
+--   awful.layout.suit.fair.horizontal,
+--   awful.layout.suit.spiral,
+--   awful.layout.suit.spiral.dwindle,
+--   awful.layout.suit.max,
+--   awful.layout.suit.max.fullscreen,
+--   awful.layout.suit.magnifier,
+--   awful.layout.suit.corner.nw,
+--   awful.layout.suit.corner.ne,
+--   awful.layout.suit.corner.sw,
+--   awful.layout.suit.corner.se,
+--   lain.layout.cascade,
+--   lain.layout.cascade.tile,
+--   lain.layout.centerwork,
+--   lain.layout.centerwork.horizontal,
+--   lain.layout.termfair,
+--   lain.layout.termfair.center }
+-- 不同数量的显示器，设置不同的tag
+local function tag_config()
+   local screen_number = screen:count()
+   local tags = { web = nil, emacs = nil, media = nil, virtualbox = nil }
+   if screen_number == 2 then
+      tags = {
+         settings = {
+            { names = { "➊ term", "➋ firefox", "➌ others" },
+              layout = {
+                 awful.layout.suit.fair,
+                 awful.layout.suit.floating,
+                 awful.layout.suit.tile.top
+            } },
+            { names = { "➊ term", "➋ emacs", "➌ media", "➍ VirtualBox", "➎ others" },
+              layout = {
+                 awful.layout.suit.fair,
+                 awful.layout.suit.tile.bottom,
+                 awful.layout.suit.fair,
+                 awful.layout.suit.floating,
+                 awful.layout.suit.tile.top
+      } } } }
+   else
+      tags = {
+         settings = {
+            { names = { "➊ term", "➋ firefox", "➌ emacs", "➍ media", "➎ VirtualBox", "➏ others" },
+              layout = {
+                 awful.layout.suit.fair,
+                 awful.layout.suit.floating,
+                 awful.layout.suit.tile.bottom,
+                 awful.layout.suit.fair,
+                 awful.layout.suit.floating,
+                 awful.layout.suit.tile.top
+      } } } }
+   end
+   awful.screen.connect_for_each_screen(function(s)
+         awful.tag(tags.settings[s.index].names, s, tags.settings[s.index].layout)
+   end)
+   if screen_number == 2 then
+      tags.specify = {
+         firefox    = screen[1].tags[2],
+         emacs      = screen[2].tags[2],
+         media      = screen[2].tags[3],
+         virtualbox = screen[2].tags[4]
+      }
+   else
+      tags.specify = {
+         firefox    = screen[1].tags[2],
+         emacs      = screen[1].tags[3],
+         media      = screen[1].tags[4],
+         virtualbox = screen[1].tags[5]
+      }
+   end
+   return tags
+end
+local mytags = tag_config()
+
 awful.util.taglist_buttons = awful.util.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
                     awful.button({ modkey }, 1, function(t)
@@ -592,16 +646,16 @@ awful.rules.rules = {
 
     -- Set Firefox to always map on the second tag on screen 1.
     { rule = { class = "Firefox" },
-      properties = { screen = 1, tag = screen[1].tags[2] }, maximized = true },
+      properties = { tag = mytags.specify.firefox }, maximized = true },
 
     { rule = { class = "mpv"},
-      properties = { screen = 1, tag = screen[1].tags[4], switchtotag = true, fullscreen = true } },
+      properties = { tag = mytags.specify.media, switchtotag = true, fullscreen = true } },
 
     { rule = { class = "VirtualBox" },
-      properties = { screen = 1, tag = screen[1].tags[5] } },
+      properties = { tag = mytags.specify.virtualbox } },
 
     { rule = { class = "Emacs" },
-      properties = { screen = 1, tag = screen[2].tags[3] } },
+      properties = { tag = mytags.specify.emacs } },
 
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
