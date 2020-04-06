@@ -161,6 +161,9 @@ local function tag_config()
 end
 local mytags = tag_config()
 
+-- when screen changed, reload awesome config
+awesome.connect_signal("screen::change", awesome.restart)
+
 awful.util.taglist_buttons = awful.util.table.join(
                     awful.button({ }, 1, function(t) t:view_only() end),
                     awful.button({ modkey }, 1, function(t)
