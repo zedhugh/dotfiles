@@ -35,7 +35,7 @@ pravitekeys = awful.util.table.join(
 
    awful.key({ modkey }, "e",
       function ()
-         run_or_raise("emacs", {class = "Emacs"})
+         run_or_raise("emacsclient -a '' -c -n", {class = "Emacs"})
    end),
 
    awful.key({ modkey, "Shift" }, "e",

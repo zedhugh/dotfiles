@@ -36,3 +36,4 @@ fcitx -d
 #sudo java -jar tcpspeed_client.jar -b &
 #cd
 #sudo service shadowsocks.client start
+emacs --daemon
