@@ -24,3 +24,8 @@ export CCACHE_DIR="/var/cache/ccache"
 export GPG_TTY=$(tty)
 
 # export PATH="~/.local/bin${PATH:+:}$PATH"
+
+alias ll="ls -l"
+alias la="ls -a"
+alias lh="ls -lh"
+alias lha="ls -lha"
