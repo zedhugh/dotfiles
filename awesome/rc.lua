@@ -147,7 +147,7 @@ local function tag_config()
          firefox    = screen[1].tags[2],
          emacs      = screen[2].tags[2],
          media      = screen[2].tags[3],
-         virtualbox = screen[2].tags[4]
+         virtualbox = screen[2].tags[4],
       }
    else
       tags.specify = {
@@ -330,11 +330,11 @@ globalkeys = awful.util.table.join(
             awful.client.focus.bydirection("left")
             if client.focus then client.focus:raise() end
         end),
-    awful.key({ modkey }, "l",
-        function()
-            awful.client.focus.bydirection("right")
-            if client.focus then client.focus:raise() end
-        end),
+    -- awful.key({ modkey }, "l",
+    --     function()
+    --         awful.client.focus.bydirection("right")
+    --         if client.focus then client.focus:raise() end
+    --     end),
     -- awful.key({ modkey,           }, "w", function () awful.util.mymainmenu:show() end,
     --           {description = "show main menu", group = "awesome"}),
 
@@ -393,8 +393,8 @@ globalkeys = awful.util.table.join(
               {description = "decrease master width factor", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
               {description = "increase the number of master clients", group = "layout"}),
-    awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
-              {description = "decrease the number of master clients", group = "layout"}),
+    -- awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
+    --           {description = "decrease the number of master clients", group = "layout"}),
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
               {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
