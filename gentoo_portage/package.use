@@ -40,7 +40,8 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs cairo dynamic-loading gfile gsettings gzip-el harfbuzz json libxml2 m17n-lib sound source wide-int
+app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz json libxml2 m17n-lib sound source wide-int
+app-emacs/emacs-common-gentoo gui
 
 # p7zip
 app-arch/p7zip rar -wxwidgets
