@@ -25,6 +25,7 @@ var rules = [
             "*reddit.com*",
             "*redditmedia.com*",
             "*quantserve.com*",
+            "*gentoo.org*",
             "*redd.it*",
             "*redditstatic.com*"
         ]
