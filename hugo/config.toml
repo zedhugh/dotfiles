@@ -1,6 +1,6 @@
 baseURL = "http://localhost:1313/"
 languageCode = "cn"
-defaultContentLanguage = "zh-cn"                             # en / zh-cn / ... (This field determines which i18n file to use)
+defaultContentLanguage = "zh-CN"                             # en / zh-cn / ... (This field determines which i18n file to use)
 title = "老陈自留地"
 preserveTaxonomyNames = true
 enableRobotsTXT = true
