@@ -14,7 +14,8 @@ URxvt.scrollWithBuffer: True
 ! lines and multi-term
 URxvt.saveLines: 1000000
 
-URxvt.font: xft:Sarasa Mono SC:size=14,\
+URxvt.font: \
+xft:Sarasa Mono SC:size=14,\
 xft:Operator Mono Book:size=14,\
 xft:Source Code Pro:size=14,\
 xft:Microsoft Yahei:size=14,\

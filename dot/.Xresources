@@ -32,3 +32,5 @@ XTerm*scrollTtyOutput: false
 XTerm*buffered: true
 XTerm*multiScroll: true
 XTerm*fastScroll: true
+
+St.font: Sarasa Mono SC:size=14:antialias=true:autohint=true

@@ -30,7 +30,7 @@ pravitekeys = awful.util.table.join(
 
    awful.key({ altkey, "Control" }, "r",
       function ()
-         run_or_raise("urxvtc", {class = "URxvt"})
+         run_or_raise("st", {class = "St"})
    end),
 
    awful.key({ modkey }, "e",
