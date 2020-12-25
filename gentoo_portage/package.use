@@ -24,9 +24,11 @@ dev-lang/python sqlite
 dev-libs/gmp static-libs
 dev-libs/libpcre2 pcre16
 media-libs/mesa -vaapi -gallium
+net-misc/curl telnet
 net-misc/openssh libedit
 sys-apps/util-linux static-libs
 sys-boot/grub mount
+sys-libs/zlib static-libs
 #sys-devel/binutils gold default-gold
 
 # nvidia driver
@@ -48,9 +50,9 @@ app-arch/p7zip rar -wxwidgets
 app-editors/vim lua python
 
 # file manager
-dev-libs/libxml2 python
-gnome-base/gvfs udisks
-x11-libs/libfm udisks
+#dev-libs/libxml2 python
+#gnome-base/gvfs udisks
+#x11-libs/libfm udisks
 
 # pdf
 app-text/poppler cairo
@@ -69,3 +71,12 @@ app-text/mupdf -opengl
 
 # postgresql
 dev-db/postgresql python
+
+# st
+x11-terms/st savedconfig
+
+# imagemagick
+media-gfx/imagemagick svg xml
+
+# pulseaudio
+media-sound/pulseaudio -orc
