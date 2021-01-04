@@ -9,8 +9,9 @@
 
 * 将 awesome 配置文件链接到配置目录下
   #+begin_src sh
-    ln -s ./rc.lua ~/.config/awesome/
-    ln -s ./pravitekeys.lua ~/.config/awesome/
+    dir=$(pwd)
+    ln -s "${dir}/rc.lua" ~/.config/awesome/
+    ln -s "${dir}/pravitekeys.lua" ~/.config/awesome/
   #+end_src
 
 * 修改 =awesome-copycats= 代码
