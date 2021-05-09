@@ -43,7 +43,9 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 
 # emacs
 app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz json libxml2 m17n-lib sound source wide-int
-app-emacs/emacs-common-gentoo gui
+# move app-emacs/emacs-common-gentoo app-emacs/emacs-common
+app-emacs/emacs-common gui
+sys-devel/gcc jit
 
 # p7zip
 app-arch/p7zip rar -wxwidgets
@@ -80,3 +82,8 @@ media-gfx/imagemagick svg xml
 
 # pulseaudio
 media-sound/pulseaudio -orc
+
+# terminus font
+media-fonts/terminus-font otf
+
+net-misc/aria2 bittorrent metalink tcmalloc xmlrpc
