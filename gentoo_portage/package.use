@@ -23,7 +23,7 @@ app-text/xmlto text
 dev-lang/python sqlite
 dev-libs/gmp static-libs
 dev-libs/libpcre2 pcre16
-media-libs/mesa -vaapi -gallium
+# media-libs/mesa -vaapi -gallium
 net-misc/curl telnet
 net-misc/openssh libedit
 sys-apps/util-linux static-libs
@@ -42,13 +42,14 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz json libxml2 m17n-lib sound source wide-int
+app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz jit json libxml2 m17n-lib sound source wide-int
 # move app-emacs/emacs-common-gentoo app-emacs/emacs-common
 app-emacs/emacs-common gui
 sys-devel/gcc jit
 
 # p7zip
 app-arch/p7zip rar -wxwidgets
+
 app-editors/vim lua python
 
 # file manager
@@ -87,3 +88,6 @@ media-sound/pulseaudio -orc
 media-fonts/terminus-font otf
 
 net-misc/aria2 bittorrent metalink tcmalloc xmlrpc
+
+# awesome use lua5.3
+x11-wm/awesome LUA_SINGLE_TARGET: lua5-3 -lua5-1

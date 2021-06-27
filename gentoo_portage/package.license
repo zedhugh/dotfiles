@@ -1,5 +1,7 @@
 app-emulation/virtualbox-bin PUEL
 dev-db/mongodb SSPL-1
+net-analyzer/nmap NPSL
+net-misc/anydesk AnyDesk-TOS
 net-misc/teamviewer TeamViewer
 www-client/google-chrome google-chrome
 www-plugins/adobe-flash AdobeFlash-11.x
