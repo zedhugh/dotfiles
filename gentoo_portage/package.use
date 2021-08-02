@@ -42,9 +42,10 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz jit json libxml2 m17n-lib sound source wide-int
+app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz json libxml2 m17n-lib sound source wide-int
 # move app-emacs/emacs-common-gentoo app-emacs/emacs-common
 app-emacs/emacs-common gui
+media-libs/freetype harfbuzz
 sys-devel/gcc jit
 
 # p7zip
@@ -89,5 +90,9 @@ media-fonts/terminus-font otf
 
 net-misc/aria2 bittorrent metalink tcmalloc xmlrpc
 
-# awesome use lua5.3
+# awesome use lua5.3 for utf-8 issue
+dev-lua/lgi LUA_TARGETS: lua5-1 lua5-3
 x11-wm/awesome LUA_SINGLE_TARGET: lua5-3 -lua5-1
+
+# MCU develop
+dev-embedded/sdcc device-lib mcs51 packihx
