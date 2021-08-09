@@ -5,13 +5,16 @@
 [github]
 	user = zedhugh
 [alias]
-    co = checkout
-    ci = commit
-    st = status
-    br = branch
-    hist = log --pretty=format:'%h %ad | %s%d [%ad]' --graph --date=short
-    type = cat-file -t
-    dump = cat-file -p
+	co = checkout
+	ci = commit
+	st = status
+	br = branch
+	hist = log --pretty=format:'%h %ad | %s%d [%ad]' --graph --date=short
+	type = cat-file -t
+	dump = cat-file -p
+	hide = update-index --assume-unchanged
+	unhide = update-index --no-assume-unchanged
+	hidden = !git ls-files -v | grep "^[[:lower:]]"
 [commit]
 	gpgSign = true
 [diff "gpg"]
