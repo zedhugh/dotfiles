@@ -1,0 +1,15 @@
+# files
+mpd_music_dir="/var/lib/mpd/music"
+
+# visualizer
+visualizer_data_source = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+# visualizer_type = "wave" (spectrum/wave)
+visualizer_type = "spectrum" (spectrum/wave)
+visualizer_in_stereo = "yes"
+
+# lyrics
+# follow_now_playing_lyrics = "yes"
+# store_lyrics_in_song_dir = "no"
+# lyrics_directory = "/home/zedhugh/.lyrics"
+# lyrics_fetchers = "lyricsfreak.com"

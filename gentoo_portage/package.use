@@ -96,3 +96,6 @@ x11-wm/awesome LUA_SINGLE_TARGET: lua5-3 -lua5-1
 
 # MCU develop
 dev-embedded/sdcc device-lib mcs51 packihx
+
+# MPD/MPC
+media-sound/ncmpcpp clock outputs taglib visualizer
