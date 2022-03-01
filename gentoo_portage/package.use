@@ -76,9 +76,6 @@ app-text/mupdf -opengl
 # postgresql
 dev-db/postgresql python
 
-# st
-x11-terms/st savedconfig
-
 # imagemagick
 media-gfx/imagemagick svg xml
 

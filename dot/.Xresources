@@ -14,7 +14,7 @@ XTerm.termName: xterm-256color
 XTerm*background: black
 XTerm*foreground: white
 XTerm*xftAntialias: true
-XTerm*faceName: xft:SaraSa Mono SC:antialias=True:size=14
+XTerm*faceName: xft:SaraSa Mono SC:antialias=True:autohint=True:size=14
 XTerm*forceBoxChars: true
 
 ! Alt键设置
@@ -34,3 +34,4 @@ XTerm*multiScroll: true
 XTerm*fastScroll: true
 
 St.font: Sarasa Mono SC:size=14:antialias=true:autohint=true
+St.alpha: 85
