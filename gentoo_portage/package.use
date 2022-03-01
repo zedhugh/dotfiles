@@ -18,6 +18,8 @@
 # x11-libs/libvdpau abi_x86_32
 # x11-libs/libxcb abi_x86_32
 # x11-base/xcb-proto abi_x86_32
+sys-libs/libxcrypt abi_x86_32
+virtual/libcrypt abi_x86_32
 
 app-text/xmlto text
 dev-lang/python sqlite
@@ -45,7 +47,7 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz json libxml2 m17n-lib sound source wide-int
 # move app-emacs/emacs-common-gentoo app-emacs/emacs-common
 app-emacs/emacs-common gui
-media-libs/freetype harfbuzz
+# media-libs/freetype harfbuzz
 sys-devel/gcc jit
 
 # p7zip
@@ -67,7 +69,9 @@ dev-ml/lablgl glut
 sys-libs/ncurses:5 tinfo
 
 # firefox
-www-client/firefox -system-av1 -system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite -system-webp
+media-libs/libvpx postproc
+#www-client/firefox -clang
+#www-client/firefox -system-av1 -system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite -system-webp
 www-client/firefox-bin -pulseaudio
 
 # pdf
@@ -97,6 +101,9 @@ dev-embedded/sdcc device-lib mcs51 packihx
 # MPD/MPC
 media-sound/ncmpcpp clock outputs taglib visualizer
 
+# graphviz
+media-libs/gd fontconfig
+
 # deepin-wine-wechat
 # media-libs/libcanberra pulseaudio
 # media-libs/mesa osmesa -vaapi
@@ -106,3 +113,8 @@ media-sound/ncmpcpp clock outputs taglib visualizer
 
 # dingtalk
 media-plugins/alsa-plugins pulseaudio
+
+# fcitx5
+app-i18n/fcitx5-configtool -kcm
+app-i18n/fcitx5-meta rime -chinese-addons
+app-i18n/fcitx5-qt qt5
