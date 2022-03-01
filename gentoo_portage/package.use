@@ -99,3 +99,13 @@ dev-embedded/sdcc device-lib mcs51 packihx
 
 # MPD/MPC
 media-sound/ncmpcpp clock outputs taglib visualizer
+
+# deepin-wine-wechat
+# media-libs/libcanberra pulseaudio
+# media-libs/mesa osmesa -vaapi
+# media-plugins/alsa-plugins pulseaudio
+# x11-drivers/nvidia-drivers abi_x86_32
+# x11-libs/libva -opengl
+
+# dingtalk
+media-plugins/alsa-plugins pulseaudio

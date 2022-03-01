@@ -4,6 +4,8 @@ app-emulation/virtualbox-bin PUEL
 dev-embedded/sdcc MicroChip-SDCC
 dev-db/mongodb SSPL-1
 net-analyzer/nmap NPSL
+net-im/deepin-wine-wechat Tencent
+net-im/dingtalk all-rights-reserved
 net-misc/anydesk AnyDesk-TOS
 net-misc/teamviewer TeamViewer
 sys-kernel/linux-firmware no-source-code linux-fw-redistributable

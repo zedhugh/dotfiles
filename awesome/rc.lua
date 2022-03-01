@@ -166,13 +166,15 @@ local function tag_config()
          emacs      = screen[2].tags[2],
          media      = screen[2].tags[3],
          virtualbox = screen[2].tags[4],
+         other2     = screen[1].tags[3],
       }
    else
       tags.specify = {
          firefox    = screen[1].tags[2],
          emacs      = screen[1].tags[3],
          media      = screen[1].tags[4],
-         virtualbox = screen[1].tags[5]
+         virtualbox = screen[1].tags[5],
+         other2     = screen[1].tags[6],
       }
    end
    return tags
@@ -765,6 +767,9 @@ awful.rules.rules = {
 
     { rule = { class = "Emacs" },
       properties = { tag = mytags.specify.emacs, switchtotag = true, fullscreen = true } },
+
+    { rule = { class = "dingtalk" },
+      properties = { tag = mytags.specify.other2 } },
 
     { rule = { class = "Gimp", role = "gimp-image-window" },
           properties = { maximized = true } },
