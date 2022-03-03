@@ -6,28 +6,47 @@
  */
 
 var proxy = 'SOCKS5 127.0.0.1:1080';
+//var proxy = 'HTTP 118.24.157.49:8118';
 var rules = [
     [
         [], 
-        [
-            "*sina.com*", 
-            "*163.com*"
-        ], 
+        [], 
         [
             "^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?google\\.com", 
             "^[\\w\\-]+:\\/+(?!\\/)(?:[^\\/]+\\.)?wikipedia\\.org"
         ], 
         [
+            "*artnet.com*",
             "*twitter.com*",
             "*youtube.com*",
             "*google-analytics.com*",
-            "*melpa.org*",
+            "*google*",
             "*reddit.com*",
             "*redditmedia.com*",
             "*quantserve.com*",
-            "*gentoo.org*",
             "*redd.it*",
-            "*redditstatic.com*"
+            "*redditstatic.com*",
+            "*imgur.com*",
+            "*githubusercontent.com*",
+            "*github.io*",
+            "*github.com*",
+            "*ycombinator.com*",
+            "*pgsqldb.org*",
+            "*matrix.org*",
+            "*getnikola.com*",
+            "*gentoo.org*",
+            "*melpa.org*",
+            "*ox-hugo.scripter.co*",
+            "*medium.com*",
+            "*xahlee.org*",
+            "*b-ok.asia*",
+            "*libgen.is*",
+            "*cdn.rawgit.com*",
+            "*v2fly.org*",
+            "*v2ex.com*",
+            "*ubuntu.org.cn*",
+            "*genius.com*",
+            "*imdb.com*"
         ]
     ], 
     [
