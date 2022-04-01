@@ -1,5 +1,7 @@
-local awful = require("awful");
+local lain = require("lain")
+local awful = require("awful")
 local beautiful = require("beautiful")
+local volume = lain.widget.pulse()
 local altkey = "Mod1"
 local modkey = "Mod4"
 
@@ -15,12 +17,12 @@ pravitekeys = awful.util.table.join(
    -- if app is running, raise it, otherwise launch it
    awful.key({ modkey }, "a",
       function ()
-         run_or_raise("android-studio", {class = "jetbrains-studio"})
+         run_or_raise("google-chrome-stable", {class = "Google-chrome"})
    end),
 
    awful.key({ modkey }, "q",
       function ()
-         run_or_raise("firefox", {class = "Firefox"})
+         run_or_raise("firefox", {class = "firefox"})
    end),
 
    awful.key({ modkey, "Shift" }, "v",
@@ -50,37 +52,46 @@ pravitekeys = awful.util.table.join(
          run_or_raise("pcmanfm", {class = "Pcmanfm"})
    end),
 
-   -- ALSA volume control
+   awful.key({ modkey }, "p",
+      function ()
+         awful.spawn.with_shell("screenshot")
+   end),
+
+   -- PulseAudio volume control
    awful.key({ }, "XF86AudioRaiseVolume",
       function ()
-         os.execute(string.format("amixer set %s 1%%+", beautiful.volume.channel))
+         os.execute(string.format("pactl set-sink-volume %s +1%%", volume.device))
+         volume.update()
          beautiful.volume.update()
    end),
    awful.key({ modkey }, "Up",
       function ()
-         os.execute(string.format("amixer set %s 1%%+", beautiful.volume.channel))
+         os.execute(string.format("pactl set-sink-volume %s +1%%", volume.device))
+         volume.update()
          beautiful.volume.update()
    end),
    awful.key({ }, "XF86AudioLowerVolume",
       function ()
-         os.execute(string.format("amixer set %s 1%%-", beautiful.volume.channel))
+         os.execute(string.format("pactl set-sink-volume %s -1%%", volume.device))
+         volume.update()
          beautiful.volume.update()
    end),
    awful.key({ modkey }, "Down",
       function ()
-         os.execute(string.format("amixer set %s 1%%-", beautiful.volume.channel))
+         os.execute(string.format("pactl set-sink-volume %s -1%%", volume.device))
+         volume.update()
          beautiful.volume.update()
    end),
    awful.key({ }, "XF86AudioMute",
       function ()
-         os.execute(string.format("amixer set %s toggle", beautiful.volume.togglechannel
-                                     or beautiful.volume.channel))
+         os.execute(string.format("pactl set-sink-mute %s toggle", volume.device))
+         volume.update()
          beautiful.volume.update()
    end),
    awful.key({ modkey, "Shift" }, "m",
       function ()
-         os.execute(string.format("amixer set %s toggle", beautiful.volume.togglechannel
-                                     or beautiful.volume.channel))
+         os.execute(string.format("pactl set-sink-mute %s toggle", volume.device))
+         volume.update()
          beautiful.volume.update()
    end)
 )

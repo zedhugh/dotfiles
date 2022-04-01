@@ -756,7 +756,10 @@ awful.rules.rules = {
       properties = { titlebars_enabled = false } },
 
     -- Set Firefox to always map on the second tag on screen 1.
-    { rule = { class = "Firefox" },
+    { rule = { class = "firefox" },
+      properties = { tag = mytags.specify.firefox }, maximized = true },
+
+    { rule = { class = "Google-chrome" },
       properties = { tag = mytags.specify.firefox }, maximized = true },
 
     { rule = { class = "mpv"},
