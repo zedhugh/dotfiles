@@ -10,22 +10,17 @@
 * 将 awesome 配置文件链接到配置目录下
   #+begin_src sh
     dir=$(pwd)
+    # 链接配置
     ln -s "${dir}/rc.lua" ~/.config/awesome/
+    # 链接定制快捷键
     ln -s "${dir}/pravitekeys.lua" ~/.config/awesome/
+    # 链接定制主题
+    ln -s "${dir}/multicolor-theme.lua" ~/.config/awesome/themes/multicolor/theme-personal.lua
   #+end_src
 
-* 修改 =awesome-copycats= 代码
-  修改 =awesome-copycats= 代码的原因有两个：
+* 定制 =multicolor= 主题
+  定制 =multicolor= 主题的原因有两个：
   1. 下拉终端使用 =st= ，=awesome-copycats= 实现下拉终端时需要设置 =st= 终端的窗口名，
      =st= 设置窗口名的命令行参数为 /-n/ 而非 =xterm= 和 =rxvt-unicode= 使用的 /-name/ 。
   2. 在我们自定义的配置中，会根据显示器数量设置不同的 *tag名称* ，=awesome-copycats= 默认
      的每个屏幕的 =tag= 都相同。
-
-  实现该功能无需手动修改代码，直接使用[[./multicolor-config.patch][该补丁]]即可，命令如下：
-  #+begin_src sh
-    dir=$(pwd)
-    file="${dir}/multicolor-config.patch"
-
-    cd ~/.config/awesome/
-    git apply $file
-  #+end_src

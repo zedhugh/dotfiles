@@ -57,7 +57,7 @@ local function run_once(cmd_arr)
     end
 end
 
-run_once({ "unclutter -root" }) -- entries must be separated by commas
+run_once({ "unclutter -root", "pulseaudio --start" }) -- entries must be separated by commas
 
 -- This function implements the XDG autostart specification
 --[[
@@ -246,6 +246,7 @@ lain.layout.cascade.tile.nmaster       = 5
 lain.layout.cascade.tile.ncol          = 2
 
 beautiful.init(string.format("%s/.config/awesome/themes/%s/theme.lua", os.getenv("HOME"), chosen_theme))
+-- beautiful.init(string.format("%s/.config/awesome/themes/%s/theme-personal.lua", os.getenv("HOME"), chosen_theme))
 -- }}}
 
 -- {{{ Menu
