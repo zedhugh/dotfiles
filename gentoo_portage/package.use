@@ -70,9 +70,7 @@ sys-libs/ncurses:5 tinfo
 
 # firefox
 media-libs/libvpx postproc
-#www-client/firefox -clang
-#www-client/firefox -system-av1 -system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite -system-webp
-www-client/firefox-bin -pulseaudio
+www-client/firefox -clang -system-av1 -system-harfbuzz -system-icu -system-jpeg -system-libevent -system-libvpx -system-png -system-webp
 
 # pdf
 app-text/mupdf -opengl
