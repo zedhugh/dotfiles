@@ -29,3 +29,27 @@ alias ll="ls -l"
 alias la="ls -a"
 alias lh="ls -lh"
 alias lha="ls -lha"
+
+if [[ "${TERM}" != "tmux-256color" ]]; then
+    tmux
+fi
+
+set-proxy() {
+    export http_proxy=http://127.0.0.1:8118
+    export https_proxy=https://127.0.0.1:8118
+}
+
+unset-proxy() {
+    unset http_proxy
+    unset https_proxy
+}
+
+set-npm-proxy() {
+    npm config set proxy http://127.0.0.1:8118
+    npm config set https-proxy http://127.0.0.1:8118
+}
+
+unset-npm-proxy() {
+    npm config delete proxy
+    npm config delete https-proxy
+}
