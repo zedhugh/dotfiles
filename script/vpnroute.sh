@@ -12,7 +12,9 @@ fi
 
 cd $(dirname $0)
 
-DEV=vpn_$(./vpncmd localhost /client /cmd accountlist | grep -e '网络适配器\|Adapter' | cut -d '|' -f 2)
+ADAPTER=$(./vpncmd localhost /client /cmd accountlist | grep -e '网络适配器\|Adapter' | cut -d '|' -f 2)
+ADAPTER=$(echo $ADAPTER | awk '{ print tolower($0) }')
+DEV=vpn_$ADAPTER
 
 echo $DEV
 
