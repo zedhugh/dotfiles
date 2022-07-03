@@ -8,7 +8,8 @@ fi
 
 SCRIPT_DIR=$(dirname $0)
 
-SOURCE_DIR="${SCRIPT_DIR}/../gentoo_portage/patches/x11-terms/st/"
-DEST_DIR="/etc/portage/patches/x11-terms/st"
+# 此处目录后面的 / 不能少
+SOURCE_DIR="${SCRIPT_DIR}/../gentoo_portage/patches/"
+DEST_DIR="/etc/portage/patches/"
 
 rsync -r --delete --mkpath $SOURCE_DIR $DEST_DIR
