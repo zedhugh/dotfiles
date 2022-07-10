@@ -11,11 +11,14 @@
   #+begin_src sh
     dir=$(pwd)
     # 链接配置
-    ln -s "${dir}/rc.lua" ~/.config/awesome/
+    ln -sf "${dir}/rc.lua" ~/.config/awesome/
     # 链接定制快捷键
-    ln -s "${dir}/pravitekeys.lua" ~/.config/awesome/
+    ln -sf "${dir}/pravitekeys.lua" ~/.config/awesome/
     # 链接定制主题
-    ln -s "${dir}/multicolor-theme.lua" ~/.config/awesome/themes/multicolor/theme-personal.lua
+    ln -sf "${dir}/multicolor-theme.lua" ~/.config/awesome/themes/multicolor/theme-personal.lua
+    # 给 pulse 组建打补丁，该补丁主要为修正蓝牙耳机显示名称
+    cd ~/.config/awesome/lain/
+    git apply "$dir/pulse-audio.diff"
   #+end_src
 
 * 定制 =multicolor= 主题
