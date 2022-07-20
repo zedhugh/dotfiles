@@ -30,9 +30,6 @@ alias la="ls -a"
 alias lh="ls -lh"
 alias lha="ls -lha"
 
-if [[ "${TERM}" != "tmux-256color" ]]; then
-    tmux
-fi
 
 set-proxy() {
     export http_proxy=http://127.0.0.1:8118
@@ -44,6 +41,14 @@ unset-proxy() {
     unset https_proxy
 }
 
+set-git-proxy() {
+    git config --global http.proxy 127.0.0.1:8118
+}
+
+unset-git-proxy() {
+    git config --global --unset http.proxy
+}
+
 set-npm-proxy() {
     npm config set proxy http://127.0.0.1:8118
     npm config set https-proxy http://127.0.0.1:8118
@@ -53,3 +58,19 @@ unset-npm-proxy() {
     npm config delete proxy
     npm config delete https-proxy
 }
+
+if [[ "${TERM}" != "tmux-256color" ]]; then
+    tmux
+fi
+
+alias pip='function _pip() {
+      if [ $1 == "search" ]; then
+         pip_search "$2";
+      else pip "$@";
+      fi;
+};_pip'
+
+# pnpm
+export PNPM_HOME="/home/zedhugh/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end

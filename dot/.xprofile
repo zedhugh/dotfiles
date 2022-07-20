@@ -16,7 +16,7 @@ fcitx5 -d
 #export QT_IM_MODULE="ibus"
 #ibus-daemon -drx
 
-# xcompmgr -c &
+xcompmgr &
 # nm-applet &
 
 #fcitx -d & > /dev/null
@@ -36,4 +36,10 @@ fcitx5 -d
 #sudo java -jar tcpspeed_client.jar -b &
 #cd
 #sudo service shadowsocks.client start
-emacs --daemon
+# emacs --daemon
+
+export PATH="~/.local/bin${PATH:+:}$PATH"
+# pnpm
+export PNPM_HOME="/home/zedhugh/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
