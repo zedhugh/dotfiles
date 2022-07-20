@@ -44,7 +44,7 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz json libxml2 m17n-lib sound source wide-int
+app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz json libxml2 m17n-lib sound source webp wide-int
 # move app-emacs/emacs-common-gentoo app-emacs/emacs-common
 app-emacs/emacs-common gui
 # media-libs/freetype harfbuzz
@@ -110,6 +110,11 @@ media-libs/gd fontconfig
 # x11-libs/libva -opengl
 
 # fcitx5
-app-i18n/fcitx5-configtool -kcm
-app-i18n/fcitx5-meta rime -chinese-addons
-app-i18n/fcitx5-qt qt5
+app-i18n/fcitx-configtool -kcm
+app-i18n/fcitx-meta rime -chinese-addons
+app-i18n/fcitx-qt qt5
+media-libs/mesa wayland
+x11-libs/gtk+ wayland
+
+# nodejs use corepack manage package manager
+net-libs/nodejs -npm
