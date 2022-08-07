@@ -17,6 +17,7 @@ var rules = [
         ], 
         [
             "*artnet.com*",
+            "*emacs-china.org*",
             "*twitter.com*",
             "*youtube.com*",
             "*google-analytics.com*",
@@ -33,6 +34,7 @@ var rules = [
             "*ycombinator.com*",
             "*pgsqldb.org*",
             "*matrix.org*",
+            "*npmjs.com*",
             "*getnikola.com*",
             "*gentoo.org*",
             "*melpa.org*",
@@ -46,7 +48,10 @@ var rules = [
             "*v2ex.com*",
             "*ubuntu.org.cn*",
             "*genius.com*",
-            "*imdb.com*"
+            "*imdb.com*",
+            "*spacevim.org*",
+            "*ant.design*",
+            "*huzheng.org*",
         ]
     ], 
     [
