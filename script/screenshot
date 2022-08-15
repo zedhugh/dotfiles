@@ -1,7 +1,12 @@
 #!/bin/sh
 
-timestamp="$(date +%Y%m%d%H%M%S)"
-targetbase="$HOME/screenshots"
-mkdir -p $targetbase
+TIMESTAMP="$(date +%Y%m%d%H%M%S)"
+TARGETBASE="$HOME/screenshots"
+mkdir -p $TARGETBASE
+FILENAME="$TARGETBASE/${TIMESTAMP}.png"
 [ -d $targetbase ] || exit 1
-scrot -s $targetbase/$timestamp.png
+scrot -s $FILENAME
+
+if [[ -n $(type -p xclip) ]]; then
+    xclip -selection clipboard -t image/png $FILENAME
+fi
