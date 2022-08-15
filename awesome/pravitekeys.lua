@@ -43,7 +43,7 @@ pravitekeys = awful.util.table.join(
 
    awful.key({ modkey }, "d",
       function ()
-         run_or_raise("gtk-launch dingtalk", {class = "dingtalk"})
+         run_or_raise("gtk-launch com.alibabainc.dingtalk", {class = "dingtalk"})
          -- run_or_raise("emacs", {class = "Emacs"})
    end),
 
