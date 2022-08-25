@@ -29,4 +29,5 @@ fi
 
 if [[ "$1" == "unset" ]]; then
     dhcpcd -k $DEV
+    dhcpcd
 fi
