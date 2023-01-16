@@ -1,1 +1,3 @@
 app-editors/emacs **
+sys-kernel/gentoo-sources -~amd64
+x11-libs/libX11 -~amd64
