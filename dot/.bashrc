@@ -10,8 +10,8 @@
 # past this point for scp and rcp, and it's important to refrain from
 # outputting anything in those cases.
 if [[ $- != *i* ]] ; then
-	# Shell is non-interactive.  Be done now!
-	return
+    # Shell is non-interactive.  Be done now!
+    return
 fi
 
 
@@ -19,11 +19,11 @@ fi
 HISTCONTROL=ignoreboth
 #export PATH="~/.local/bin:/usr/lib/distcc/bin:${PATH}"
 
-export PATH="/usr/lib/ccache/bin${PATH:+:}$PATH"
-export CCACHE_DIR="/var/cache/ccache"
+# export PATH="~/.local/bin/:/usr/lib/ccache/bin${PATH:+:}$PATH"
+# export CCACHE_DIR="/var/cache/ccache"
 export GPG_TTY=$(tty)
 
-# export PATH="~/.local/bin${PATH:+:}$PATH"
+export PATH="~/.local/bin${PATH:+:}$PATH"
 
 alias ll="ls -l"
 alias la="ls -a"
@@ -42,11 +42,27 @@ unset-proxy() {
 }
 
 set-git-proxy() {
-    git config --global http.proxy 127.0.0.1:8118
+    prefix_cmd=""
+    flag="--global"
+    if [[ "$1" == "-s" ]]; then
+        prefix_cmd="sudo"
+        flag="--system"
+    fi
+
+    $prefix_cmd git config $flag http.proxy http://127.0.0.1:8118
+    $prefix_cmd git config $flag http.sslVerify false
 }
 
 unset-git-proxy() {
-    git config --global --unset http.proxy
+    prefix_cmd=""
+    flag="--global"
+    if [[ "$1" == "-s" ]]; then
+        prefix_cmd="sudo"
+        flag="--system"
+    fi
+
+    $prefix_cmd git config $flag --unset http.proxy
+    $prefix_cmd git config $flag --unset http.sslVerify
 }
 
 set-npm-proxy() {
@@ -74,3 +90,6 @@ alias pip='function _pip() {
 export PNPM_HOME="/home/zedhugh/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
+# tabtab source for packages
+# uninstall by removing these lines
+[ -f ~/.config/tabtab/bash/__tabtab.bash ] && . ~/.config/tabtab/bash/__tabtab.bash || true

@@ -16,7 +16,7 @@ fcitx5 -d
 #export QT_IM_MODULE="ibus"
 #ibus-daemon -drx
 
-xcompmgr &
+# xcompmgr &
 # nm-applet &
 
 #fcitx -d & > /dev/null
