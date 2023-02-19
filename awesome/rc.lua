@@ -57,7 +57,7 @@ local function run_once(cmd_arr)
     end
 end
 
-run_once({ "unclutter -root", "pulseaudio --start" }) -- entries must be separated by commas
+run_once({ "unclutter -root", "pulseaudio --start", "picom -b" }) -- entries must be separated by commas
 
 -- This function implements the XDG autostart specification
 --[[
@@ -98,7 +98,6 @@ local browser      = os.getenv("BROWSER") or "firefox"
 local scrlocker    = "slock"
 
 awful.util.terminal = terminal
--- ❶❷❸❹❺❻❼❽❾❿ ➊➋➌➍➎➏➐➑➒➓
 -- 支持的窗口布局
 -- { awful.layout.suit.fair.horizontal,
 --   awful.layout.suit.floating,
@@ -130,13 +129,13 @@ local function tag_config()
    if screen_number == 2 then
       tags = {
          settings = {
-            { names = { "➊ term", "➋ firefox", "➌ others" },
+            { names = { "1  ", "2  ", "3  " },
               layout = {
                  awful.layout.suit.fair,
                  awful.layout.suit.floating,
                  awful.layout.suit.tile.top
             } },
-            { names = { "➊ term", "➋ emacs", "➌ media", "➍ VirtualBox", "➎ others" },
+            { names = { "1  ", "2  ", "3  ", "4  ", "5 " },
               layout = {
                  awful.layout.suit.fair,
                  awful.layout.suit.tile.bottom,
@@ -147,7 +146,7 @@ local function tag_config()
    else
       tags = {
          settings = {
-            { names = { "➊ term", "➋ firefox", "➌ emacs", "➍ media", "➎ VirtualBox", "➏ others" },
+            { names = { "1 ", "2  ", "3  ", "4  ", "5  ", "6  " },
               layout = {
                  awful.layout.suit.fair,
                  awful.layout.suit.floating,
