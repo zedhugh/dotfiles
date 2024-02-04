@@ -50,12 +50,15 @@ const parse = (str) => {
 
 /**
  * @param {string} commit 提交 Hash 值
+ * @param {string} repo github 仓库名
  * @returns {Promise<string>}
  */
-const fetchCragoLock = async (commit) => {
-    const url = `https://raw.githubusercontent.com/shadowsocks/shadowsocks-rust/${commit}/Cargo.lock`;
+const fetchCragoLock = async (repo, commit) => {
+    const path = require("node:path");
+    const pathName = path.join(repo, commit, "Cargo.lock");
+    const url = new URL(pathName, "https://raw.githubusercontent.com/").toString();
     if (global.fetch) {
-        const resp = await fetch(url);
+        const resp = await global.fetch(url, { method: "GET", mode: "cors" });
         if (resp.status !== 200) {
             const text = await resp.text();
             throw new Error(text);
@@ -86,17 +89,29 @@ const fetchCragoLock = async (commit) => {
 
 const commitPrefix = "-c";
 const outputPrefix = "-o";
+const repoPrefix = "-r";
 
 const showUsage = () => {
     const { basename } = require('node:path');
-    const usage = `Usage: ${basename(__filename)} ${commitPrefix} <commit_full_hash | branch | tag> [${outputPrefix} output_file_path]`;
+    const usage = `Usage: ${basename(__filename)} ${repoPrefix} <github repo> ${commitPrefix} <commit_full_hash | branch | tag> [${outputPrefix} output_file_path]`;
     console.error(usage);
 }
 
 const parseCmdArgs = () => {
     const argStartIndex = process.argv.indexOf(__filename) + 1;
     const args = process.argv.slice(argStartIndex);
-    if (args.length !== 2 && args.length !== 4) {
+    if (args.length !== 4 && args.length !== 6) {
+        showUsage();
+        return;
+    }
+
+    const repoIndex = args.indexOf(repoPrefix);
+    if (repoIndex === -1) {
+        showUsage();
+        return;
+    }
+    const repo = args.at(repoIndex + 1);
+    if (!repo) {
         showUsage();
         return;
     }
@@ -112,7 +127,7 @@ const parseCmdArgs = () => {
         return;
     }
 
-    const cmdArgs = { commit, output: '' };
+    const cmdArgs = { repo, commit, output: '' };
     const outputIndex = args.indexOf(outputPrefix);
     if (outputIndex === -1) {
         return cmdArgs;
@@ -126,12 +141,13 @@ const parseCmdArgs = () => {
 
 const doTask = async () => {
     const cmdArgs = parseCmdArgs();
+    const repo = cmdArgs?.repo;
     const commit = cmdArgs?.commit;
     const output = cmdArgs?.output;
-    if (!commit) return;
+    if (!repo || !commit) return;
 
     try {
-        const content = await fetchCragoLock(cmdArgs.commit);
+        const content = await fetchCragoLock(repo, commit);
         const result = parse(content);
         if (!output) {
             console.log(result);
