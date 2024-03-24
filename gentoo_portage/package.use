@@ -18,8 +18,8 @@
 # x11-libs/libvdpau abi_x86_32
 # x11-libs/libxcb abi_x86_32
 # x11-base/xcb-proto abi_x86_32
-sys-libs/libxcrypt abi_x86_32
-virtual/libcrypt abi_x86_32
+# sys-libs/libxcrypt abi_x86_32
+# virtual/libcrypt abi_x86_32
 
 app-text/xmlto text
 dev-lang/python sqlite
@@ -44,10 +44,8 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs cairo dynamic-loading gfile gsettings gui gzip-el harfbuzz json libxml2 m17n-lib sound source tree-sitter webp wide-int
-# move app-emacs/emacs-common-gentoo app-emacs/emacs-common
+app-editors/emacs dynamic-loading gui gzip-el harfbuzz json libxml2 sound source sqlite tree-sitter wide-int
 app-emacs/emacs-common gui
-# media-libs/freetype harfbuzz
 sys-devel/gcc jit
 
 # p7zip
@@ -60,20 +58,10 @@ app-editors/vim lua python
 #gnome-base/gvfs udisks
 #x11-libs/libfm udisks
 
-# pdf
-app-text/poppler cairo
-# llpp
-dev-ml/lablgl glut
-
-# android studio
-sys-libs/ncurses:5 tinfo
-
 # firefox
 media-libs/libvpx postproc
-www-client/firefox -clang -system-av1 -system-harfbuzz -system-icu -system-jpeg -system-libevent -system-libvpx -system-png -system-webp
-
-# pdf
-app-text/mupdf -opengl
+#www-client/firefox -clang -system-av1 -system-harfbuzz -system-icu -system-jpeg -system-libevent -system-libvpx -system-png -system-webp
+#www-client/firefox -clang
 
 # postgresql
 dev-db/postgresql python
@@ -117,4 +105,24 @@ media-libs/mesa wayland
 x11-libs/gtk+ wayland
 
 # nodejs use corepack manage package manager
-net-libs/nodejs -npm
+net-libs/nodejs corepack -npm
+
+# dwm
+x11-misc/dmenu xinerama
+x11-wm/dwm savedconfig xinerama
+
+# xorg-server
+x11-base/xorg-server xephyr suid -elogind
+
+# latex
+app-text/texlive cjk extra luatex xetex L10N: zh
+app-text/texlive-core cjk xetex
+
+# samba client
+net-fs/samba client
+
+# mpv
+media-video/mpv bluray
+
+# librime
+app-i18n/librime octagram

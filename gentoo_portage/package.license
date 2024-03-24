@@ -1,8 +1,11 @@
 app-arch/p7zip unRAR
 app-editors/vscode Microsoft-vscode
 app-emulation/virtualbox-bin PUEL
+app-office/wps-office WPS-EULA
 dev-embedded/sdcc MicroChip-SDCC
 dev-db/mongodb SSPL-1
+media-fonts/font-bh-ttf bh-luxi
+media-fonts/font-bh-type1 bh-luxi
 net-analyzer/nmap NPSL
 net-im/deepin-wine-wechat Tencent
 net-im/dingtalk all-rights-reserved
@@ -10,5 +13,6 @@ net-misc/anydesk AnyDesk-TOS
 net-misc/teamviewer TeamViewer
 sys-kernel/linux-firmware no-source-code linux-fw-redistributable
 www-client/google-chrome google-chrome
+www-client/microsoft-edge microsoft-edge
 www-plugins/adobe-flash AdobeFlash-11.x
 x11-drivers/nvidia-drivers NVIDIA-r2
