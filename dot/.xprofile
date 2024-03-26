@@ -28,7 +28,7 @@ fcitx5 -d
 # export SSH_AUTH_SOCK
 # export GPG_AGENT_INFO
 
-/usr/libexec/polkit-gnome-authentication-agent-1 &
+# /usr/libexec/polkit-gnome-authentication-agent-1 &
 # stardict -h & > /dev/null &2 > /dev/null
 # sudo sslocal -d start -p 443 -s zedhugh.me -k BlsEYioG1w > /dev/null
 
