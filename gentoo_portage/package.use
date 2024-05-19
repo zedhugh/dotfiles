@@ -98,7 +98,7 @@ media-libs/gd fontconfig
 # x11-libs/libva -opengl
 
 # fcitx5
-app-i18n/fcitx-configtool -kcm
+app-i18n/fcitx-configtool qt5 -kcm
 app-i18n/fcitx-meta rime -chinese-addons
 app-i18n/fcitx-qt qt5
 # media-libs/mesa wayland
