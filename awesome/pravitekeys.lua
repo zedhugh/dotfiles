@@ -22,7 +22,7 @@ pravitekeys = awful.util.table.join(
 
    awful.key({ modkey }, "q",
       function ()
-         run_or_raise("firefox", {class = "firefox"})
+         run_or_raise("firefox-bin", {class = "firefox"})
    end),
 
    awful.key({ modkey, "Shift" }, "v",
