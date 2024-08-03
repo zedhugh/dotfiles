@@ -1,9 +1,9 @@
 local lain = require("lain")
 local awful = require("awful")
 local beautiful = require("beautiful")
-local volume = lain.widget.pulse()
 local altkey = "Mod1"
 local modkey = "Mod4"
+local use_pulse = true
 
 function run_or_raise (cmd, rule)
    local matcher = function (c)
@@ -12,6 +12,29 @@ function run_or_raise (cmd, rule)
    awful.client.run_or_raise(cmd, matcher)
 end
 
+local volume_raise, volume_lower, volume_mute;
+
+if use_pulse then
+   volume_raise = function()
+      os.execute(string.format("pactl set-sink-volume %s +1%%", beautiful.volume.device))
+   end
+   volume_lower = function()
+      os.execute(string.format("pactl set-sink-volume %s -1%%", beautiful.volume.device))
+   end
+   volume_mute = function()
+      os.execute(string.format("pactl set-sink-mute %s toggle", beautiful.volume.device))
+   end
+else
+   volume_raise = function()
+      os.execute(string.format("amixer -q set %s 1%%+", beautiful.volume.channel))
+   end
+   volume_lower = function()
+      os.execute(string.format("amixer -q set %s 1%%-", beautiful.volume.channel))
+   end
+   volume_mute = function()
+      os.execute(string.format("amixer -q set %s toggle", beautiful.volume.togglechannel or beautiful.volume.channel))
+   end
+end
 
 pravitekeys = awful.util.table.join(
    -- if app is running, raise it, otherwise launch it
@@ -60,38 +83,32 @@ pravitekeys = awful.util.table.join(
    -- PulseAudio volume control
    awful.key({ }, "XF86AudioRaiseVolume",
       function ()
-         os.execute(string.format("pactl set-sink-volume %s +1%%", volume.device))
-         volume.update()
+         volume_raise()
          beautiful.volume.update()
    end),
    awful.key({ modkey }, "Up",
       function ()
-         os.execute(string.format("pactl set-sink-volume %s +1%%", volume.device))
-         volume.update()
+         volume_raise()
          beautiful.volume.update()
    end),
    awful.key({ }, "XF86AudioLowerVolume",
       function ()
-         os.execute(string.format("pactl set-sink-volume %s -1%%", volume.device))
-         volume.update()
+         volume_lower()
          beautiful.volume.update()
    end),
    awful.key({ modkey }, "Down",
       function ()
-         os.execute(string.format("pactl set-sink-volume %s -1%%", volume.device))
-         volume.update()
+         volume_lower()
          beautiful.volume.update()
    end),
    awful.key({ }, "XF86AudioMute",
       function ()
-         os.execute(string.format("pactl set-sink-mute %s toggle", volume.device))
-         volume.update()
+         volume_mute()
          beautiful.volume.update()
    end),
    awful.key({ modkey, "Shift" }, "m",
       function ()
-         os.execute(string.format("pactl set-sink-mute %s toggle", volume.device))
-         volume.update()
+         volume_mute()
          beautiful.volume.update()
    end)
 )
