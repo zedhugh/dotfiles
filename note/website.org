@@ -18,3 +18,14 @@ https://replicate.com/
 DIFY key 见 account.org.gpg
 
 登录账号 github
+
+* 其他参考链接
+1. https://www.moonshot.cn/
+2. https://github.com/langchain-ai/langchain
+
+   示例 https://chat.langchain.com/?llm=openai_gpt_3_5_turbo
+3. https://github.com/dataelement/bisheng/blob/main/README.md
+4. 支付系统
+   1. [[https://github.com/killbill/killbill][killbill]]
+
+   2. https://www.chargebee.com/pricing/?ref=primary-header
