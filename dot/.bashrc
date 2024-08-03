@@ -33,7 +33,7 @@ alias lha="ls -lha"
 
 set-proxy() {
     export http_proxy=http://127.0.0.1:8118
-    export https_proxy=https://127.0.0.1:8118
+    export https_proxy=http://127.0.0.1:8118
 }
 
 unset-proxy() {
@@ -47,6 +47,8 @@ set-git-proxy() {
     if [[ "$1" == "-s" ]]; then
         prefix_cmd="sudo"
         flag="--system"
+    elif [[ "$1" == "-l" ]]; then
+        flag="--local"
     fi
 
     $prefix_cmd git config $flag http.proxy http://127.0.0.1:8118
@@ -59,6 +61,8 @@ unset-git-proxy() {
     if [[ "$1" == "-s" ]]; then
         prefix_cmd="sudo"
         flag="--system"
+    elif [[ "$1" == "-l" ]]; then
+        flag="--local"
     fi
 
     $prefix_cmd git config $flag --unset http.proxy
@@ -75,7 +79,7 @@ unset-npm-proxy() {
     npm config delete https-proxy
 }
 
-if [[ "${TERM}" != "tmux-256color" ]]; then
+if [[ "${TERM}" != "tmux-256color" ]] && [[ -x $(type -p tmux) ]]; then
     tmux
 fi
 
@@ -93,3 +97,12 @@ export PATH="$PNPM_HOME:$PATH"
 # tabtab source for packages
 # uninstall by removing these lines
 [ -f ~/.config/tabtab/bash/__tabtab.bash ] && . ~/.config/tabtab/bash/__tabtab.bash || true
+
+clean-pnpm-node() {
+    if [[ -d "$PNPM_HOME" ]]; then
+        rm -f "$PNPM_HOME/nodejs_current"
+        rm -f "$PNPM_HOME/node"
+        rm -f "$PNPM_HOME/npm"
+        rm -f "$PNPM_HOME/npx"
+    fi
+}
