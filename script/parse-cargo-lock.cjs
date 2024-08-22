@@ -31,9 +31,10 @@ const parseItem = (str) => {
 }
 
 /**
- * @param {string} str
+ * @param {string} str 依赖文本
+ * @param {string=} concatenation 依赖项版本连接符
  */
-const parse = (str) => {
+const parse = (str, concatenation = '@') => {
     const pkgSeparator = '[[package]]';
     const idx = str.indexOf(pkgSeparator);
     if (idx >= 0) {
@@ -41,7 +42,7 @@ const parse = (str) => {
     }
 
     const arr = str.split(pkgSeparator).filter(Boolean);
-    const list = arr.map(parseItem).filter(Boolean).map((item) => item.join("-"));
+    const list = arr.map(parseItem).filter(Boolean).map((item) => item.join(concatenation));
     const result = list.join('\n');
     return result
 }
@@ -90,10 +91,11 @@ const fetchCragoLock = async (repo, commit) => {
 const commitPrefix = "-c";
 const outputPrefix = "-o";
 const repoPrefix = "-r";
+const concatPrefix = "-vc"
 
 const showUsage = () => {
     const { basename } = require('node:path');
-    const usage = `Usage: ${basename(__filename)} ${repoPrefix} <github repo> ${commitPrefix} <commit_full_hash | branch | tag> [${outputPrefix} output_file_path]`;
+    const usage = `Usage: ${basename(__filename)} ${repoPrefix} <github repo> ${commitPrefix} <commit_full_hash | branch | tag> [${outputPrefix} output_file_path] [${concatPrefix} version-concatenation]`;
     console.error(usage);
 }
 
@@ -127,7 +129,14 @@ const parseCmdArgs = () => {
         return;
     }
 
-    const cmdArgs = { repo, commit, output: '' };
+    /** @type {string | undefined} */
+    let versionConcatenation;
+    const versionConcatenationIndex = args.indexOf(concatPrefix);
+    if (versionConcatenationIndex !== -1) {
+        versionConcatenation = args.at(versionConcatenationIndex + 1);
+    }
+
+    const cmdArgs = { repo, commit, output: '', versionConcatenation };
     const outputIndex = args.indexOf(outputPrefix);
     if (outputIndex === -1) {
         return cmdArgs;
@@ -146,9 +155,10 @@ const doTask = async () => {
     const output = cmdArgs?.output;
     if (!repo || !commit) return;
 
+
     try {
         const content = await fetchCragoLock(repo, commit);
-        const result = parse(content);
+        const result = parse(content, cmdArgs.versionConcatenation);
         if (!output) {
             console.log(result);
             return
