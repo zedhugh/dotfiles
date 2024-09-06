@@ -29,3 +29,9 @@ DIFY key 见 account.org.gpg
    1. [[https://github.com/killbill/killbill][killbill]]
 
    2. https://www.chargebee.com/pricing/?ref=primary-header
+
+5. i18n 翻译工具
+
+   效果还挺好，使用地址 https://github.com/lobehub/lobe-cli-toolbox/blob/master/packages/lobe-i18n/README.zh-CN.md
+
+   *注意*: 配置中需要将 =experimental.jsonMode= 配置打开
