@@ -35,3 +35,8 @@ DIFY key 见 [[file:account.org.gpg][account.org.gpg]]
    效果还挺好，使用地址 https://github.com/lobehub/lobe-cli-toolbox/blob/master/packages/lobe-i18n/README.zh-CN.md
 
    *注意*: 配置中需要将 =experimental.jsonMode= 配置打开
+
+6. 自建 AI
+
+   地址: ai.hgtoo.com
+   密码: 见 [[file:account.org.gpg][account.org.gpg]]
