@@ -56,6 +56,24 @@ var proxyDomains = [
     "*vimeo.com*",
     "*wikipedia.org*",
     "*wikimedia.org*",
+
+    "*cursor.com*",
+    "*mux.com*",
+    "*app.posthog.com",
+    "*inferred.litix.io*",
+    "*amazontrust.com*",
+
+    "*vultr.com*",
+
+    "*libera.chat*",
+    "*freenode.net*",
+
+    "*adys.tv*",
+    "*meijumi.net*",
+
+    "*ocbc.com*",
+    "*ocsp.digicert.com*",
+    "*singpass.gov.sg*",
 ];
 
 var rules = [
