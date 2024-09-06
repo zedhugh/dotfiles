@@ -3,7 +3,7 @@
 * 需求关键字
 网站: [[https://dash.3ue.com]]
 
-用户及密码见 account.org.gpg
+用户及密码见 [[file:account.org.gpg][account.org.gpg]]
 
 * 各种 AI 模型 api
 https://replicate.com/
@@ -15,7 +15,7 @@ https://replicate.com/
 [[https://cloud.dify.ai/app/b33ce31b-ea64-412b-9acf-0a58f6a8b0f8/develop][涛哥 DIFY API 文档地址]]
 [[https://cloud.dify.ai/][DIFY 地址]]
 
-DIFY key 见 account.org.gpg
+DIFY key 见 [[file:account.org.gpg][account.org.gpg]]
 
 登录账号 github
 
