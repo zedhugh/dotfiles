@@ -40,3 +40,40 @@ DIFY key 见 [[file:account.org.gpg][account.org.gpg]]
 
    地址: ai.hgtoo.com
    密码: 见 [[file:account.org.gpg][account.org.gpg]]
+
+* tailwindcss 组件模板
+https://tailspark.co/
+https://ui.shadcn.com
+https://daisyui.com/
+https://uicolors.app/
+https://sailboatui.com/
+https://preline.co/
+https://www.tailbits.com/
+https://www.tailwindtoolbox.com/
+https://www.tailwindawesome.com/
+https://merakiui.com/
+https://flowbite.com/
+https://www.langui.dev/
+https://cruip.com/
+https://tailspark.co/
+https://tailsc.com/
+https://github.com/unlight/tailwind-components/
+https://github.com/aniftyco/awesome-tailwindcss
+https://freesets.vercel.app/components
+
+* AI 后台
+https://ai2.hgtoo.com/apps
+| 账号                | 密码     |
+|---------------------+----------|
+| hangtaoto@gmail.com | ht124816 |
+| zedhugh             | Qwer1234 |
+
+* google 产品
+后续慢慢研究
+https://developers.google.com/webmaster-tools/limits?hl=zh-cn
+
+google 搜索接口
+https://developers.google.com/custom-search/docs/overview?hl=zh-cn
+
+第三方聚合接口（收费）
+https://serpapi.com/google-autocomplete-api
