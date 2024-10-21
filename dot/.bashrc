@@ -30,54 +30,10 @@ alias la="ls -a"
 alias lh="ls -lh"
 alias lha="ls -lha"
 
-
-set-proxy() {
-    export http_proxy=http://127.0.0.1:8118
-    export https_proxy=http://127.0.0.1:8118
-}
-
-unset-proxy() {
-    unset http_proxy
-    unset https_proxy
-}
-
-set-git-proxy() {
-    prefix_cmd=""
-    flag="--global"
-    if [[ "$1" == "-s" ]]; then
-        prefix_cmd="sudo"
-        flag="--system"
-    elif [[ "$1" == "-l" ]]; then
-        flag="--local"
-    fi
-
-    $prefix_cmd git config $flag http.proxy http://127.0.0.1:8118
-    $prefix_cmd git config $flag http.sslVerify false
-}
-
-unset-git-proxy() {
-    prefix_cmd=""
-    flag="--global"
-    if [[ "$1" == "-s" ]]; then
-        prefix_cmd="sudo"
-        flag="--system"
-    elif [[ "$1" == "-l" ]]; then
-        flag="--local"
-    fi
-
-    $prefix_cmd git config $flag --unset http.proxy
-    $prefix_cmd git config $flag --unset http.sslVerify
-}
-
-set-npm-proxy() {
-    npm config set proxy http://127.0.0.1:8118
-    npm config set https-proxy http://127.0.0.1:8118
-}
-
-unset-npm-proxy() {
-    npm config delete proxy
-    npm config delete https-proxy
-}
+PROXY_SHELL_FILE="$(realpath ~/.bash_proxy.sh)"
+if [[ -e $PROXY_SHELL_FILE ]] ; then
+    . $PROXY_SHELL_FILE
+fi
 
 if [[ "${TERM}" != "tmux-256color" ]] && [[ -x $(type -p tmux) ]]; then
     tmux
@@ -91,7 +47,7 @@ alias pip='function _pip() {
 };_pip'
 
 # pnpm
-export PNPM_HOME="/home/zedhugh/.local/share/pnpm"
+export PNPM_HOME="$(realpath ~/.local/share/pnpm)"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 # tabtab source for packages
