@@ -74,6 +74,18 @@ var proxyDomains = [
     "*ocbc.com*",
     "*ocsp.digicert.com*",
     "*singpass.gov.sg*",
+
+    "*melpa.org*",
+    "*netdna.bootstrapcdn.com*",
+    "*.cloudflare.com*",
+    "*pixhost.to*",
+    "*nodejs.org*",
+
+    "*qbittorrent.org*",
+    "*docker.com*",
+    "*cloudfront.net*",
+    "*telegram.org*",
+    "*fsm.name*",
 ];
 
 var rules = [
