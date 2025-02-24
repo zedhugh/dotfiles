@@ -57,7 +57,7 @@ local function run_once(cmd_arr)
     end
 end
 
-run_once({ "unclutter -root", "pulseaudio --start", "picom -b --backend xrender" }) -- entries must be separated by commas
+run_once({ "unclutter -root", "gentoo-pipewire-launcher", "picom -b --backend xrender" }) -- entries must be separated by commas
 
 -- This function implements the XDG autostart specification
 --[[
@@ -769,7 +769,7 @@ awful.rules.rules = {
       properties = { tag = mytags.specify.virtualbox } },
 
     { rule = { class = "Emacs" },
-      properties = { tag = mytags.specify.emacs, switchtotag = true, fullscreen = true } },
+      properties = { tag = mytags.specify.emacs, switchtotag = true, fullscreen = false } },
 
     { rule = { class = "dingtalk" },
       properties = { tag = mytags.specify.other2 } },
