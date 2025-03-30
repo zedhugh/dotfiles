@@ -1,0 +1,20 @@
+#+title: 高分辨率配置
+
+在 linux 中，4K 显示器若设置原始分辨率，则显示字体太小，若设置分辨率为 2K 或
+1080p 则图片、字体和光标大小适中，但不够清晰，显示效果不如 Windows 系统好。
+
+但现在突然间发现 linux 下也能较好的支持 HiDPI 了，字体大小通过 =~/.Xresources= 文件添加如下配置
+#+begin_src conf-xdefaults
+  Xcursor.size: 32
+  Xft.dpi: 144
+#+end_src
+其中 =Xcursor.size= 设置默认光标大小， =Xft.dpi= 设置文字显示 DPI 。
+
+通过如上设置后，字体和 xorg 默认环境下字体和光标显示正常，但 =Firefox= 和 =Emacs= 等 gtk 应用程序的
+光标大小显示和空白框口下大小不一致，这是因为 =Xcursor.size= 不能影响 gtk 应用程序的光标大小。
+
+gtk 应用的光标大小通过 =~/.config/gtk-3.0/settings.ini= 文件中设置，添加如下配置后即可统一光标大小。
+#+begin_src conf-unix
+  [Settings]
+  gtk-cursor-theme-size = 32
+#+end_src
