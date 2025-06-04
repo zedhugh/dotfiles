@@ -202,8 +202,11 @@ local volicon = wibox.widget.imagebox(theme.widget_vol)
 -- PulseAudio volume
 theme.volume = lain.widget.pulse({
       settings = function()
-         vlevel = volume_now.left .. "-" .. volume_now.right .. "%|" .. volume_now.device
-         if volume_now.muted then
+         vlevel = "N/A"
+         if volume_now then
+            vlevel = volume_now.left .. "-" .. volume_now.right .. "%|" .. volume_now.device
+         end
+         if volume_now and volume_now.muted then
             vlevel = vlevel .. " M"
          end
          widget:set_markup(markup.fontfg(theme.font, "#7493d2", vlevel))

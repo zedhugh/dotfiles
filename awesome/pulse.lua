@@ -86,9 +86,12 @@ local function factory(args)
    function pulse.update()
       helpers.async({ shell, "-c", type(pulse.cmd) == "string" and pulse.cmd or pulse.cmd() },
          function(s)
-            volume_now = parse_sink(s)
-
-            pulse.device = volume_now.index
+            if not s or #s == 0 then
+               volume_now = nil
+            else
+               volume_now = parse_sink(s)
+               pulse.device = volume_now.index
+            end
 
             widget = pulse.widget
             settings()
