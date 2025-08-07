@@ -40,6 +40,12 @@ fcitx5 -d
 
 export PATH="~/.local/bin${PATH:+:}$PATH"
 # pnpm
-export PNPM_HOME="/home/zedhugh/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+export PATH="~/.local/share/pnpm${PATH:+:}$PATH"
 # pnpm end
+
+# rust cargo
+export PATH="~/.cargo/bin${PATH:+:}$PATH"
+if [[ -e "$HOME/.cargo/env" ]]; then
+    . "$HOME/.cargo/env"
+fi
+# rust cargo end

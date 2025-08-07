@@ -3,7 +3,7 @@
 * 需求关键字
 网站: [[https://dash.3ue.com]]
 
-用户及密码见 [[file:account.org.gpg][account.org.gpg]]
+用户及密码见 [[file:account.org.gpg::*需求关键字][account.org.gpg]]
 
 * 各种 AI 模型 api
 https://replicate.com/
@@ -15,7 +15,7 @@ https://replicate.com/
 [[https://cloud.dify.ai/app/b33ce31b-ea64-412b-9acf-0a58f6a8b0f8/develop][涛哥 DIFY API 文档地址]]
 [[https://cloud.dify.ai/][DIFY 地址]]
 
-DIFY key 见 [[file:account.org.gpg][account.org.gpg]]
+DIFY key 见 [[file:account.org.gpg::*DIFY key][account.org.gpg]]
 
 登录账号 github
 
@@ -39,7 +39,7 @@ DIFY key 见 [[file:account.org.gpg][account.org.gpg]]
 6. 自建 AI
 
    地址: ai.hgtoo.com
-   密码: 见 [[file:account.org.gpg][account.org.gpg]]
+   密码: 见 [[file:account.org.gpg::*自建 AI][account.org.gpg]]
 
 * tailwindcss 组件模板
 https://tailspark.co/
@@ -63,10 +63,7 @@ https://freesets.vercel.app/components
 
 * AI 后台
 https://ai2.hgtoo.com/apps
-| 账号                | 密码     |
-|---------------------+----------|
-| hangtaoto@gmail.com | ht124816 |
-| zedhugh             | Qwer1234 |
+账号密码见 [[file:account.org.gpg::*AI 后台][account.org.gpg]]
 
 * google 产品
 后续慢慢研究
@@ -77,3 +74,25 @@ https://developers.google.com/custom-search/docs/overview?hl=zh-cn
 
 第三方聚合接口（收费）
 https://serpapi.com/google-autocomplete-api
+
+* 免费 SEO 工具
+https://ahrefs.com/zh/free-seo-tools
+
+* 视频处理
+https://github.com/Kedreamix/Linly-Dubbing/blob/main/README_zh.md
+https://github.com/Chenyme/Chenyme-AAVT
+
+* 本地 ocr
+https://github.com/golangboy/wxocr.git
+
+* 支付
+2checkout
+
+测试卡参见 [[https://verifone.cloud/docs/2checkout/Documentation/09Test_ordering_system/01Test_payment_methods][Test payment methods]]
+
+* bing
+https://www.bing.com/webmasters/about
+* WPS 共享文档
+[[https://kdocs.cn/l/cpQaCXssOBwk][Cloudfare优化]]
+
+[[https://kdocs.cn/l/ci4NCe8Jqf82][SEO 外链建设策略指南]]
