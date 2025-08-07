@@ -57,7 +57,7 @@ local function run_once(cmd_arr)
     end
 end
 
-run_once({ "unclutter -root", "gentoo-pipewire-launcher restart", "picom -b --backend xrender" }) -- entries must be separated by commas
+run_once({ "gentoo-pipewire-launcher restart", "picom -b --backend xrender" }) -- entries must be separated by commas
 
 -- This function implements the XDG autostart specification
 --[[
