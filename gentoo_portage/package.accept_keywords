@@ -1,3 +1,34 @@
+# editor
+app-editors/cursor ~amd64
 app-editors/emacs **
-sys-kernel/gentoo-sources -~amd64
-x11-libs/libX11 -~amd64
+app-editors/vscode ~amd64
+app-emacs/emacs-common ~amd64
+
+# imput method
+app-i18n/fcitx ~amd64
+app-i18n/fcitx-configtool ~amd64
+app-i18n/fcitx-meta ~amd64
+app-i18n/fcitx-rime ~amd64
+app-i18n/librime ~amd64
+
+# tree sitter
+dev-libs/tree-sitter* ~amd64
+
+# audroid studio
+dev-util/android-studio::gentoo ~amd64
+
+# frp
+net-vpn/frp ~amd64
+
+# firefox
+dev-libs/nspr ~amd64
+dev-libs/nss ~amd64
+www-client/firefox ~amd64
+
+media-fonts/sarasa-gothic ~amd64
+media-sound/bluez-alsa ~amd64
+
+*/*-bin ~amd64
+
+net-wireless/iwgtk ~amd64
+sys-fs/jmtpfs ~amd64

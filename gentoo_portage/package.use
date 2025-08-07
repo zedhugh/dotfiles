@@ -1,40 +1,10 @@
-# abi
-# dev-libs/glib abi_x86_32
-# dev-libs/libffi abi_x86_32
-# dev-libs/libpcre abi_x86_32
-# dev-libs/libpthread-stubs abi_x86_32
-# dev-util/pkgconfig abi_x86_32
-# sys-apps/attr abi_x86_32
-# sys-apps/util-linux abi_x86_32
-# sys-libs/zlib abi_x86_32
-# virtual/libffi abi_x86_32
-# virtual/libiconv abi_x86_32
-# virtual/libintl abi_x86_32
-# virtual/pkgconfig abi_x86_32
-# x11-libs/libX11 abi_x86_32
-# x11-libs/libXau abi_x86_32
-# x11-libs/libXdmcp abi_x86_32
-# x11-libs/libXext abi_x86_32
-# x11-libs/libvdpau abi_x86_32
-# x11-libs/libxcb abi_x86_32
-# x11-base/xcb-proto abi_x86_32
-# sys-libs/libxcrypt abi_x86_32
-# virtual/libcrypt abi_x86_32
-
 app-text/xmlto text
-dev-lang/python sqlite
-dev-libs/gmp static-libs
-dev-libs/libpcre2 pcre16
-# media-libs/mesa -vaapi -gallium
 net-misc/curl telnet
 net-misc/openssh libedit
-sys-apps/util-linux static-libs
 sys-boot/grub mount
-sys-libs/zlib static-libs
-#sys-devel/binutils gold default-gold
 
-# nvidia driver
-x11-drivers/nvidia-drivers -abi_x86_32
+# kernel
+sys-kernel/installkernel dracut grub
 
 # terminal
 x11-terms/xterm sixel xinerama
@@ -44,13 +14,14 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs dynamic-loading gui gzip-el json sound source sqlite tree-sitter wide-int -gtk
+app-editors/emacs dynamic-loading -gtk gui gzip-el harfbuzz json libxml2 sound source sqlite tree-sitter wide-int
 app-emacs/emacs-common gui
 sys-devel/gcc jit
 
 # p7zip
 app-arch/p7zip rar -wxwidgets
 
+# vim
 app-editors/vim lua python
 
 # file manager
@@ -59,27 +30,15 @@ app-editors/vim lua python
 #x11-libs/libfm udisks
 
 # firefox
-media-libs/libvpx postproc
+# media-libs/libvpx postproc
 #www-client/firefox -clang -system-av1 -system-harfbuzz -system-icu -system-jpeg -system-libevent -system-libvpx -system-png -system-webp
-#www-client/firefox -clang
-
-# postgresql
-dev-db/postgresql python
+# www-client/firefox -clang
 
 # imagemagick
 media-gfx/imagemagick svg xml
 
-# pulseaudio
-media-sound/pulseaudio aptx -orc
-
 # terminus font
 media-fonts/terminus-font otf
-
-net-misc/aria2 bittorrent metalink tcmalloc xmlrpc
-
-# awesome use lua5.3 for utf-8 issue
-dev-lua/lgi LUA_TARGETS: lua5-1 lua5-3
-x11-wm/awesome LUA_SINGLE_TARGET: lua5-3 -lua5-1
 
 # MCU develop
 dev-embedded/sdcc device-lib mcs51 packihx
@@ -90,22 +49,8 @@ media-sound/ncmpcpp clock outputs taglib visualizer
 # graphviz
 media-libs/gd fontconfig
 
-# deepin-wine-wechat
-# media-libs/libcanberra pulseaudio
-# media-libs/mesa osmesa -vaapi
-# media-plugins/alsa-plugins pulseaudio
-# x11-drivers/nvidia-drivers abi_x86_32
-# x11-libs/libva -opengl
-
 # fcitx5
-app-i18n/fcitx-configtool qt5 -kcm
-app-i18n/fcitx-meta rime -chinese-addons
-app-i18n/fcitx-qt qt5
-# media-libs/mesa wayland
-# x11-libs/gtk+ wayland
-
-# nodejs use corepack manage package manager
-net-libs/nodejs corepack -npm
+app-i18n/fcitx-meta gtk4 rime -chinese-addons
 
 # dwm
 x11-misc/dmenu xinerama
@@ -122,7 +67,43 @@ app-text/texlive-core cjk xetex
 net-fs/samba client
 
 # mpv
-media-video/mpv bluray
+media-video/mpv bluray dvd nvenc pipewire -vulkan
 
-# librime
-app-i18n/librime octagram
+# pdf-tools need poppler-glib library
+app-text/poppler cairo
+
+# qbittorrent
+net-p2p/qbittorrent webui
+
+# ffmpeg encoder
+media-video/ffmpeg bluray cuda libass nvenc opus vorbis vpx x264 x265
+
+# pipewire
+media-video/pipewire extra jack-sdk pipewire-alsa sound-server
+
+# calibra
+dev-python/pyqt6 qml quick vulkan webchannel
+dev-qt/qtbase vulkan
+dev-qt/qtdeclarative vulkan
+dev-qt/qtgui egl vulkan
+dev-qt/qtimageformats mng
+dev-qt/qttools qml vulkan
+dev-qt/qtwebchannel qml
+dev-qt/qtwebengine bindist qml vulkan -pulseaudio -vaapi
+
+# rust
+dev-lang/rust clippy rust-analyzer rust-src rustfmt
+dev-lang/rust-bin clippy rust-analyzer rust-src rustfmt
+
+# webkit-gtk as dependency of tauri
+# net-libs/webkit-gtk keyring lcms spell wayland
+# x11-libs/gtk+ wayland
+# media-libs/mesa wayland
+# media-libs/vulkan-loader wayland
+# gui-libs/gtk wayland
+
+# mkvtoolnix
+media-video/mkvtoolnix -dbus
+
+# fwupd
+sys-apps/fwupd bash-completion gnutls logitech nvme synaptics

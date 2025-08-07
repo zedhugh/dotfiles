@@ -1,18 +1,28 @@
 app-arch/p7zip unRAR
+app-editors/cursor cursor
 app-editors/vscode Microsoft-vscode
 app-emulation/virtualbox-bin PUEL
 app-office/wps-office WPS-EULA
 dev-embedded/sdcc MicroChip-SDCC
 dev-db/mongodb SSPL-1
+dev-libs/cudnn NVIDIA-cuDNN
+dev-util/nvidia-cuda-toolkit NVIDIA-CUDA
+dev-util/android-studio android
+dev-util/pycharm-community JetBrains-business JSON
+dev-util/pycharm-professional JetBrains-business JSON
 media-fonts/font-bh-ttf bh-luxi
 media-fonts/font-bh-type1 bh-luxi
+media-tv/plex-media-server Plex
 net-analyzer/nmap NPSL
 net-im/deepin-wine-wechat Tencent
 net-im/dingtalk all-rights-reserved
+net-im/wechat all-rights-reserved
+net-im/wechat-universal-bwrap all-rights-reserved
 net-misc/anydesk AnyDesk-TOS
+net-misc/baidunetdisk BaiduNetDisk
 net-misc/teamviewer TeamViewer
 sys-kernel/linux-firmware no-source-code linux-fw-redistributable
 www-client/google-chrome google-chrome
 www-client/microsoft-edge microsoft-edge
 www-plugins/adobe-flash AdobeFlash-11.x
-x11-drivers/nvidia-drivers NVIDIA-r2
+x11-drivers/nvidia-drivers NVIDIA-r2 NVIDIA-2023 NVIDIA-2025

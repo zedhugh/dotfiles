@@ -1,0 +1,9 @@
+dev-python/epc
+dev-python/orjson
+dev-python/sexpdata
+dev-python/six
+dev-python/setuptools
+dev-python/paramiko
+dev-python/rapidfuzz
+dev-python/watchdog
+dev-python/packaging
