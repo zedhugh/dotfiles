@@ -2,6 +2,7 @@ app-text/xmlto text
 net-misc/curl telnet
 net-misc/openssh libedit
 sys-boot/grub mount
+sys-libs/zlib minizip
 
 # kernel
 sys-kernel/installkernel dracut grub
