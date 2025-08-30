@@ -108,3 +108,7 @@ media-video/mkvtoolnix -dbus
 
 # fwupd
 sys-apps/fwupd bash-completion gnutls logitech nvme synaptics
+
+# llvm and clang
+llvm-core/clang xml
+llvm-core/llvm xml
