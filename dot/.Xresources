@@ -14,12 +14,15 @@ XTerm.termName: xterm-256color
 XTerm*background: black
 XTerm*foreground: white
 XTerm*xftAntialias: true
-XTerm*faceName: xft:SaraSa Mono SC:antialias=True:autohint=True:size=14
+XTerm*faceName: xft:Sarasa Mono SC:antialias=True:autohint=True:size=14
 XTerm*forceBoxChars: true
 
 ! Alt键设置
 XTerm*metaSendsEscape: true
 XTerm*eightBitInput: false
+
+! Backspace 键设置
+XTerm*backarrowKey: false
 
 XTerm*saveLines: 1000000
 XTerm*selectToClipboard: true
