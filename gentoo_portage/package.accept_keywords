@@ -28,6 +28,9 @@ www-client/firefox ~amd64
 # wechat
 net-im/wechat ~amd64
 
+# tencent meeting
+net-im/wemeet ~amd64
+
 media-fonts/sarasa-gothic ~amd64
 media-sound/bluez-alsa ~amd64
 
