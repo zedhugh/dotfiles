@@ -35,7 +35,16 @@ if [[ -e $PROXY_SHELL_FILE ]] ; then
     . $PROXY_SHELL_FILE
 fi
 
-if [[ "${TERM}" != "tmux-256color" ]] && [[ -x $(type -p tmux) ]]; then
+if [[ "$TERM" == "linux" ]]; then
+    PS1="(tty) $PS1"
+elif [[ "$TERM" == "fbterm" ]]; then
+    PS1="(fbterm) $PS1"
+fi
+
+# use fbterm to show CJK charactor in tty
+if [[ "$TERM" == "linux" ]] && [[ -x $(type -p fbterm) ]]; then
+    fbterm
+elif [[ "${TERM}" != "tmux-256color" ]] && [[ -z "${TERM_PROGRAM}" ]] && [[ -x $(type -p tmux) ]]; then
     tmux
 fi
 
