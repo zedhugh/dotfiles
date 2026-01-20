@@ -38,3 +38,5 @@ media-sound/bluez-alsa ~amd64
 
 net-wireless/iwgtk ~amd64
 sys-fs/jmtpfs ~amd64
+
+app-office/wps-office ~amd64
