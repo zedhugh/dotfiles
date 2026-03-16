@@ -31,13 +31,36 @@ generate-bash-completion() {
 }
 
 add-to-path() {
-    if [[ $# -eq 0 ]]; then
-        echo "usage: add-to-path <path1> [path2 ...]" >&2
+    local silence=false
+    local -a dirs=()
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -s)
+                silence=true
+                shift
+                ;;
+            --)
+                shift
+                dirs+=("$@")
+                break
+                ;;
+            *)
+            dirs+=("$1")
+            shift
+            ;;
+        esac
+    done
+
+    if [[ ${#dirs[@]} -eq 0 ]]; then
+        echo "usage: add-to-path [-s] <path1> [path2 ...]" >&2
+        echo "" >&2
+        echo " -s: if some path not exist, just skip it silently" >&2
+        echo "" >&2
         echo "example: add-to-path /usr/local/bin /tmp/my-dir" >&2
         return 1
     fi
 
-    local -a dirs=("$@")
     local dir
     local dir_normalized
     local new_path="$PATH"
@@ -47,7 +70,9 @@ add-to-path() {
 
         dir_normalized="${dir%/}"
         if [[ ! -d "$dir_normalized" ]]; then
-            echo "WARNING: '${dir}' is not a valid directory, skipped." >&2
+            if [[ "$silence" == false ]]; then
+                echo "WARNING: '${dir}' is not a valid directory, skipped." >&2
+            fi
             continue
         fi
 

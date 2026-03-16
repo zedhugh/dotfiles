@@ -21,5 +21,3 @@ if [[ -x $(type -p volta) || -x "${VOLTA_HOME}/bin/volta" ]]; then
         unhash-command-in-dirs "$bin_dir"
     }
 fi
-
-
