@@ -12,7 +12,7 @@ app-i18n/fcitx-rime ~amd64
 app-i18n/librime ~amd64
 
 # tree sitter
-dev-libs/tree-sitter* ~amd64
+# dev-libs/tree-sitter* ~amd64
 
 # audroid studio
 dev-util/android-studio::gentoo ~amd64
@@ -40,3 +40,6 @@ net-wireless/iwgtk ~amd64
 sys-fs/jmtpfs ~amd64
 
 app-office/wps-office ~amd64
+
+# rustup
+dev-util/rustup ~amd64
