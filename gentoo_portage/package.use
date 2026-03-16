@@ -115,3 +115,6 @@ llvm-core/llvm xml
 
 # freetype
 media-libs/freetype harfbuzz
+
+# watchman
+dev-cpp/glog gflags
