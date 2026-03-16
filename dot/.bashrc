@@ -23,17 +23,12 @@ HISTCONTROL=ignoreboth
 # export CCACHE_DIR="/var/cache/ccache"
 export GPG_TTY=$(tty)
 
-export PATH="~/.local/bin${PATH:+:}$PATH"
+export PATH="${HOME}/.local/bin${PATH:+:}$PATH"
 
 alias ll="ls -l"
 alias la="ls -a"
 alias lh="ls -lh"
 alias lha="ls -lha"
-
-PROXY_SHELL_FILE="$(realpath ~/.bash_proxy.sh)"
-if [[ -e $PROXY_SHELL_FILE ]] ; then
-    . $PROXY_SHELL_FILE
-fi
 
 if [[ "$TERM" == "linux" ]]; then
     PS1="(tty) $PS1"
@@ -48,26 +43,17 @@ elif [[ "${TERM}" != "tmux-256color" ]] && [[ -z "${TERM_PROGRAM}" ]] && [[ -x $
     tmux
 fi
 
-alias pip='function _pip() {
-      if [ $1 == "search" ]; then
-         pip_search "$2";
-      else pip "$@";
-      fi;
-};_pip'
+# bash completion error
+if [[ -n $(type -t _comp__split_longopt) ]] && [[ -z $(type -t _split_longopt) ]]; then
+    alias _split_longopt="_comp__split_longopt"
+fi
 
-# pnpm
-export PNPM_HOME="$(realpath ~/.local/share/pnpm)"
-export PATH="$PNPM_HOME:$PATH"
-# pnpm end
-# tabtab source for packages
-# uninstall by removing these lines
-[ -f ~/.config/tabtab/bash/__tabtab.bash ] && . ~/.config/tabtab/bash/__tabtab.bash || true
-
-clean-pnpm-node() {
-    if [[ -d "$PNPM_HOME" ]]; then
-        rm -f "$PNPM_HOME/nodejs_current"
-        rm -f "$PNPM_HOME/node"
-        rm -f "$PNPM_HOME/npm"
-        rm -f "$PNPM_HOME/npx"
+for _ in ${HOME}/.bashrc.d/*; do
+    if [[ $_ == *.@(bash|sh) && -r $_ ]]; then
+        source "$_"
     fi
-}
+done
+
+if [[ -n "$(type -t mise-activate)" ]]; then
+    mise-activate
+fi
