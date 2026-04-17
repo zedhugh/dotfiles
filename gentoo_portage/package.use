@@ -4,6 +4,9 @@ net-misc/openssh libedit
 sys-boot/grub mount
 sys-libs/zlib minizip
 
+# gcc
+sys-devel/gcc lto pgo
+
 # kernel
 sys-kernel/installkernel dracut grub
 
@@ -17,7 +20,6 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 # emacs
 app-editors/emacs dynamic-loading -gtk gui gzip-el harfbuzz json libxml2 sound source sqlite tree-sitter wide-int
 app-emacs/emacs-common gui
-sys-devel/gcc jit
 
 # p7zip
 app-arch/p7zip rar -wxwidgets
