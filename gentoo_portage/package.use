@@ -120,3 +120,7 @@ media-libs/freetype harfbuzz
 
 # watchman
 dev-cpp/glog gflags
+
+# llama-cpp
+sci-libs/openblas cpudetection
+sci-ml/llama-cpp cuda flexiblas opencl rpc vulkan

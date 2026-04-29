@@ -30,6 +30,60 @@ generate-bash-completion() {
     fi
 }
 
+load-bash-completion() {
+    local silence=false
+    local -a files=()
+
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -s)
+                silence=true
+                shift
+                ;;
+            --)
+                shift
+                files+=("$@")
+                break
+                ;;
+            *)
+            files+=("$1")
+            shift
+            ;;
+        esac
+    done
+
+    if [[ ${#files[@]} -eq 0 ]]; then
+        echo "usage: load-bash-completion [-s] <path1> [path2 ...]" >&2
+        echo "" >&2
+        echo " -s: if some completion file not exist, just skip it silently" >&2
+        echo "" >&2
+        echo "example: load-bash-completion pnpm npm" >&2
+        return 1
+    fi
+
+    local completion_dir="${HOME}/.local/share/bash-completion/completions"
+
+    for file in "${files[@]}"; do
+        local completion_file="$(realpath -m "${completion_dir}/${file}")"
+
+        if [[ ! -e "$completion_file" ]]; then
+            if [[ "$silence" == false ]]; then
+                echo "WARNING: cannot found completion file '${file}'" >&2
+            fi
+            continue
+        fi
+
+        if [[ ! -r "$completion_file" ]]; then
+            if [[ "$silence" == false ]]; then
+                echo "WARNING: cannot read completion file '$file'" >&2
+            fi
+            continue
+        fi
+
+        source "$completion_file"
+    done
+}
+
 add-to-path() {
     local silence=false
     local -a dirs=()

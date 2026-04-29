@@ -43,3 +43,9 @@ app-office/wps-office ~amd64
 
 # rustup
 dev-util/rustup ~amd64
+
+# llama-cpp
+sci-ml/llama-cpp **
+
+# nvidia cuda toolkit
+dev-util/nvidia-cuda-toolkit ~amd64
