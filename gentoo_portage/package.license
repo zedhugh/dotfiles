@@ -6,8 +6,8 @@ app-office/wps-office WPS-EULA
 dev-embedded/sdcc MicroChip-SDCC
 dev-db/mongodb SSPL-1
 dev-libs/cudnn NVIDIA-cuDNN
-dev-util/nvidia-cuda-toolkit NVIDIA-CUDA
 dev-util/android-studio android
+dev-util/nvidia-cuda-toolkit NVIDIA-CUDA
 dev-util/pycharm-community JetBrains-business JSON
 dev-util/pycharm-professional JetBrains-business JSON
 media-fonts/font-bh-ttf bh-luxi
