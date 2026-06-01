@@ -4,6 +4,9 @@ net-misc/openssh libedit
 sys-boot/grub mount
 sys-libs/zlib minizip
 
+# gcc
+sys-devel/gcc lto pgo
+
 # kernel
 sys-kernel/installkernel dracut grub
 
@@ -15,9 +18,8 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs dynamic-loading -gtk gui gzip-el harfbuzz json libxml2 sound source sqlite tree-sitter wide-int
+app-editors/emacs cairo dynamic-loading gtk gui gzip-el harfbuzz json libxml2 sound source sqlite tree-sitter wide-int
 app-emacs/emacs-common gui
-sys-devel/gcc jit
 
 # p7zip
 app-arch/p7zip rar -wxwidgets
@@ -118,3 +120,10 @@ media-libs/freetype harfbuzz
 
 # watchman
 dev-cpp/glog gflags
+
+# llama-cpp
+sci-libs/openblas cpudetection
+sci-ml/llama-cpp cuda flexiblas opencl rpc vulkan
+
+# docker-compose dependencies
+app-containers/docker-credential-helpers keyring

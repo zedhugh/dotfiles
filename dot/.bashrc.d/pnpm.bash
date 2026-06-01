@@ -4,7 +4,7 @@ source "${basedir}/function.bash"
 unset basedir
 
 export PNPM_HOME="${HOME}/.local/share/pnpm"
-add-to-path -s $PNPM_HOME
+add-to-path -s "${PNPM_HOME}/bin"
 
 if [[ -x "$(type -p pnpm)" ]]; then
     generate-bash-completion pnpm "pnpm completion bash"
