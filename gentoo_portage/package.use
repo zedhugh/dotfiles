@@ -124,3 +124,6 @@ dev-cpp/glog gflags
 # llama-cpp
 sci-libs/openblas cpudetection
 sci-ml/llama-cpp cuda flexiblas opencl rpc vulkan
+
+# docker-compose dependencies
+app-containers/docker-credential-helpers keyring
