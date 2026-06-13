@@ -1,5 +1,6 @@
 /* -*- mode: js; -*- */
-const PROXY = 'SOCKS5 192.168.1.13:20170; HTTP 192.168.1.13:20172; DIRECT';
+const proxy_ip = "192.168.0.104"
+const PROXY = `SOCKS5 ${proxy_ip}:20170; HTTP ${proxy_ip}:20172; DIRECT`;
 const DIRECT = 'DIRECT';
 
 const direct_ip_list = [

@@ -1,5 +1,6 @@
-HTTP_PROXY="http://192.168.1.13:20172"
-SOCKS_PROXY="socks5://192.168.1.13:20170"
+PROXY_IP="192.168.0.104"
+HTTP_PROXY="http://${PROXY_IP}:20172"
+SOCKS_PROXY="socks5://${PROXY_IP}:20170"
 
 set-shell-proxy() {
     export http_proxy="$HTTP_PROXY"
