@@ -68,6 +68,7 @@ app-text/texlive-core cjk xetex
 
 # samba client
 net-fs/samba client
+net-libs/ngtcp2 gnutls
 
 # mpv
 media-video/mpv bluray dvd nvenc pipewire -vulkan

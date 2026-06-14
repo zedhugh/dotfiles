@@ -36,6 +36,7 @@ media-sound/bluez-alsa ~amd64
 
 */*-bin ~amd64
 
+net-wireless/iwd ~amd64
 net-wireless/iwgtk ~amd64
 sys-fs/jmtpfs ~amd64
 
