@@ -8,7 +8,7 @@ sys-libs/zlib minizip
 sys-devel/gcc lto pgo
 
 # kernel
-sys-kernel/installkernel grub
+sys-kernel/installkernel dracut grub
 
 # terminal
 x11-terms/xterm sixel xinerama
