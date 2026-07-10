@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 #xrandr --output HDMI-1 --same-as LVDS-1
 
@@ -38,14 +38,23 @@ fcitx5 -d
 #sudo service shadowsocks.client start
 # emacs --daemon
 
-export PATH="~/.local/bin${PATH:+:}$PATH"
-# pnpm
-export PATH="~/.local/share/pnpm${PATH:+:}$PATH"
-# pnpm end
+# shell environment setup
+export PATH="${HOME}/.local/bin${PATH:+:}$PATH"
 
-# rust cargo
-export PATH="~/.cargo/bin${PATH:+:}$PATH"
-if [[ -e "$HOME/.cargo/env" ]]; then
-    . "$HOME/.cargo/env"
+for _ in ${HOME}/.bashrc.d/manager/*; do
+    if [[ $_ == *.@(bash|sh) && -r $_ ]]; then
+        echo "$_"
+        source "$_"
+    fi
+done
+
+if [[ -n "$(type -t mise-activate)" ]]; then
+    mise-activate
 fi
-# rust cargo end
+
+for _ in ${HOME}/.bashrc.d/*; do
+    echo "$_"
+    if [[ $_ == *.@(bash|sh) && -r $_ ]]; then
+        source "$_"
+    fi
+done

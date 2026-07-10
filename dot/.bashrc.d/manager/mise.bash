@@ -1,15 +1,14 @@
 basedir=$(realpath -m $(dirname "${BASH_SOURCE[0]:-$0}"))
-source "${basedir}/function.bash"
+source "${basedir}/../function.bash"
 
 unset basedir
 
 if [[ -x $(type -p mise) ]]; then
-    completion_cmd="mise completion --include-bash-completion-lib bash"
-    generate-bash-completion mise "$completion_cmd"
-    unset completion_cmd
-
     mise-activate() {
         eval "$(mise activate bash)"
+
+        local completion_cmd="mise completion --include-bash-completion-lib bash"
+        generate-bash-completion mise "$completion_cmd"
     }
 
     mise-deactivate() {

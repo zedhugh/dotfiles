@@ -6,10 +6,9 @@ unset basedir
 export VOLTA_HOME="${HOME}/.volta"
 
 if [[ -x $(type -p volta) || -x "${VOLTA_HOME}/bin/volta" ]]; then
-    generate-bash-completion volta "volta completions bash"
-
     volta-activate() {
         add-to-path "${VOLTA_HOME}/bin"
+        generate-bash-completion volta "volta completions bash"
 
         # enable pnpm support
         # export VOLTA_FEATURE_PNPM=1
