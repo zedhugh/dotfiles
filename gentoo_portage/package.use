@@ -21,8 +21,8 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 app-editors/emacs cairo dynamic-loading gtk gui gzip-el harfbuzz json libxml2 sound source sqlite tree-sitter wide-int
 app-emacs/emacs-common gui
 
-# p7zip
-app-arch/p7zip rar -wxwidgets
+# 7zip
+app-arch/7zip rar
 
 # vim
 app-editors/vim lua python

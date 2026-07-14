@@ -1,10 +1,43 @@
-PROXY_IP="192.168.0.104"
-HTTP_PROXY="http://${PROXY_IP}:20172"
-SOCKS_PROXY="socks5://${PROXY_IP}:20170"
+proxy_ip="192.168.0.104"
+proxy_http_port="20172"
+# SOCKS_PROXY="socks5://${PROXY_IP}:20170"
+
+_proxy_config_validate() {
+    if [[ -z "$proxy_ip" && -z "$proxy_http_port" ]]; then
+        echo "error: proxy_ip and proxy_http_port is not set" >&2
+        return 1
+    fi
+    if [[ -z "$proxy_ip" ]]; then
+        echo "error: proxy_id is not set"
+        return 1
+    fi
+    if [[ -z "$proxy_http_port" ]]; then
+        echo "error: proxy_http_port is not set"
+        return 1
+    fi
+
+    if ! [[ "$proxy_http_port" =~ ^[0-9]+$ ]] || ((proxy_http_port < 1 || proxy_http_port > 65535)); then
+        echo "error: proxy_http_port is invalid: $proxy_http_port" >&2
+        return 1
+    fi
+
+    if command -v nc >/dev/null 2>&1; then
+        if ! nc -z -w2 "$proxy_ip" "$proxy_http_port" 2>/dev/null; then
+            echo "error: proxy $proxy_ip:$proxy_http_port is not reachable" >&2
+            return 1
+        fi
+    fi
+
+    return 0
+}
 
 set-shell-proxy() {
-    export http_proxy="$HTTP_PROXY"
-    export https_proxy="$HTTP_PROXY"
+    _proxy_config_validate || return 1
+
+    local http_proxy_url="http://${proxy_ip}:${proxy_http_port}"
+
+    export http_proxy="$http_proxy_url"
+    export https_proxy="$http_proxy_url"
 }
 
 unset-shell-proxy() {
@@ -13,8 +46,10 @@ unset-shell-proxy() {
 }
 
 set-git-proxy() {
-    prefix_cmd=""
-    flag="--global"
+    _proxy_config_validate || return 1
+
+    local prefix_cmd=""
+    local flag="--global"
     if [[ "$1" == "-s" ]]; then
         prefix_cmd="sudo"
         flag="--system"
@@ -22,13 +57,15 @@ set-git-proxy() {
         flag="--local"
     fi
 
-    $prefix_cmd git config $flag http.proxy $HTTP_PROXY
+    local http_proxy_url="http://${proxy_ip}:${proxy_http_port}"
+
+    $prefix_cmd git config $flag http.proxy $http_proxy_url
     $prefix_cmd git config $flag http.sslVerify false
 }
 
 unset-git-proxy() {
-    prefix_cmd=""
-    flag="--global"
+    local prefix_cmd=""
+    local flag="--global"
     if [[ "$1" == "-s" ]]; then
         prefix_cmd="sudo"
         flag="--system"
@@ -41,8 +78,12 @@ unset-git-proxy() {
 }
 
 set-npm-proxy() {
-    npm config set proxy $HTTP_PROXY
-    npm config set https-proxy $HTTP_PROXY
+    _proxy_config_validate || return 1
+
+    local http_proxy_url="http://${proxy_ip}:${proxy_http_port}"
+
+    npm config set proxy $http_proxy_url
+    npm config set https-proxy $http_proxy_url
 }
 
 unset-npm-proxy() {

@@ -48,7 +48,7 @@ if [[ -n $(type -t _comp__split_longopt) ]] && [[ -z $(type -t _split_longopt) ]
     alias _split_longopt="_comp__split_longopt"
 fi
 
-for _ in ${HOME}/.bashrc.d/*; do
+for _ in ${HOME}/.bashrc.d/manager/*; do
     if [[ $_ == *.@(bash|sh) && -r $_ ]]; then
         source "$_"
     fi
@@ -57,3 +57,9 @@ done
 if [[ -n "$(type -t mise-activate)" ]]; then
     mise-activate
 fi
+
+for _ in ${HOME}/.bashrc.d/*; do
+    if [[ $_ == *.@(bash|sh) && -r $_ ]]; then
+        source "$_"
+    fi
+done

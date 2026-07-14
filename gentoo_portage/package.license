@@ -1,4 +1,4 @@
-app-arch/p7zip unRAR
+app-arch/7zip unRAR
 app-editors/cursor cursor
 app-editors/vscode Microsoft-vscode
 app-emulation/virtualbox-bin PUEL
