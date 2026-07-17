@@ -1,4 +1,4 @@
-basedir=$(realpath -m $(dirname "${BASH_SOURCE[0]:-$0}"))
+basedir=$(realpath $(dirname "${BASH_SOURCE[0]:-$0}"))
 source "${basedir}/function.bash"
 
 unset basedir
