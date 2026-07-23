@@ -22,7 +22,7 @@ net-im/wemeet wemeet_license
 net-misc/anydesk AnyDesk-TOS
 net-misc/baidunetdisk BaiduNetDisk
 net-misc/teamviewer TeamViewer
-sys-kernel/linux-firmware no-source-code linux-fw-redistributable
+sys-kernel/linux-firmware linux-fw-redistributable
 www-client/google-chrome google-chrome
 www-client/microsoft-edge microsoft-edge
 www-plugins/adobe-flash AdobeFlash-11.x
