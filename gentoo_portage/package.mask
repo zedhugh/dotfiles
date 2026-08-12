@@ -1,3 +1,2 @@
 dev-lang/rust
-net-proxy/shadowsocks-rust::gentoo-zh
 >=x11-drivers/nvidia-drivers-581

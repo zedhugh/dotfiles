@@ -7,12 +7,14 @@ const direct_ip_list = [
     ["192.168.0.0", "255.255.255.0"],
     ["192.168.1.0", "255.255.255.0"],
     ["192.168.2.0", "255.255.255.0"],
+    ["127.0.0.1", "255.255.255.0"],
 ];
 
 const direct_domain_list = [
     "zedhugh.fun",
     "codeberg.org",
     "gitweb.gentoo.org",
+    "localhost"
 ];
 
 /**

@@ -49,3 +49,6 @@ sci-ml/llama-cpp **
 
 # nvidia cuda toolkit
 dev-util/nvidia-cuda-toolkit ~amd64
+
+# proxy
+net-proxy/shadowsocks-rust ~amd64
