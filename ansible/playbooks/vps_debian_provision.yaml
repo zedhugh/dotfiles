@@ -1,0 +1,88 @@
+---
+- name: 新机器初始化
+  hosts: vps_debian
+  gather_facts: yes
+
+  vars:
+    ansible_user: root
+    ansible_ssh_port: 22
+
+    admin_user: zedhugh
+    ssh_port: 44444
+    timezone: Asia/Shanghai
+    ssh_public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+
+  tasks:
+    - name: 启用 BBR
+      sysctl:
+        name: net.ipv4.tcp_congestion_control
+        value: bbr
+        sysctl_set: yes
+        reload: yes
+
+    - name: 设置时区
+      timezone:
+        name: "{{ timezone }}"
+
+    - name: 创建管理员用户
+      user:
+        name: "{{ admin_user }}"
+        shell: /bin/bash
+        create_home: yes
+        state: present
+
+    - name: 确保 sudo 已安装
+      apt:
+        name: sudo
+        state: present
+
+    - name: 确保 sudoers.d 目录存在
+      file:
+        path: /etc/sudoers.d
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: 配置 sudo 免密码
+      copy:
+        content: "{{ admin_user }} ALL=(ALL) NOPASSWD: ALL\n"
+        dest: "/etc/sudoers.d/{{ admin_user }}"
+        owner: root
+        group: root
+        mode: '0440'
+        validate: '/usr/sbin/visudo -cf %s'
+
+    - name: 复制 SSH 密钥
+      authorized_key:
+        user: "{{ admin_user }}"
+        key: "{{ ssh_public_key }}"
+        state: present
+
+    - name: 修改 SSH 端口
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?Port "
+        line: "Port {{ ssh_port }}"
+      notify: restart ssh
+
+    - name: 禁止 root 密码登录
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PermitRootLogin"
+        line: "PermitRootLogin prohibit-password"
+      notify: restart ssh
+
+    - name: 禁止密码认证
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PasswordAuthentication"
+        line: "PasswordAuthentication no"
+      notify: restart ssh
+
+
+  handlers:
+    - name: restart ssh
+      systemd:
+        name: sshd
+        state: restarted

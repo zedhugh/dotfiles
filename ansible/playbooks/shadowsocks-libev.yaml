@@ -1,0 +1,34 @@
+---
+- name: 配置 shadowsocks-libev 服务器
+  hosts: vps_debian
+  become: true
+  vars_files:
+    - ../vars/vault.yaml
+
+  tasks:
+    - name: 安装 shadowsocks-libev
+      apt:
+        name: shadowsocks-libev
+        state: present
+        update_cache: true
+
+    - name: 配置 shadowsocks-libev 服务器
+      template:
+        src: ../templates/ss-config.json.j2
+        dest: /etc/shadowsocks-libev/config.json
+        owner: root
+        group: root
+        mode: '0644'
+      notify: restart shadowsocks-libev server
+
+    - name: 启动 shadowsocks-libev 服务器
+      systemd:
+        name: shadowsocks-libev
+        enabled: true
+        state: started
+
+  handlers:
+    - name: restart shadowsocks-libev server
+      systemd:
+        name: shadowsocks-libev
+        state: restarted
