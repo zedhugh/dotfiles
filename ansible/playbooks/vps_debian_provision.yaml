@@ -80,6 +80,13 @@
         line: "PasswordAuthentication no"
       notify: restart ssh
 
+    - name: 开启公钥认证
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: "^#?PubkeyAuthentication"
+        line: "PubkeyAuthentication yes"
+      notify: restart ssh
+
 
   handlers:
     - name: restart ssh
