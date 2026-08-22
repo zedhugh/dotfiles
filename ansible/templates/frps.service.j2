@@ -1,0 +1,13 @@
+[Uint]
+Description=Frp Server Service
+After=network.target
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartSec=5s
+ExecStart={{ frp_install_dir }}/frps -c {{ frp_config_dir }}/frps.toml
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target
