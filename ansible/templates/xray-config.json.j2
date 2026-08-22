@@ -7,12 +7,12 @@
   "inbounds": [
     {
       "listen": "0.0.0.0",
-      "port": 443,
+      "port": {{ vault_xray_port }},
       "protocol": "vless",
       "settings": {
         "clients": [
           {
-            "id": "817a867d-7bcf-48d1-b30e-5c6794852e13",
+            "id": "{{ vault_xray_uuid }}",
             "flow": "xtls-rprx-vision"
           }
         ],
@@ -24,9 +24,9 @@
         "security": "reality",
         "realitySettings": {
           "dest": "dl.google.com:443",
-          "serverNames": ["www.cloudflare.com"],
-          "privateKey": "uJQs7FOMjafiU-7kxOUpfJut8ocj5kpr_p-zH7RTt1g",
-          "shortIds": ["1e21014957dfc7a9"]
+          "serverNames": ["dl.google.com"],
+          "privateKey": "{{ vault_xray_private_key }}",
+          "shortIds": ["{{ vault_xray_short_id }}"]
         }
       },
       "sniffing": {
