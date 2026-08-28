@@ -1,0 +1,17 @@
+services:
+  v2raya:
+    image: mzz2017/v2raya:latest
+    container_name: v2raya
+    restart: always
+    privileged: true
+    network_mode: host
+    volumes:
+      - /lib/modules:/lib/modules:ro
+      - /etc/resolv.conf:/etc/resolv.conf
+      - /etc/v2raya:/etc/v2raya
+    environment:
+      # V2RAYA_V2RAY_BIN: /usr/local/bin/v2ray # 老版本用这个，要开 xray 不设置这个环境变量
+      # V2RAYA_V2RAY_BIN: /usr/bin/v2raya_core # 新版本用这个，或者不设置这个环境变量
+      V2RAYA_LOG_FILE: /tmp/v2raya.log
+      V2RAYA_NFTABLES_SUPPORT: off
+      IPTABLES_MODE: legacy

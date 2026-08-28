@@ -63,3 +63,13 @@ for _ in ${HOME}/.bashrc.d/*; do
         source "$_"
     fi
 done
+
+if [[ "$(uname)" == "FreeBSD" ]]; then
+    # ls with color
+    alias ls="ls -G"
+
+    # bash-completion need load manually in FreeBSD
+    if [[ -f /usr/local/share/bash-completion/bash_completion.sh  ]]; then
+        source /usr/local/share/bash-completion/bash_completion.sh
+    fi
+fi

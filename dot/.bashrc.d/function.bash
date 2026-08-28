@@ -9,7 +9,7 @@ generate-bash-completion() {
     fi
 
     local completion_dir="${HOME}/.local/share/bash-completion/completions"
-    local completion_file="$(realpath -m "${completion_dir}/${file}")"
+    local completion_file="${completion_dir}/${file}"
 
     if [[ -d "$completion_dir" && ! -w "$completion_dir" ]]; then
         echo "ERROR: has no permission to write to directory '${completion_dir}'" >&2
@@ -64,7 +64,7 @@ load-bash-completion() {
     local completion_dir="${HOME}/.local/share/bash-completion/completions"
 
     for file in "${files[@]}"; do
-        local completion_file="$(realpath -m "${completion_dir}/${file}")"
+        local completion_file="${completion_dir}/${file}"
 
         if [[ ! -e "$completion_file" ]]; then
             if [[ "$silence" == false ]]; then

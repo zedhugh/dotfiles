@@ -1,0 +1,16 @@
+#+title: docker 配置说明
+
+每个及其需要用到的 docker 都通过 =docker-compose.yaml= 配置，避免每次升级都自己手动写命令行。
+
+* 文件用途
+
+| 文件                 | 说明                           |
+|----------------------+--------------------------------|
+| y480.yaml            | 家用服务器 docker compose 配置 |
+| xray-config.json     | xray 服务器配置                |
+| V2RayA-RoutingA.conf | V2rayA 路由配置                |
+
+* docker 镜像对应的 git 仓库
+
+- https://github.com/ronggang/OWSS
+- https://github.com/v2rayA/v2rayA

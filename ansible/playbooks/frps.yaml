@@ -1,0 +1,85 @@
+---
+- name: 配置 frps 服务端
+  hosts: vps_debian
+  gather_facts: false
+  become: true
+  vars:
+    frp_version: "0.71.0"
+    frp_download_url: "https://github.com/fatedier/frp/releases/download/v{{ frp_version }}/frp_{{ frp_version }}_linux_amd64.tar.gz"
+    frp_local_archive: "/tmp/frp_{{ frp_version }}_linux_amd64.tar.gz"
+    frp_local_tmp_dir: "/tmp/frp_{{ frp_version }}_linux_amd64"
+    frp_install_dir: "/opt/frp"
+    frp_config_dir: "/etc/frp"
+  vars_files:
+    - ../vars/vault.yaml
+
+  tasks:
+    - name: 创建 frp 目录
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ frp_install_dir }}"
+        - "{{ frp_config_dir }}"
+
+    - name: 检查本地是否已有该版本的压缩包
+      stat:
+        path: "{{ frp_local_archive }}"
+      register: local_archive
+      delegate_to: localhost
+      run_once: true
+
+    - name: 下载 frp 压缩包到本地
+      get_url:
+        url: "{{ frp_download_url }}"
+        dest: "{{ frp_local_archive }}"
+        timeout: 60
+      delegate_to: localhost
+      run_once: true
+      become: false
+      when: not local_archive.stat.exists
+
+    - name: 解压 frp 压缩包到本地
+      unarchive:
+        src: "{{ frp_local_archive }}"
+        dest: "/tmp/"
+        creates: "{{ frp_local_tmp_dir }}"
+      delegate_to: localhost
+      run_once: true
+      become: false
+      when: not local_archive.stat.exists
+
+    - name: 复制 frps 二进制文件到目标机器
+      copy:
+        src: "{{ frp_local_tmp_dir }}/frps"
+        dest: "{{ frp_install_dir }}/frps"
+        mode: '0755'
+      notify: restart frps
+
+    - name: 生成 frps.toml 配置文件
+      template:
+        src: ../templates/frps.toml.j2
+        dest: "{{ frp_config_dir }}/frps.toml"
+        mode: '0644'
+      notify: restart frps
+
+    - name: 创建 frps 的 systemd 服务文件
+      template:
+        src: ../templates/frps.service.j2
+        dest: /etc/systemd/system/frps.service
+        mode: '0644'
+      notify: restart frps
+
+    - name: 启用并启动 frps 服务
+      systemd:
+        name: frps
+        enabled: true
+        state: started
+        daemon_reload: true
+
+  handlers:
+    - name: restart frps
+      systemd:
+        name: frps
+        state: restarted

@@ -1,0 +1,45 @@
+---
+- name: 配置 xray 服务
+  hosts: vps_debian
+  become: true
+  gather_facts: false
+  vars:
+    xray_config_file: /usr/local/etc/xray/config.json
+    xray_bin: /usr/local/bin/xray
+  vars_files:
+    - ../vars/vault.yaml
+
+  tasks:
+    - name: 确保有 curl 软件包
+      apt:
+        name:
+          - curl
+        state: present
+        update_cache: true
+
+    - name: 安装 xray
+      shell: |
+        bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install
+      notify: restart xray
+
+    - name: 生成 xray 配置
+      template:
+        src: ../templates/xray-config.json.j2
+        dest: "{{ xray_config_file }}"
+        owner: root
+        group: root
+        mode: '0644'
+      notify: restart xray
+
+    - name: 启动 xray 服务并添加开机启动
+      systemd:
+        name: xray
+        enabled: true
+        state: started
+        daemon_reload: true
+
+  handlers:
+    - name: restart xray
+      systemd:
+        name: xray
+        state: restarted

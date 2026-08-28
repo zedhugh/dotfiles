@@ -18,7 +18,7 @@ x11-terms/rxvt-unicode 256-color blink fading-colors pixbuf unicode3
 #www-servers/uwsgi cgi python
 
 # emacs
-app-editors/emacs cairo dynamic-loading gtk gui gzip-el harfbuzz json libxml2 sound source sqlite tree-sitter wide-int
+app-editors/emacs cairo dynamic-loading -gtk gui gzip-el harfbuzz json libxml2 sound source sqlite tree-sitter wide-int
 app-emacs/emacs-common gui
 
 # 7zip
