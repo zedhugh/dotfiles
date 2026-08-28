@@ -1,0 +1,36 @@
+address: 0.0.0.0
+port: 46065
+auth: true
+prefix: /
+tls: false
+behindProxy: true
+log:
+  format: console
+  colors: true
+  outputs:
+    - /logs/webdav.log
+logLevel: info
+
+directory: /data
+permissions: R
+
+users:
+  - username: zedhugh
+    password: "{bcrypt}$2a$10$nP6GQJidzLyhwkkQGQH/KOAQq2KjNW5Fbb.I/XD2OD2oxCxEoXbUO"
+    directory: /data
+    permissions: CRUD
+
+  - username: PT
+    password: "{bcrypt}$2a$10$cK9NWvSafxne2Fv6P6ZH7.Q/tVKk5M4pqXgsuOi2bF/zsCopFHsC2"
+    directory: /data/users/PT
+    permissions: CRUD
+
+  - username: v2rayNG
+    password: "{bcrypt}$2a$10$jvjejyOea8Xqsik8a9M71.rvC/0kdFah2WuMCTKHBQJ8PxGkdFmKC"
+    directory: /data/users/v2rayNG
+    permissions: CRUD
+
+  - username: guest
+    password: "guest"
+    directory: /data/public
+    permissions: R

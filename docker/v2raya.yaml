@@ -1,17 +1,4 @@
 services:
-  owss:
-    image: ronggang/owss:latest
-    container_name: owss
-    restart: always
-    privileged: true
-    # host 模式和 bridge 模式二选一
-    network_mode: host
-    # ports:
-    #   - "8088:8088"
-    volumes:
-      - /OWSS/storage:/app/storage
-      - /OWSS/config:/app/config
-
   v2raya:
     image: mzz2017/v2raya:latest
     container_name: v2raya

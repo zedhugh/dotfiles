@@ -1,0 +1,36 @@
+x-data-volume: &data-volume
+  type: bind
+  source: /var/db/webDAV
+  target: /data
+
+x-user-dirs: &user-dirs
+  /data/users/PT
+  /data/users/v2rayNG
+  /data/public
+
+services:
+  WebDAV-init:
+    image: busybox:latest
+    container_name: webdav-init
+    restart: no
+    volumes:
+      - *data-volume
+    environment:
+      DIRS: *user-dirs
+    command: sh -c "mkdir -p $$DIRS"
+
+  WebDAV:
+    image: hacdias/webdav:latest
+    container_name: webdav
+    restart: always
+    depends_on:
+      WebDAV-init:
+        condition: service_completed_successfully
+    command: ["-c", "/config.yaml"]
+    network_mode: host
+    volumes:
+      - ./webdav-config.yaml:/config.yaml:ro
+      - /var/log:/logs
+      - *data-volume
+    environment:
+      TZ: Asia/Shanghai
