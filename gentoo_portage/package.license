@@ -16,7 +16,7 @@ media-tv/plex-media-server Plex
 net-analyzer/nmap NPSL
 net-im/deepin-wine-wechat Tencent
 net-im/dingtalk all-rights-reserved
-net-im/wechat all-rights-reserved
+net-im/wechat Tencent-Weixin
 net-im/wechat-universal-bwrap all-rights-reserved
 net-im/wemeet wemeet_license
 net-misc/anydesk AnyDesk-TOS

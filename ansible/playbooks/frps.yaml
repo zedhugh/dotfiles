@@ -6,8 +6,9 @@
   vars:
     frp_version: "0.71.0"
     frp_download_url: "https://github.com/fatedier/frp/releases/download/v{{ frp_version }}/frp_{{ frp_version }}_linux_amd64.tar.gz"
-    frp_local_archive: "/tmp/frp_{{ frp_version }}_linux_amd64.tar.gz"
-    frp_local_tmp_dir: "/tmp/frp_{{ frp_version }}_linux_amd64"
+    frp_tmp_dir: "{{ playbook_dir }}/../tmp"
+    frp_local_archive: "{{ frp_tmp_dir }}/frp_{{ frp_version }}_linux_amd64.tar.gz"
+    frp_local_tmp_dir: "{{ frp_tmp_dir }}/frp_{{ frp_version }}_linux_amd64"
     frp_install_dir: "/opt/frp"
     frp_config_dir: "/etc/frp"
   vars_files:
@@ -43,7 +44,7 @@
     - name: 解压 frp 压缩包到本地
       unarchive:
         src: "{{ frp_local_archive }}"
-        dest: "/tmp/"
+        dest: "{{ frp_tmp_dir }}"
         creates: "{{ frp_local_tmp_dir }}"
       delegate_to: localhost
       run_once: true

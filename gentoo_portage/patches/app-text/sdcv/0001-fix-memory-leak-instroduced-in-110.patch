@@ -1,0 +1,32 @@
+From 849f0ed1ac24b21530b2085ae17b85a98fa04a59 Mon Sep 17 00:00:00 2001
+From: "Evgeniy A. Dushistov" <dushistov@mail.ru>
+Date: Sun, 17 Aug 2025 13:43:07 +0300
+Subject: [PATCH] fix: memory leak instroduced in #110
+
+---
+ src/stardict_lib.cpp | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/src/stardict_lib.cpp b/src/stardict_lib.cpp
+index 13cf779..6b0d55c 100644
+--- a/src/stardict_lib.cpp
++++ b/src/stardict_lib.cpp
+@@ -1047,10 +1047,11 @@ bool Libs::LookupSimilarWord(const gchar *sWord, std::set<glong> &iWordIndices,
+         }
+         // Upper the first character and lower others.
+         if (!bFound) {
+-            const gchar *nextchar = g_utf8_next_char(sWord);
+-            gchar *firstchar = g_utf8_strup(sWord, nextchar - sWord);
+-            nextchar = g_utf8_strdown(nextchar, -1);
+-            casestr = g_strdup_printf("%s%s", firstchar, nextchar);
++            const gchar *rest = g_utf8_next_char(sWord);
++            gchar *firstchar = g_utf8_strup(sWord, rest - sWord);
++            gchar *rest_lowercase = g_utf8_strdown(rest, -1);
++            casestr = g_strdup_printf("%s%s", firstchar, rest_lowercase);
++            g_free(rest_lowercase);
+             g_free(firstchar);
+             if (strcmp(casestr, sWord)) {
+                 if (oLib[iLib]->Lookup(casestr, iWordIndices))
+-- 
+2.55.0
+

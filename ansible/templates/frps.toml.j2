@@ -1,12 +1,11 @@
 bindPort = {{ vault_frps_bind_port }}
 
 vhostHTTPPort = {{ vault_frps_vhost_http_port }}
-vhostHTTPSPort = {{ vault_frps_vhost_https_port }}
 
 auth.method = "token"
 auth.token = "{{ vault_frps_token }}"
 
-webServer.addr = "0.0.0.0"
+webServer.addr = "127.0.0.1"
 webServer.port = {{ vault_frps_dashboard_port }}
 webServer.user = "{{ vault_frps_dashboard_user }}"
 webServer.password = "{{ vault_frps_dashboard_password }}"
