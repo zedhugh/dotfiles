@@ -1,0 +1,4 @@
+---
+- import_tasks: config.yaml
+- import_tasks: module.yaml
+- import_tasks: verify.yaml

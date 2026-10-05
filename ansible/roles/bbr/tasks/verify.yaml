@@ -1,0 +1,19 @@
+---
+- name: 获取可用的 TCP 拥塞控制算法列表
+  command: sysctl net.ipv4.tcp_available_congestion_control
+  register: available_cc
+  changed_when: false
+
+- name: 确认 bbr 在可用列表中
+  fail:
+    msg: "BBR 不在可用的 TCP 拥塞控制算法列表中"
+  when: "'bbr' not in available_cc.stdout"
+
+- name: 验证当前拥塞控制算法
+  command: sysctl net.ipv4.tcp_congestion_control
+  register: current_cc
+  changed_when: false
+
+- name: 打印当前 TCP 拥塞控制算法
+  debug:
+    msg: "当前 TPC 拥塞控制算法: {{ current_cc.stdout }}"
