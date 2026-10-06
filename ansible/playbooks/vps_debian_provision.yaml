@@ -12,14 +12,10 @@
     timezone: Asia/Shanghai
     ssh_public_key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
 
-  tasks:
-    - name: 启用 BBR
-      sysctl:
-        name: net.ipv4.tcp_congestion_control
-        value: bbr
-        sysctl_set: yes
-        reload: yes
+  roles:
+    - role: bbr
 
+  tasks:
     - name: 设置时区
       timezone:
         name: "{{ timezone }}"

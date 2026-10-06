@@ -1,0 +1,13 @@
+---
+- name: 开机加载 tcp_bbr 模块
+  copy:
+    dest: /etc/modules-load.d/bbr.conf
+    content: "tcp_bbr\n"
+    mode: '0644'
+    owner: root
+    group: root
+
+- name: 立即加载 tcp_bbr 模块
+  modprobe:
+    name: tcp_bbr
+    state: present

@@ -1,0 +1,9 @@
+#+title: TCP 拥塞控制算法设置为 BBR
+
+这个 role 是为了将服务器上的 linux 系统的 TCP 拥塞控制算法设置为 BBR 以提供更好的网络环境，
+主要时提高吞吐量，降低延迟和提升弱网稳定性。
+
+最开始是使用 =ansible= 的 =sysctl= 模块实现的，配置是写入 =/etc/sysctl.conf= 的，但后面发现重启机器后配置未生效。
+
+查询原因发现是 =systemd-sysctl= 不会读取 =/etc/sysctl.conf= ，读取的是 =/etc/sysctl.d= 目录下的配置文件。
+因此配置方式改为手动写入配置文件，不再直接使用 ansible 的 sysctl 模块。

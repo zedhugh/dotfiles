@@ -1,0 +1,15 @@
+---
+- name: 启用 BBR
+  copy:
+    dest: /etc/sysctl.d/bbr.conf
+    content: |
+      net.core.default_qdisc=fq
+      net.ipv4.tcp_congestion_control=bbr
+    mode: '0644'
+    owner: root
+    group: root
+  notify: reload sysctl
+
+- name: 应用 sysctl 配置
+  command: sysctl --system
+  changed_when: false

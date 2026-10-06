@@ -4,13 +4,14 @@
 
 * 文件用途
 
-| 文件                 | 说明                           |
-|----------------------+--------------------------------|
-| y480.yaml            | 家用服务器 docker compose 配置 |
-| xray-config.json     | xray 服务器配置                |
-| V2RayA-RoutingA.conf | V2rayA 路由配置                |
+| 文件                 | 说明                      |
+|----------------------+---------------------------|
+| v2raya.yaml          | V2rayA 代理客户端容器配置 |
+| V2RayA-RoutingA.conf | V2rayA 路由配置           |
+| webdav.yaml          | webdav 服务容器配置       |
+| webdav-config.yaml   | webdav 配置文件           |
 
 * docker 镜像对应的 git 仓库
 
-- https://github.com/ronggang/OWSS
+- https://github.com/hacdias/webdav
 - https://github.com/v2rayA/v2rayA

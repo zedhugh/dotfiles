@@ -1,4 +1,4 @@
-proxy_ip="192.168.0.104"
+proxy_ip="127.0.0.1"
 proxy_http_port="20172"
 # SOCKS_PROXY="socks5://${PROXY_IP}:20170"
 
