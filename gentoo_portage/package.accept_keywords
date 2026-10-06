@@ -20,8 +20,8 @@ dev-util/android-studio ~amd64
 net-vpn/frp ~amd64
 
 # firefox
-dev-libs/nspr ~amd64
-dev-libs/nss ~amd64
+# dev-libs/nspr ~amd64
+# dev-libs/nss ~amd64
 www-client/firefox ~amd64
 
 # wechat

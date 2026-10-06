@@ -71,7 +71,7 @@ net-fs/samba client
 net-libs/ngtcp2 gnutls
 
 # mpv
-media-video/mpv bluray dvd nvenc pipewire -vulkan
+media-video/mpv bluray dvd nvenc pipewire
 
 # pdf-tools need poppler-glib library
 app-text/poppler cairo
