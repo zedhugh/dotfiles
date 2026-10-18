@@ -52,3 +52,6 @@ dev-util/nvidia-cuda-toolkit ~amd64
 
 # proxy
 net-proxy/shadowsocks-rust ~amd64
+
+# qbittorrent
+net-p2p/qbittorrent ~amd64
