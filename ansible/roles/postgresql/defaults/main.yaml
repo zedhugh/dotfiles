@@ -1,0 +1,12 @@
+---
+# 要创建的角色列表，先于数据库创建，以便作为数据库的属主
+# - name: 角色名（必填）
+#   password: 登录密码（可选，建议从 vault 读取，推荐加密存储）
+#   role_attr_flags: 角色属性（可选，如 "LOGIN"、"NOLOGIN"、"NOSUPERUSER" 等，默认 LOGIN）
+postgresql_roles: []
+
+# 要创建的数据库列表
+# - name: 数据库名（必填）
+#   owner: 属主角色（可选，需已在 postgresql_roles 中定义）
+#   encoding: 字符编码（可选，默认跟随集群初始化设置，一般为 UTF-8）
+postgresql_databases: []

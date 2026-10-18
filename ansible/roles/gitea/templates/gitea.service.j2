@@ -1,0 +1,28 @@
+# reference to https://github.com/go-gitea/gitea/blob/main/contrib/service/systemd/gitea.service
+
+[Unit]
+Description=Gitea (Git with a cup of tea)
+After=network.target
+# 数据库在本机（见 app.ini 的 [database]），开机时避免先于数据库启动
+Wants=postgresql.service
+After=postgresql.service
+
+[Service]
+# 仓库文件很多、http 操作报 HTTP 500 时放开下面一行
+#LimitNOFILE=524288:524288
+RestartSec=2s
+Type=simple
+User={{ gitea_user }}
+Group={{ gitea_user }}
+WorkingDirectory={{ gitea_work_path }}
+ExecStart={{ gitea_binary }} web --config {{ gitea_conf_dir }}/app.ini
+Restart=always
+Environment=USER={{ gitea_user }} HOME={{ gitea_home }} GITEA_WORK_DIR={{ gitea_work_path }}
+# git 安装在非默认 PATH 前缀，或需要 git-lfs 支持时放开并按需修改
+#Environment=PATH=/path/to/git/bin:/bin:/sbin:/usr/bin:/usr/sbin
+# 绑定 1024 以下端口时放开
+#CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+#AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target

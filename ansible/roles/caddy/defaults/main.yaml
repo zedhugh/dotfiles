@@ -1,0 +1,8 @@
+---
+# 站点配置列表，每个站点渲染为独立文件 /etc/caddy/sites.d/<name>.caddyfile，
+# 对应的 import 行由 role 通过 lineinfile 写入主 Caddyfile（带
+# managed-by=caddy-role 标记）；从列表中移除的站点，其 import 行和
+# 配置文件会被自动清理
+# - name: 站点名（必填，同时用作配置文件名，一般为域名，如 "git.example.com"）
+#   content: 站点配置内容（必填，完整的站点块，含站点地址行）
+caddy_sites: []

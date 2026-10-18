@@ -1,0 +1,71 @@
+#+title: Caddy 安装与配置
+
+在 Debian 系统上安装 Caddy（发行版自带版本），用作网站的 HTTPS 反向代理。
+每个站点一个独立配置文件，放在 =/etc/caddy/sites.d/= 下，由主 Caddyfile
+（=/etc/caddy/Caddyfile= ）以 =import= 行加载。服务保持启动状态。
+
+Caddy 会自动为站点域名申请并续期 HTTPS 证书（ACME），要求 80/443 端口
+能从公网访问。
+
+使用方法见 =../../playbooks/caddy.yaml= 。
+
+* 目录结构
+
+- =/etc/caddy/Caddyfile= ：主 Caddyfile。role 只在文件不存在或不带
+  =managed-by=caddy-role= 标记时写入一次基础内容（Debian 包自带的默认
+  文件含活动的 =:80= 站点块，会被替换掉），此后各站点的 =import= 行由
+  role 通过 =lineinfile= 增删，文件其余内容不受影响。
+- =/etc/caddy/sites.d/<name>.caddyfile= ：站点配置，一个站点一个文件，
+  文件名取自 =caddy_sites= 中的 =name= 。
+
+* 变量
+
+见 =defaults/main.yaml= ：
+
+- =caddy_sites= ：站点配置列表。=content= 为完整的站点块（含站点
+  地址行），例如：
+
+  #+begin_src caddyfile
+  git.example.com {
+      reverse_proxy localhost:3000
+  }
+  #+end_src
+
+- 从 =caddy_sites= 中移除的站点，其 =import= 行和配置文件会在下次
+  执行时自动删除（只清理带 =managed-by=caddy-role= 标记的内容）。
+
+* 被其他 role 引用
+
+其他 role 可以依赖本 role，把自己的站点配置加入管理：
+
+1. 先执行本 role（=import_role= / =include_role= ），确保 Caddy 已
+   安装并初始化。
+2. 把站点配置写到 =/etc/caddy/sites.d/<name>.caddyfile= 。
+3. 用 =lineinfile= 向主 Caddyfile 追加 =import= 行。注意不要带
+   =managed-by=caddy-role= 标记，否则会被本 role 当作自己的配置
+   增删；不带标记的行本 role 不会改动。
+4. 配置变更后 notify 本 role 的 =reload caddy= handler（会先
+   =caddy validate= 校验再 reload）。
+
+多个引用方（role A、role B 各管各的站点）以此方式互不干扰。
+
+注意引用方不要通过 =caddy_sites= 变量配置自己的站点：该变量是全量
+状态，清理逻辑按它做差集，两个引用方各自传入不同列表时，后执行的
+一次会把先执行的带标记行当作已移除站点删掉。=caddy_sites= 仅供
+单一 owner（如主 playbook）全量管理站点使用。
+
+* 注意
+
+- 配置变更通过 handler 处理：先执行 =caddy validate= 校验，校验不通过
+  则不 reload，服务继续以旧配置运行。
+- 域名站点在 start/reload 时会同步申请证书（ACME）：域名无效、DNS
+  未生效或 80/443 不可达时，配置加载会被证书重试长时间阻塞（最长
+  30 天），进而让 systemd 的 reload job 卡住、后续 start/reload 全部
+  排队等待。reload 与启动任务有 async 超时兜底（90s/120s），超时
+  报错；处理方式为 =systemctl cancel= 卡住的 job 后 =systemctl
+  restart caddy= 。占位域名（如 =example.com= 系）会被 CA 拒签，
+  示例配置不要直接上线。
+- 主 Caddyfile 路径、站点配置目录、=managed-by= 标记及 import 行的
+  格式与配套正则是 role 内部常量（=vars/main.yaml= ），不是配置项；
+  适配其他系统（如 FreeBSD 的 =/usr/local/etc/caddy= ）时改那里。
+- 安装的是 Debian 仓库中的版本，跟随发行版更新。

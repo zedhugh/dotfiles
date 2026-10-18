@@ -1,0 +1,78 @@
+#+title: Gitea 安装与配置
+
+在 Debian 系统上以官方发布的二进制安装 Gitea（固定版本，见
+=vars/main.yaml= ），由 systemd 托管，服务保持启动状态。配置文件为
+=/etc/gitea/app.ini= ，由本 role 的 =templates/app.ini.j2= 渲染。
+
+完整的部署还需要 PostgreSQL 数据库与 Caddy 反代，由 playbook
+（=../../playbooks/gitea.yaml= ）组合：postgresql / gitea / caddy
+三个 role 依次完成建库与服务部署，最后由 play 级任务把 gitea 站点
+接入 Caddy——所有服务启动之后才配置反代。
+
+* 目录结构
+
+- =/usr/local/bin/gitea= ：Gitea 二进制，从 dl.gitea.com 下载，
+  sha256 校验，root 只读可执行。
+- =/etc/gitea/app.ini= ：主配置文件（root:git 0640）。密钥已全部写
+  明且 =INSTALL_LOCK = true= ，Gitea 启动时不会再改动它。
+- =/var/lib/gitea= ：工作目录（=WORK_PATH= ），下设 =custom= 、
+  =data= （=APP_DATA_PATH= ，仓库、附件等数据）、=log= ，属主为
+  =git= 用户。
+- =/etc/systemd/system/gitea.service= ：systemd unit。
+- =git= 系统用户：运行 Gitea 的用户（=RUN_USER= ），同时是 git
+  over SSH 的登录用户；home 为 =/home/git= （官方安装教程的默认
+  值），与 Gitea 工作目录（=WORK_PATH= ）是两个路径。
+
+* app.ini 与 [restore] 约定
+
+涉及密钥的配置项（=INTERNAL_TOKEN= 、=LFS_JWT_SECRET= 、
+=JWT_SECRET= ）在模板中以 =# [restore]= 行分隔两份值：
+
+#+begin_src ini
+# INTERNAL_TOKEN = <新部署时 Gitea 自动生成的值>
+# [restore]
+INTERNAL_TOKEN = <之前部署生成、生成备份的那次部署的值>
+#+end_src
+
+- =[restore]= 之前注释掉的是 /全新部署/ 时 Gitea 会自动生成的值，
+  留着作参考。
+- =[restore]= 之后生效的是 /之前部署/ 的密钥：恢复备份的 Gitea 数据
+  必须配回生成该备份的那次部署的密钥——备份中的 token 等敏感数据以
+  =INTERNAL_TOKEN= 加密、LFS 对象由 =LFS_JWT_SECRET= 签名、OAuth2
+  token 由 =JWT_SECRET= 签发，密钥不匹配时这些数据无法解密/校验。
+- 若全新部署（不恢复数据），反过来：启用自动生成的值、注释掉旧密钥。
+
+* 变量
+
+本 role 无配置项：站点相关设置（端口、域名、数据库、密钥……）全部
+写在 =templates/app.ini.j2= 里，改配置直接改模板（改后重跑 playbook
+会触发重启）。=vars/main.yaml= 是内部常量（版本、下载地址、路径、
+用户名、HTTP 端口），任务与 systemd unit 从那里取值；app.ini 中的
+路径同样由这些常量拼接，与任务、unit 自动保持一致。
+
+* 升级
+
+修改 =vars/main.yaml= 中的 =gitea_version= ，重跑 playbook 即可：
+sha256 从下载地址旁的 =.sha256= 文件自动获取，二进制变化会触发服务
+重启。跨大版本升级先读官方 release notes 确认无破坏性变更。
+
+* 注意
+
+- PostgreSQL 角色与数据库由 playbook 以 postgresql role 创建：名称
+  与密码定义在 vault（=vault_gitea_db_*= ），与 app.ini 的
+  =[database]= 一致。
+- Caddy 反代在 playbook 的 tasks 阶段接入（三个 role 之后执行，保证
+  各服务已启动）：站点内容内联在 playbook 中，写入
+  =/etc/caddy/sites.d/gitea.caddyfile= （域名取自 vault、端口取自
+  本 role 的 =gitea_http_port= ），import 行不带
+  =managed-by=caddy-role= 标记，不参与 caddy role 的差集清理，与
+  其他站点的接入方式一致。站点文件用固定名 =gitea= 而非域名：换
+  域名时只更新内容，不残留旧文件。
+- git over SSH 走系统 sshd（=START_SSH_SERVER = false= ），=git=
+  用户的 shell 为 /bin/bash（role 已设置）；若 sshd 配置了
+  =AllowUsers= 需加入 =git= 用户。app.ini 的 =SSH_PORT= 是界面上
+  展示的 clone 端口，与 sshd 实际监听端口不一致时改它。
+- 生效的密钥与密码来自 vault（=../../vars/vault.yaml= ），经
+  playbook 的 vars_files 注入模板；模板中以注释保留的 [restore]
+  参考值仍是明文。
+- 安装的是固定版本二进制，不随 apt 更新，升级方式见上文。

@@ -1,0 +1,90 @@
+---
+- name: 创建站点配置目录
+  file:
+    path: "{{ caddy_sites_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: 生成各站点配置文件
+  copy:
+    dest: "{{ caddy_sites_dir }}/{{ item.name }}.caddyfile"
+    content: "{{ item.content }}"
+    owner: root
+    group: root
+    mode: '0644'
+  loop: "{{ caddy_sites }}"
+  notify: reload caddy
+
+- name: 读取现存主 Caddyfile
+  slurp:
+    src: "{{ caddy_config_file }}"
+  register: caddyfile_slurp
+  failed_when: false
+
+# 汇总文件中带本 role 标记、但已不在 caddy_sites 中的站点名，
+# 用于删除对应的 import 行和站点配置文件；不带标记的行（其他组件
+# 追加的）不受影响
+- name: 计算已不再管理的站点
+  set_fact:
+    caddy_stale_sites: >-
+      {{ (caddyfile_slurp.content | default('') | b64decode).splitlines()
+         | select('match', caddy_import_tagged_regexp)
+         | map('regex_replace', caddy_import_name_regexp, '\g<1>')
+         | difference(caddy_sites | map(attribute='name') | list)
+         | unique | list }}
+
+# 仅在文件不存在或不带本 role 标记时写入基础内容：Debian 包自带的默认
+# Caddyfile 含活动的 :80 站点块，需要替换掉；已初始化的文件原样保留，
+# 其他组件追加的 import 行不会被覆盖
+- name: 初始化主 Caddyfile
+  copy:
+    dest: "{{ caddy_config_file }}"
+    content: |
+      # 主 Caddyfile：各站点配置文件位于 {{ caddy_sites_dir }}/ ，在此以 import 行加载
+      # 本 role 管理的 import 行带 {{ caddy_managed_marker }} 标记，会自动增删；
+      # 其他组件可追加自己的 import 行（不带该标记）
+    owner: root
+    group: root
+    mode: '0644'
+  when: (caddyfile_slurp.content | default('') | b64decode) is not search(caddy_managed_marker)
+  notify: reload caddy
+
+- name: 添加各站点的 import 行
+  lineinfile:
+    path: "{{ caddy_config_file }}"
+    line: "{{ caddy_import_line }}"
+    regexp: "{{ caddy_import_regexp }}"
+    state: present
+  loop: "{{ caddy_sites | map(attribute='name') | list }}"
+  loop_control:
+    loop_var: caddy_site_name
+  notify: reload caddy
+
+- name: 移除已不再管理的站点的 import 行
+  lineinfile:
+    path: "{{ caddy_config_file }}"
+    regexp: "{{ caddy_import_regexp }}"
+    state: absent
+  loop: "{{ caddy_stale_sites }}"
+  loop_control:
+    loop_var: caddy_site_name
+  notify: reload caddy
+
+- name: 删除已不再管理的站点的配置文件
+  file:
+    path: "{{ caddy_sites_dir }}/{{ item }}.caddyfile"
+    state: absent
+  loop: "{{ caddy_stale_sites }}"
+  notify: reload caddy
+
+# async 兜底：start 请求若排在卡住的 reload job 后面会无限排队
+# （Type=notify unit），超时报错而不是挂住整个 playbook
+- name: 确保 Caddy 服务已启动并开机自启
+  systemd:
+    name: caddy
+    enabled: true
+    state: started
+  async: 120
+  poll: 5

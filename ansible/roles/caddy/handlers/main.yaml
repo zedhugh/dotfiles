@@ -1,0 +1,17 @@
+---
+# 先校验配置合法性，校验不通过则 handler 失败，服务继续以旧配置运行
+- name: 校验 Caddy 配置
+  command: caddy validate --config {{ caddy_config_file }} --adapter caddyfile
+  changed_when: false
+  listen: reload caddy
+
+- name: reload caddy
+  systemd:
+    name: caddy
+    state: reloaded
+  # 配置加载可能被证书申请长时间阻塞（如域名无效时 caddy 最长重试
+  # 30 天），systemd 的 reload job 卡住会连带挂住后续所有 start/reload
+  # 请求；async 兜底让任务超时报错而不是无限等待
+  async: 90
+  poll: 5
+  listen: reload caddy

@@ -1,0 +1,11 @@
+---
+# acl 提供 setfacl，Ansible 以 postgres 用户执行模块时用它开放临时文件权限
+- name: 安装 PostgreSQL 及依赖
+  apt:
+    name:
+      - postgresql
+      - python3-psycopg
+      - acl
+    state: present
+    update_cache: true
+    cache_valid_time: 3600

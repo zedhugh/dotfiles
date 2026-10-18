@@ -1,0 +1,33 @@
+---
+# Gitea 需要 git 执行仓库操作（版本要求见官方文档，Debian 仓库的版本满足）
+- name: 安装 Git
+  apt:
+    name: git
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+# RUN_USER 对应的系统用户，同时是 git over SSH 的登录用户，需要可用
+# shell 执行 git-receive-pack 等命令；home 按官方安装教程默认 /home/git，
+# 工作目录 /var/lib/gitea 的权限收紧由 configure.yaml 负责
+- name: 创建 git 用户
+  user:
+    name: "{{ gitea_user }}"
+    comment: Git Version Control
+    shell: /bin/bash
+    home: "{{ gitea_home }}"
+    create_home: true
+    system: true
+
+# 固定版本 + sha256 校验，已下载且校验匹配时不重复下载。校验和从下载
+# 地址旁的 .sha256 文件取（get_url 按下载 URL 的文件名在其中匹配条目），
+# 避免在 vars 里维护一份哈希
+- name: 下载 Gitea 二进制
+  get_url:
+    url: "{{ gitea_download_url }}"
+    dest: "{{ gitea_binary }}"
+    checksum: "sha256:{{ gitea_download_url }}.sha256"
+    owner: root
+    group: root
+    mode: '0755'
+  notify: restart gitea

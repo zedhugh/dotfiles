@@ -1,0 +1,31 @@
+#+title: PostgreSQL 安装与配置
+
+在 Debian 系统上安装 PostgreSQL（发行版自带版本），并按变量定义创建
+角色（用户）和数据库，服务保持启动状态。
+
+数据库和角色的创建通过 =community.postgresql= collection 的
+=postgresql_user= / =postgresql_db= 模块完成，连接方式是以 =postgres=
+用户通过本地 unix socket（peer 认证），无需为管理操作配置密码。
+
+使用方法见 =../../playbooks/postgresql.yaml= 。
+
+* 变量
+
+见 =defaults/main.yaml= ：
+
+- =postgresql_roles= ：要创建的角色列表。=password= 建议存放在
+  vault（=../../vars/vault.yaml= ）中，通过变量引用。
+- =postgresql_databases= ：要创建的数据库列表，=owner= 指向
+  =postgresql_roles= 中已有的角色，属主对该数据库拥有全部权限。
+
+* 注意
+
+- 控制机需要 =community.postgresql= collection（ansible 官方包自带，
+  缺失时执行 =ansible-galaxy collection install community.postgresql= ）。
+- 目标机的 Python 驱动 =python3-psycopg= （psycopg 3，Debian 12+
+  提供）由 role 自动安装。
+- 目标机的 =acl= 包（提供 =setfacl= ）由 role 自动安装。Ansible 以
+  =postgres= 用户执行模块时需要它来开放临时文件的读取权限，Debian
+  云镜像默认不带。
+- 角色创建任务设置了 =no_log= ，避免密码出现在日志中，排查问题时
+  可临时将该任务的 =no_log= 改为 =false= 。

@@ -1,0 +1,22 @@
+---
+# role 内部常量，非配置项：vars 优先级高于 playbook/inventory 变量，
+# 引用方不能（也不应）覆盖，保证所有组件使用同一套路径与标记
+
+# 主 Caddyfile 与站点配置目录
+caddy_config_file: /etc/caddy/Caddyfile
+caddy_sites_dir: /etc/caddy/sites.d
+
+# 本 role 管理的 import 行标记，引用方追加的 import 行不要带它
+caddy_managed_marker: managed-by=caddy-role
+
+# import 行的线格式及配套正则。caddy_site_name 是空闲变量，由使用
+# 这些模板的任务通过 loop_control.loop_var 提供站点名。
+# 注意：正则里不能用井号字面量，ansible 2.19 的模板引擎会把它当
+# 注释截断表达式，所以用 .* / \S+ 代替
+caddy_import_line: 'import {{ caddy_sites_dir }}/{{ caddy_site_name }}.caddyfile # {{ caddy_managed_marker }}'
+# 匹配某个站点的 import 行（标记部分可选，容忍书写差异）
+caddy_import_regexp: '^import\s+{{ caddy_sites_dir | regex_escape }}/{{ caddy_site_name | regex_escape }}\.caddyfile(\s+\S+\s+{{ caddy_managed_marker }})?\s*$'
+# 匹配任意带标记的 import 行（用于找出已不再管理的站点）
+caddy_import_tagged_regexp: '^import\s+{{ caddy_sites_dir | regex_escape }}/.+\.caddyfile.*{{ caddy_managed_marker }}\s*$'
+# 从带标记的 import 行提取站点名（捕获组 1）
+caddy_import_name_regexp: '^import\s+{{ caddy_sites_dir | regex_escape }}/(.+)\.caddyfile.*$'

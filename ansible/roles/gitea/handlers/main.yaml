@@ -1,0 +1,13 @@
+---
+# 先 daemon-reload 使 unit 变更生效，再重启服务；app.ini 与二进制变更
+# 也统一走这里重启
+- name: daemon-reload
+  systemd:
+    daemon_reload: true
+  listen: restart gitea
+
+- name: restart gitea
+  systemd:
+    name: gitea
+    state: restarted
+  listen: restart gitea

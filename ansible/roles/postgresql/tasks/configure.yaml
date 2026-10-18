@@ -1,0 +1,39 @@
+---
+- name: 确保 PostgreSQL 服务已启动
+  systemd:
+    name: postgresql
+    enabled: true
+    state: started
+
+# Ansible 以 postgres 用户执行模块时会用到其 home 下的临时目录，
+# 预先创建好（0700 且属主为 postgres），消除 ansible 首次运行时的
+# remote_tmp 权限警告
+- name: 预创建 postgres 用户的模块临时目录
+  file:
+    path: /var/lib/postgresql/.ansible/tmp
+    state: directory
+    owner: postgres
+    group: postgres
+    mode: '0700'
+
+# 通过本地 unix socket 以 postgres 用户连接（Debian 默认 peer 认证），无需密码
+- name: 创建 PostgreSQL 角色
+  become: true
+  become_user: postgres
+  postgresql_user:
+    name: "{{ item.name }}"
+    password: "{{ item.password | default(omit) }}"
+    role_attr_flags: "{{ item.role_attr_flags | default(omit) }}"
+    state: present
+  loop: "{{ postgresql_roles }}"
+  no_log: true
+
+- name: 创建 PostgreSQL 数据库
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ item.name }}"
+    owner: "{{ item.owner | default(omit) }}"
+    encoding: "{{ item.encoding | default(omit) }}"
+    state: present
+  loop: "{{ postgresql_databases }}"
