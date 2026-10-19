@@ -5,7 +5,7 @@
 
 # 固定安装的 frp 版本（amd64），升级时更新版本号即可；本地缓存
 # （frps_tmp_dir）中已有旧版本压缩包时不影响新版本下载，但可手动清理
-frps_version: "0.71.0"
+frps_version: "0.71.1"
 frps_download_url: "https://github.com/fatedier/frp/releases/download/v{{ frps_version }}/frp_{{ frps_version }}_linux_amd64.tar.gz"
 
 # 控制机上的缓存目录（本 role 自己的 tmp/，与其他 role 的缓存隔离，

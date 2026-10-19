@@ -5,7 +5,7 @@
 
 # 固定安装的 Gitea 版本（amd64），升级时更新版本号即可；sha256 不在此
 # 写死，安装时从 "{{ gitea_download_url }}.sha256" 获取
-gitea_version: 28.1.0
+gitea_version: 28.2.0
 gitea_download_url: https://dl.gitea.com/gitea/{{ gitea_version }}/gitea-{{ gitea_version }}-linux-amd64
 
 gitea_binary: /usr/local/bin/gitea
