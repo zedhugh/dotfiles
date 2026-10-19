@@ -1,0 +1,83 @@
+---
+- name: 安装配置服务
+  hosts: vps_debian
+  become: true
+
+  vars_files:
+    - ../vars/vault.yaml
+
+  vars:
+    lo_ip: "127.0.0.1"
+    domain: "{{ vault_domain }}"
+    gitea_http_port: "{{ vault_gitea_http_port }}"
+    gitea_domain: "gitea.{{ vault_domain }}"
+
+  roles:
+    - role: shadowsocks
+      vars:
+        shadowsocks_mode: "{{ vault_ss_mode }}"
+        shadowsocks_server_port: "{{ vault_ss_server_port }}"
+        shadowsocks_local_port: "{{ vault_ss_local_port }}"
+        shadowsocks_password: "{{ vault_ss_password }}"
+        shadowsocks_method: "{{ vault_ss_method }}"
+
+    - role: frps
+      vars:
+        frps_bind_port: "{{ vault_frps_bind_port }}"
+        frps_vhost_http_port: "{{ vault_frps_vhost_http_port }}"
+        frps_token: "{{ vault_frps_token }}"
+        frps_dashboard_port: "{{ vault_frps_dashboard_port }}"
+        frps_dashboard_user: "{{ vault_frps_dashboard_user }}"
+        frps_dashboard_password: "{{ vault_frps_dashboard_password }}"
+
+    - role: postgresql
+      vars:
+        postgresql_roles:
+          - name: "{{ vault_gitea_db_owner }}"
+            password: "{{ vault_gitea_db_owner_password }}"
+        postgresql_databases:
+          - name: "{{ vault_gitea_db_name }}"
+            owner: "{{ vault_gitea_db_owner }}"
+
+    - role: gitea
+      vars:
+        gitea_db_name: "{{ vault_gitea_db_name }}"
+        gitea_db_owner: "{{ vault_gitea_db_owner }}"
+        gitea_db_owner_password: "{{ vault_gitea_db_owner_password }}"
+        gitea_internal_token: "{{ vault_gitea_internal_token }}"
+        gitea_lfs_jwt_secret: "{{ vault_gitea_lfs_jwt_secret }}"
+        gitea_oauth2_jwt_secret: "{{ vault_gitea_oauth2_jwt_secret }}"
+
+    - role: caddy
+      vars:
+        caddy_sites:
+          - name: root
+            content: |
+              {{ domain }} {
+                  root * /usr/share/caddy
+                  file_server
+              }
+
+          - name: gitea
+            content: |
+              {{ gitea_domain }} {
+                  reverse_proxy {{ lo_ip }}:{{ gitea_http_port }}
+              }
+
+          - name: frp
+            content: |
+              frp.{{ domain }} {
+                  reverse_proxy {{ lo_ip }}:{{ vault_frps_dashboard_port }}
+              }
+
+          - name: qbittorrent
+            content: |
+              q.{{ domain }} {
+                  reverse_proxy {{ lo_ip }}:{{ vault_frps_vhost_http_port }}
+              }
+
+          - name: webdav
+            content: |
+              dav.{{ domain }} {
+                  reverse_proxy {{ lo_ip }}:{{ vault_frps_vhost_http_port }}
+              }

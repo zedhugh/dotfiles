@@ -15,4 +15,3 @@ gitea_home: /home/git
 # Gitea 工作目录（app.ini 的 WORK_PATH）
 gitea_work_path: /var/lib/gitea
 gitea_conf_dir: /etc/gitea
-gitea_http_port: 2950

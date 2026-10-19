@@ -33,11 +33,17 @@
 - =gitea_oauth2_jwt_secret=
 - =gitea_db_name= 、=gitea_db_owner= 、=gitea_db_owner_password=
 
-无默认变量。站点相关设置（端口等）除上述变量外均写在
-=templates/app.ini.j2= 里，改配置直接改模板（改后重跑 playbook 会
-触发重启）。=vars/main.yaml= 是内部常量（版本、下载地址、路径、
-用户名、HTTP 端口），任务与 systemd unit 从那里取值；app.ini 中的
-路径同样由这些常量拼接，与任务、unit 自动保持一致。
+默认变量（有默认值，见 =defaults/main.yaml= ，可覆盖，此处不列默认
+值）：
+
+- =gitea_http_port= ：Gitea 的 HTTP 监听端口（app.ini 的
+  =HTTP_PORT= ），反代指向它。
+
+站点相关设置除上述变量外均写在 =templates/app.ini.j2= 里，改配置
+直接改模板（改后重跑 playbook 会触发重启）。=vars/main.yaml= 是
+内部常量（版本、下载地址、路径、用户名），任务与 systemd unit 从
+那里取值；app.ini 中的路径同样由这些常量拼接，与任务、unit 自动
+保持一致。
 
 * 升级
 

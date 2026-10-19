@@ -1,25 +1,26 @@
 ---
 - name: 新机器初始化
   hosts: vps_debian
-  gather_facts: yes
+  gather_facts: true
 
   vars:
     ansible_user: root
-    ansible_ssh_port: 22
 
     admin_user: zedhugh
-    # sshd role 的 sshd_admin_user 默认 root；sudo_user 是 sudo role
-    # 的必填变量（无默认值），二者统一指定为管理员用户
-    sshd_admin_user: "{{ admin_user }}"
-    sudo_user: "{{ admin_user }}"
-    # sshd role 的 sshd_port 默认 22，本仓库机器统一用 44444
-    sshd_port: 44444
     timezone: Asia/Shanghai
 
   roles:
     - role: bbr
+
     - role: sshd
+      vars:
+        sshd_admin_user: "{{ admin_user }}"
+        sshd_port: 22
+        sshd_public_key_path: ~/.ssh/id_rsa.pub
+
     - role: sudo
+      vars:
+        sudo_user: "{{ admin_user }}"
 
   tasks:
     - name: 设置时区
@@ -30,5 +31,5 @@
       user:
         name: "{{ admin_user }}"
         shell: /bin/bash
-        create_home: yes
+        create_home: true
         state: present
