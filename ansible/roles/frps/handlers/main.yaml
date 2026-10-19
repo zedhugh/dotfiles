@@ -1,0 +1,5 @@
+---
+- name: restart frps
+  systemd:
+    name: frps
+    state: restarted

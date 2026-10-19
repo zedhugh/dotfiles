@@ -1,0 +1,45 @@
+#+title: frps 安装与配置
+
+在 Debian 系统上以官方发布的二进制安装 frp 服务端 frps（固定版本，
+见 =vars/main.yaml= ），由 systemd 托管，服务保持启动状态。客户端
+frpc 的部署不在本 role 范围内。
+
+* 目录结构
+
+- =/opt/frp/frps= ：frps 二进制，从 GitHub release 的压缩包中提取。
+- =/etc/frp/frps.toml= ：主配置文件，由本 role 的
+  =templates/frps.toml.j2= 渲染；端口、token、dashboard 账号密码等
+  全部取自 vault（=vault_frps_*= ）。
+- =/etc/systemd/system/frps.service= ：systemd unit，由
+  =templates/frps.service.j2= 渲染。
+- =/var/log/frps.log= ：frps 日志（frps.toml 中的 =log.to= ）。
+
+* 下载方式
+
+压缩包的下载与解压在 /控制机本地/ 完成（缓存目录为本 role 下的
+=tmp/= ，即 =frp_tmp_dir= ，与其他 role 的缓存隔离），再把 =frps=
+二进制拷贝到目标机——目标机无需
+访问 GitHub。本地已有该版本的压缩包时跳过下载与解压，直接复用。
+
+* 变量
+
+本 role 无配置项：端口、token、dashboard 等敏感配置写在
+=templates/frps.toml.j2= 里（取自 vault），改配置直接改模板（改后
+重跑 playbook 会触发重启）。=vars/main.yaml= 是内部常量（版本、
+下载地址、缓存目录、安装与配置路径），任务与 systemd unit 从那里
+取值。
+
+* 升级
+
+修改 =vars/main.yaml= 中的 =frp_version= ，重跑 playbook 即可：新
+版本压缩包会下载到本地缓存并解压，二进制变化会触发服务重启。跨
+大版本升级先读官方 release notes 确认无破坏性变更，并同步检查
+frpc 侧版本兼容（frp 要求两端版本匹配）。
+
+* 注意
+
+- 生效的端口、token 与 dashboard 账号密码来自 vault
+  （=../../vars/vault.yaml= ），经 playbook 的 vars_files 注入模板。
+- dashboard 只监听 =127.0.0.1= （=webServer.addr= ），外网访问需经
+  反代或 SSH 隧道。
+- 安装的是固定版本二进制，不随 apt 更新，升级方式见上文。

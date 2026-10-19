@@ -1,0 +1,19 @@
+---
+# role 内部常量，非配置项：vars 优先级高于 playbook/inventory 变量，
+# 引用方不能（也不应）覆盖；端口、token 等密钥类配置在
+# templates/frps.toml.j2，取自 vault
+
+# 固定安装的 frp 版本（amd64），升级时更新版本号即可；本地缓存
+# （frp_tmp_dir）中已有旧版本压缩包时不影响新版本下载，但可手动清理
+frp_version: "0.71.0"
+frp_download_url: "https://github.com/fatedier/frp/releases/download/v{{ frp_version }}/frp_{{ frp_version }}_linux_amd64.tar.gz"
+
+# 控制机上的缓存目录（本 role 自己的 tmp/，与其他 role 的缓存隔离，
+# 仓库 .gitignore 的 tmp/ 规则不锚定路径，此处同样不会误提交）：
+# 压缩包下载与解压都在本地完成后拷贝到目标机，目标机无需访问 GitHub
+frp_tmp_dir: "{{ role_path }}/tmp"
+frp_local_archive: "{{ frp_tmp_dir }}/frp_{{ frp_version }}_linux_amd64.tar.gz"
+frp_local_tmp_dir: "{{ frp_tmp_dir }}/frp_{{ frp_version }}_linux_amd64"
+
+frp_install_dir: /opt/frp
+frp_config_dir: /etc/frp

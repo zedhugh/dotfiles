@@ -1,0 +1,42 @@
+---
+- name: 创建 frp 安装目录
+  file:
+    path: "{{ frp_install_dir }}"
+    state: directory
+    mode: '0755'
+
+# 压缩包下载与解压都在控制机本地完成（见 vars/main.yaml 的
+# frp_tmp_dir），本地已有该版本的压缩包时跳过这两步
+- name: 检查本地是否已有该版本的压缩包
+  stat:
+    path: "{{ frp_local_archive }}"
+  register: local_archive
+  delegate_to: localhost
+  run_once: true
+
+- name: 下载 frp 压缩包到本地
+  get_url:
+    url: "{{ frp_download_url }}"
+    dest: "{{ frp_local_archive }}"
+    timeout: 60
+  delegate_to: localhost
+  run_once: true
+  become: false
+  when: not local_archive.stat.exists
+
+- name: 解压 frp 压缩包到本地
+  unarchive:
+    src: "{{ frp_local_archive }}"
+    dest: "{{ frp_tmp_dir }}"
+    creates: "{{ frp_local_tmp_dir }}"
+  delegate_to: localhost
+  run_once: true
+  become: false
+  when: not local_archive.stat.exists
+
+- name: 复制 frps 二进制文件到目标机器
+  copy:
+    src: "{{ frp_local_tmp_dir }}/frps"
+    dest: "{{ frp_install_dir }}/frps"
+    mode: '0755'
+  notify: restart frps

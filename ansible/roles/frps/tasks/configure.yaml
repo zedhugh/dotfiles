@@ -1,0 +1,27 @@
+---
+- name: 创建 frp 配置目录
+  file:
+    path: "{{ frp_config_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: 生成 frps.toml 配置文件
+  template:
+    src: frps.toml.j2
+    dest: "{{ frp_config_dir }}/frps.toml"
+    mode: '0644'
+  notify: restart frps
+
+- name: 创建 frps 的 systemd 服务文件
+  template:
+    src: frps.service.j2
+    dest: /etc/systemd/system/frps.service
+    mode: '0644'
+  notify: restart frps
+
+- name: 启用并启动 frps 服务
+  systemd:
+    name: frps
+    enabled: true
+    state: started
+    daemon_reload: true
