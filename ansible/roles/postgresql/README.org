@@ -11,10 +11,11 @@
 
 * 变量
 
-见 =defaults/main.yaml= ：
+无必填变量。默认变量（有默认值，见 =defaults/main.yaml= ，此处不列
+默认值；列表项结构见其中的注释）：
 
-- =postgresql_roles= ：要创建的角色列表。=password= 建议存放在
-  vault（=../../vars/vault.yaml= ）中，通过变量引用。
+- =postgresql_roles= ：要创建的角色列表。=password= 建议以变量引用
+  传入，避免明文写死在 playbook 中。
 - =postgresql_databases= ：要创建的数据库列表，=owner= 指向
   =postgresql_roles= 中已有的角色，属主对该数据库拥有全部权限。
 

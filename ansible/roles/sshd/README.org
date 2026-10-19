@@ -17,15 +17,13 @@ SSH 公钥部署到目标机。服务保持启动状态。
 
 * 变量
 
-均见 =defaults/main.yaml= ，统一带 =sshd_= 前缀：
+无必填变量。默认变量（有默认值，见 =defaults/main.yaml= ，统一带
+=sshd_= 前缀，可覆盖，此处不列默认值）：
 
-- =sshd_admin_user= ：公钥部署的目标用户，默认 root，可覆盖为普通
-  管理员用户。
-- =sshd_port= ：sshd 监听端口，默认 22。修改后须同步 inventory 中
-  该主机的连接端口（=ansible_port= ），否则重跑时按旧端口连接会失败。
-- =sshd_public_key_path= ：公钥在 /控制机/ 上的路径，默认
-  =~/.ssh/id_ed25519.pub= （OpenSSH 9.5 起 ssh-keygen 的默认密钥
-  类型）。
+- =sshd_admin_user= ：公钥部署的目标用户，可覆盖为普通管理员用户。
+- =sshd_port= ：sshd 监听端口。修改后须同步 inventory 中该主机的
+  连接端口（=ansible_port= ），否则重跑时按旧端口连接会失败。
+- =sshd_public_key_path= ：公钥在 /控制机/ 上的路径。
 
 * 注意
 

@@ -7,25 +7,25 @@ WORK_PATH = {{ gitea_work_path }}
 
 [security]
 INSTALL_LOCK = true
-INTERNAL_TOKEN = {{ vault_gitea_conf_security_internal_token }}
+INTERNAL_TOKEN = {{ gitea_internal_token }}
 PASSWORD_HASH_ALGO = pbkdf2
 
 [database]
 DB_TYPE = postgres
 HOST = 127.0.0.1:5432
-NAME = {{ vault_gitea_db_name }}
-USER = {{ vault_gitea_db_owner }}
-PASSWD = {{ vault_gitea_db_owner_password }}
+NAME = {{ gitea_db_name }}
+USER = {{ gitea_db_owner }}
+PASSWD = {{ gitea_db_owner_password }}
 SCHEMA =
 SSL_MODE = disable
 PATH = {{ gitea_work_path }}/data/gitea.db
 
 [server]
 HTTP_PORT = {{ gitea_http_port }}
-ROOT_URL = https://{{ vault_gitea_conf_server_domain }}/
+ROOT_URL = https://{{ gitea_domain }}/
 APP_DATA_PATH = {{ gitea_work_path }}/data
 LFS_START_SERVER = true
-LFS_JWT_SECRET = {{ vault_gitea_conf_server_lfs_jwt_secret }}
+LFS_JWT_SECRET = {{ gitea_lfs_jwt_secret }}
 
 # use systemd ssh daemon
 START_SSH_SERVER = false
@@ -52,7 +52,7 @@ ENABLED = true
 DEFAULT_TRUST_MODEL = committer
 
 [oauth2]
-JWT_SECRET = {{ vault_gitea_conf_oauth2_jwt_secret }}
+JWT_SECRET = {{ gitea_oauth2_jwt_secret }}
 
 [log]
 MODE = file

@@ -23,30 +23,19 @@
   over SSH 的登录用户；home 为 =/home/git= （官方安装教程的默认
   值），与 Gitea 工作目录（=WORK_PATH= ）是两个路径。
 
-* app.ini 与 [restore] 约定
-
-涉及密钥的配置项（=INTERNAL_TOKEN= 、=LFS_JWT_SECRET= 、
-=JWT_SECRET= ）在模板中以 =# [restore]= 行分隔两份值：
-
-#+begin_src ini
-# INTERNAL_TOKEN = <新部署时 Gitea 自动生成的值>
-# [restore]
-INTERNAL_TOKEN = <之前部署生成、生成备份的那次部署的值>
-#+end_src
-
-- =[restore]= 之前注释掉的是 /全新部署/ 时 Gitea 会自动生成的值，
-  留着作参考。
-- =[restore]= 之后生效的是 /之前部署/ 的密钥：恢复备份的 Gitea 数据
-  必须配回生成该备份的那次部署的密钥——备份中的 token 等敏感数据以
-  =INTERNAL_TOKEN= 加密、LFS 对象由 =LFS_JWT_SECRET= 签名、OAuth2
-  token 由 =JWT_SECRET= 签发，密钥不匹配时这些数据无法解密/校验。
-- 若全新部署（不恢复数据），反过来：启用自动生成的值、注释掉旧密钥。
-
 * 变量
 
-本 role 无配置项：站点相关设置（端口、域名、数据库、密钥……）全部
-写在 =templates/app.ini.j2= 里，改配置直接改模板（改后重跑 playbook
-会触发重启）。=vars/main.yaml= 是内部常量（版本、下载地址、路径、
+必填变量（无默认值，由引用方 playbook 提供，未提供时模板渲染报错）：
+
+- =gitea_internal_token=
+- =gitea_domain=
+- =gitea_lfs_jwt_secret=
+- =gitea_oauth2_jwt_secret=
+- =gitea_db_name= 、=gitea_db_owner= 、=gitea_db_owner_password=
+
+无默认变量。站点相关设置（端口等）除上述变量外均写在
+=templates/app.ini.j2= 里，改配置直接改模板（改后重跑 playbook 会
+触发重启）。=vars/main.yaml= 是内部常量（版本、下载地址、路径、
 用户名、HTTP 端口），任务与 systemd unit 从那里取值；app.ini 中的
 路径同样由这些常量拼接，与任务、unit 自动保持一致。
 
@@ -58,13 +47,13 @@ sha256 从下载地址旁的 =.sha256= 文件自动获取，二进制变化会�
 
 * 注意
 
-- PostgreSQL 角色与数据库由 playbook 以 postgresql role 创建：名称
-  与密码定义在 vault（=vault_gitea_db_*= ），与 app.ini 的
-  =[database]= 一致。
+- PostgreSQL 角色与数据库由 playbook 以 postgresql role 创建：
+  playbook 以本 role 的 =gitea_db_*= 变量构造其参数（app.ini 的
+  =[database]= 引用同一组变量），两处天然一致。
 - Caddy 反代在 playbook 的 tasks 阶段接入（三个 role 之后执行，保证
   各服务已启动）：站点内容内联在 playbook 中，写入
-  =/etc/caddy/sites.d/gitea.caddyfile= （域名取自 vault、端口取自
-  本 role 的 =gitea_http_port= ），import 行不带
+  =/etc/caddy/sites.d/gitea.caddyfile= （域名取自 =gitea_domain=
+  、端口取自本 role 的 =gitea_http_port= ），import 行不带
   =managed-by=caddy-role= 标记，不参与 caddy role 的差集清理，与
   其他站点的接入方式一致。站点文件用固定名 =gitea= 而非域名：换
   域名时只更新内容，不残留旧文件。
@@ -72,7 +61,4 @@ sha256 从下载地址旁的 =.sha256= 文件自动获取，二进制变化会�
   用户的 shell 为 /bin/bash（role 已设置）；若 sshd 配置了
   =AllowUsers= 需加入 =git= 用户。app.ini 的 =SSH_PORT= 是界面上
   展示的 clone 端口，与 sshd 实际监听端口不一致时改它。
-- 生效的密钥与密码来自 vault（=../../vars/vault.yaml= ），经
-  playbook 的 vars_files 注入模板；模板中以注释保留的 [restore]
-  参考值仍是明文。
 - 安装的是固定版本二进制，不随 apt 更新，升级方式见上文。

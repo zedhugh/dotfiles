@@ -7,17 +7,21 @@ Shadowsocks 服务器，由 systemd 托管（unit 名 =shadowsocks-libev=
 * 目录结构
 
 - =/etc/shadowsocks-libev/config.json= ：主配置文件，由本 role 的
-  =templates/config.json.j2= 渲染；加密方法、端口、密码等全部取自
-  vault（=vault_ss_*= ）。
+  =templates/config.json.j2= 渲染。
 
 * 变量
 
-本 role 无配置项：端口、密码、加密方法等敏感配置写在
-=templates/config.json.j2= 里（取自 vault），改配置直接改模板（改
-后重跑 playbook 会触发重启）。
+必填变量（无默认值，由引用方 playbook 提供，统一带 =shadowsocks_=
+前缀，未提供时模板渲染报错）：
+
+- =shadowsocks_mode= ：运行模式
+- =shadowsocks_server_port= ：服务监听端口
+- =shadowsocks_local_port= ：本地回环端口
+- =shadowsocks_password= ：连接密码
+- =shadowsocks_method= ：加密方法
+
+无默认变量。
 
 * 注意
 
-- 生效的配置来自 vault（=../../vars/vault.yaml= ），经 playbook 的
-  vars_files 注入模板。
 - 安装的是 Debian 仓库中的版本，跟随发行版更新。

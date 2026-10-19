@@ -20,7 +20,8 @@ Caddy 会自动为站点域名申请并续期 HTTPS 证书（ACME），要求 80
 
 * 变量
 
-见 =defaults/main.yaml= ：
+无必填变量。默认变量（有默认值，见 =defaults/main.yaml= ，此处不列
+默认值）：
 
 - =caddy_sites= ：站点配置列表。=content= 为完整的站点块（含站点
   地址行），例如：

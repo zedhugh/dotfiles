@@ -6,5 +6,14 @@
   vars_files:
     - ../vars/vault.yaml
 
+  vars:
+    # role 的配置变量必填、无默认值，统一在此从 vault 赋值，role 内
+    # 不出现 vault_ 前缀
+    shadowsocks_mode: "{{ vault_ss_mode }}"
+    shadowsocks_server_port: "{{ vault_ss_server_port }}"
+    shadowsocks_local_port: "{{ vault_ss_local_port }}"
+    shadowsocks_password: "{{ vault_ss_password }}"
+    shadowsocks_method: "{{ vault_ss_method }}"
+
   roles:
     - role: shadowsocks

@@ -1,7 +1,7 @@
 ---
 # 要创建的角色列表，先于数据库创建，以便作为数据库的属主
 # - name: 角色名（必填）
-#   password: 登录密码（可选，建议从 vault 读取，推荐加密存储）
+#   password: 登录密码（可选，建议由引用方以变量赋值，避免明文写死）
 #   role_attr_flags: 角色属性（可选，如 "LOGIN"、"NOLOGIN"、"NOSUPERUSER" 等，默认 LOGIN）
 postgresql_roles: []
 

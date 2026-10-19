@@ -1,14 +1,14 @@
 ---
 - name: 创建 frp 配置目录
   file:
-    path: "{{ frp_config_dir }}"
+    path: "{{ frps_config_dir }}"
     state: directory
     mode: '0755'
 
 - name: 生成 frps.toml 配置文件
   template:
     src: frps.toml.j2
-    dest: "{{ frp_config_dir }}/frps.toml"
+    dest: "{{ frps_config_dir }}/frps.toml"
     mode: '0644'
   notify: restart frps
 
