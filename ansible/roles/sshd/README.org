@@ -1,0 +1,36 @@
+#+title: sshd 安装与配置
+
+在 Debian 系统上安装 openssh-server 并收紧 sshd 配置：改监听端口、
+禁止 root 密码登录、禁止密码认证、开启公钥认证；同时把目标用户的
+SSH 公钥部署到目标机。服务保持启动状态。
+
+* 目录结构
+
+- =/etc/ssh/sshd_config= ：sshd 主配置文件。role 通过 =lineinfile=
+  只改动 =Port= 、=PermitRootLogin= 、=PasswordAuthentication= 、
+  =PubkeyAuthentication= 四项，其余内容（含发行版注释掉的默认值）
+  不动。
+- 目标用户的 =~/.ssh/authorized_keys= ：公钥由 role 部署，目标用户
+  不存在时 role 会先创建（=tasks/keys.yaml= ；只建账号与 home，
+  shell 等细节由引用方按需设置）。
+- =/etc/systemd/system= 下的 unit 由发行版包提供，role 不管理。
+
+* 变量
+
+均见 =defaults/main.yaml= ，统一带 =sshd_= 前缀：
+
+- =sshd_admin_user= ：公钥部署的目标用户，默认 root，可覆盖为普通
+  管理员用户。
+- =sshd_port= ：sshd 监听端口，默认 22。修改后须同步 inventory 中
+  该主机的连接端口（=ansible_port= ），否则重跑时按旧端口连接会失败。
+- =sshd_public_key_path= ：公钥在 /控制机/ 上的路径，默认
+  =~/.ssh/id_ed25519.pub= （OpenSSH 9.5 起 ssh-keygen 的默认密钥
+  类型）。
+
+* 注意
+
+- role 的配置变更通过 handler 重启才生效，handler 在 play 末尾运行；
+  公钥部署（=keys.yaml= ）排在收紧配置（=configure.yaml= ）之前，
+  先落公钥再关密码认证，不会打断当前连接。引用方无论在 play 的哪个
+  阶段创建/细化目标用户，公钥部署都不会因用户不存在而失败。
+- 安装的是 Debian 仓库中的版本，跟随发行版更新。

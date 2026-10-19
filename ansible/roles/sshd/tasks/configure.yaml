@@ -1,0 +1,34 @@
+---
+- name: 修改 SSH 端口
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?Port "
+    line: "Port {{ sshd_port }}"
+  notify: restart ssh
+
+- name: 禁止 root 密码登录
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PermitRootLogin"
+    line: "PermitRootLogin prohibit-password"
+  notify: restart ssh
+
+- name: 禁止密码认证
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  notify: restart ssh
+
+- name: 开启公钥认证
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PubkeyAuthentication"
+    line: "PubkeyAuthentication yes"
+  notify: restart ssh
+
+- name: 确保 sshd 服务已启动并开机自启
+  systemd:
+    name: sshd
+    enabled: true
+    state: started

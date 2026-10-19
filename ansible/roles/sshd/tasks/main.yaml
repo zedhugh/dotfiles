@@ -1,0 +1,6 @@
+---
+- import_tasks: install.yaml
+# 公钥部署放在 configure 之前：万一调用方在 play 中途 flush handlers，
+# 关闭密码认证的重启也不会先于公钥落位
+- import_tasks: keys.yaml
+- import_tasks: configure.yaml

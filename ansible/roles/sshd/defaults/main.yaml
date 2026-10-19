@@ -1,0 +1,12 @@
+---
+# 公钥部署的目标用户，默认 root；引用方 playbook 可覆盖为普通管理员
+# 用户（role 会确保该用户存在）
+sshd_admin_user: root
+
+# sshd 监听端口，默认 22；修改后须同步 inventory 侧的连接端口
+# （group_vars/vps_debian.yml 的 ansible_ssh_port），否则重跑时连不上
+sshd_port: 22
+
+# 管理员用户的 SSH 公钥路径（控制机上），部署给 sshd_admin_user 指定的
+# 用户；id_ed25519 是 OpenSSH 9.5 起 ssh-keygen 的默认密钥类型
+sshd_public_key_path: ~/.ssh/id_ed25519.pub

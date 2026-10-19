@@ -1,0 +1,7 @@
+---
+- name: 安装 sudo
+  apt:
+    name: sudo
+    state: present
+    update_cache: true
+    cache_valid_time: 3600

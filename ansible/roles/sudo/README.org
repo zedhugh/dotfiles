@@ -1,0 +1,24 @@
+#+title: sudo 安装与配置
+
+在 Debian 系统上安装 sudo，为目标用户配置免密 sudo（NOPASSWD）。
+规则写入 =/etc/sudoers.d/= 下的独立文件，不改动主 sudoers 文件。
+
+* 目录结构
+
+- =/etc/sudoers.d/<用户名>= ：目标用户的免密 sudo 规则（root:root
+  0440），写入前用 =visudo -cf= 校验，校验不通过则任务失败、不落盘。
+- =/etc/sudoers= ：发行版包自带，role 不改动（其 includedir 行会
+  加载 =sudoers.d= 下的文件）。
+
+* 变量
+
+- =sudo_user= ：免密 sudo 的目标用户，/必填/ ，无默认值——root 已在
+  主 sudoers 中，对其配置免密无意义，故 role 不设兜底，未指定时在
+  首个任务处直接报错。规则文件只引用用户名，不要求该用户已存在。
+
+* 注意
+
+- 规则文件以用户名命名，重复执行幂等；但更换 =sudo_user= 后旧用户
+  的规则文件不会自动清理，会继续保留免密 sudo，需手动删除
+  =/etc/sudoers.d/= 下的旧文件。
+- 安装的是 Debian 仓库中的版本，跟随发行版更新。

@@ -1,0 +1,27 @@
+---
+# sudo_user 必填：role 不设默认值（root 已在主 sudoers 中，对其配置
+# 免密无意义），未指定时在此报错并说明
+- name: 检查 sudo_user 已指定
+  assert:
+    that: sudo_user is defined and sudo_user | length > 0
+    fail_msg: sudo_user 未指定：本 role 不设默认值，须由引用方显式传入免密 sudo 的目标用户
+
+# Debian 的 sudo 包自带此目录（主 sudoers 的 includedir 行加载其中
+# 文件），防御性重建以防包布局变化
+- name: 确保 sudoers.d 目录存在
+  file:
+    path: /etc/sudoers.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+# 规则文件只引用用户名，不要求该用户已存在；用户随后由引用方创建即可
+- name: 配置免密 sudo
+  copy:
+    content: "{{ sudo_user }} ALL=(ALL) NOPASSWD: ALL\n"
+    dest: "/etc/sudoers.d/{{ sudo_user }}"
+    owner: root
+    group: root
+    mode: '0440'
+    validate: '/usr/sbin/visudo -cf %s'

@@ -1,0 +1,14 @@
+---
+# authorized_key 不能创建用户，先确保目标用户存在（root 天然存在，
+# 此任务是幂等的 no-op）；只建账号与 home，shell 等细节由引用方按需设置
+- name: 确保目标用户存在
+  user:
+    name: "{{ sshd_admin_user }}"
+    state: present
+    create_home: true
+
+- name: 复制 SSH 公钥
+  authorized_key:
+    user: "{{ sshd_admin_user }}"
+    key: "{{ lookup('file', sshd_public_key_path) }}"
+    state: present
