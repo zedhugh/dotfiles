@@ -4,10 +4,7 @@ const PROXY = `SOCKS5 ${proxy_ip}:20170; HTTP ${proxy_ip}:20172; DIRECT`;
 const DIRECT = 'DIRECT';
 
 const direct_ip_list = [
-    ["192.168.0.0", "255.255.255.0"],
-    ["192.168.1.0", "255.255.255.0"],
-    ["192.168.2.0", "255.255.255.0"],
-    ["192.168.5.0", "255.255.255.0"],
+    ["192.168.0.0", "255.255.0.0"],
     ["127.0.0.1", "255.255.255.0"],
 ];
 
@@ -15,6 +12,7 @@ const direct_domain_list = [
     "zedhugh.fun",
     "codeberg.org",
     "gitweb.gentoo.org",
+    "zte.home",
     "localhost"
 ];
 
