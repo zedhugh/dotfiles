@@ -1,10 +1,4 @@
 ---
-- name: 创建 frp 安装目录
-  file:
-    path: "{{ frps_install_dir }}"
-    state: directory
-    mode: '0755'
-
 # 压缩包下载与解压都在控制机本地完成（见 vars/main.yaml 的
 # frps_tmp_dir），本地已有该版本的压缩包时跳过这两步
 - name: 检查本地是否已有该版本的压缩包
@@ -37,6 +31,6 @@
 - name: 复制 frps 二进制文件到目标机器
   copy:
     src: "{{ frps_local_tmp_dir }}/frps"
-    dest: "{{ frps_install_dir }}/frps"
+    dest: "{{ frps_binary }}"
     mode: '0755'
   notify: restart frps

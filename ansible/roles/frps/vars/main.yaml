@@ -15,5 +15,5 @@ frps_tmp_dir: "{{ role_path }}/tmp"
 frps_local_archive: "{{ frps_tmp_dir }}/frp_{{ frps_version }}_linux_amd64.tar.gz"
 frps_local_tmp_dir: "{{ frps_tmp_dir }}/frp_{{ frps_version }}_linux_amd64"
 
-frps_install_dir: /opt/frp
+frps_binary: /usr/local/bin/frps
 frps_config_dir: /etc/frp

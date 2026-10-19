@@ -6,7 +6,7 @@ frpc 的部署不在本 role 范围内。
 
 * 目录结构
 
-- =/opt/frp/frps= ：frps 二进制，从 GitHub release 的压缩包中提取。
+- =/usr/local/bin/frps= ：frps 二进制，从 GitHub release 的压缩包中提取。
 - =/etc/frp/frps.toml= ：主配置文件，由本 role 的
   =templates/frps.toml.j2= 渲染。
 - =/etc/systemd/system/frps.service= ：systemd unit，由

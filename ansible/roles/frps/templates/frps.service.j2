@@ -6,7 +6,7 @@ After=network.target
 Type=simple
 Restart=on-failure
 RestartSec=5s
-ExecStart={{ frps_install_dir }}/frps -c {{ frps_config_dir }}/frps.toml
+ExecStart={{ frps_binary }} -c {{ frps_config_dir }}/frps.toml
 LimitNOFILE=1048576
 
 [Install]
