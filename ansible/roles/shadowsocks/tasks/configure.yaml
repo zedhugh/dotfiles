@@ -1,0 +1,15 @@
+---
+- name: 生成 config.json 配置文件
+  template:
+    src: config.json.j2
+    dest: /etc/shadowsocks-libev/config.json
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart shadowsocks-libev
+
+- name: 确保 shadowsocks-libev 服务已启动并开机自启
+  systemd:
+    name: shadowsocks-libev
+    enabled: true
+    state: started

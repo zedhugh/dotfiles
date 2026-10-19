@@ -1,0 +1,7 @@
+---
+- name: 安装 shadowsocks-libev
+  apt:
+    name: shadowsocks-libev
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
