@@ -11,6 +11,7 @@
     domain: "{{ vault_domain }}"
     gitea_http_port: "{{ vault_gitea_http_port }}"
     gitea_domain: "gitea.{{ vault_domain }}"
+    webdav_domain: "dav.{{ vault_domain }}"
 
   roles:
     - role: shadowsocks
@@ -47,6 +48,9 @@
         gitea_internal_token: "{{ vault_gitea_internal_token }}"
         gitea_lfs_jwt_secret: "{{ vault_gitea_lfs_jwt_secret }}"
         gitea_oauth2_jwt_secret: "{{ vault_gitea_oauth2_jwt_secret }}"
+        gitea_webdav_url: "https://{{ webdav_domain }}"
+        gitea_webdav_user: "{{ vault_gitea_backup_user }}"
+        gitea_webdav_password: "{{ vault_gitea_backup_password }}"
 
     - role: caddy
       vars:
@@ -78,6 +82,6 @@
 
           - name: webdav
             content: |
-              dav.{{ domain }} {
+              {{ webdav_domain }} {
                   reverse_proxy {{ lo_ip }}:{{ vault_frps_vhost_http_port }}
               }

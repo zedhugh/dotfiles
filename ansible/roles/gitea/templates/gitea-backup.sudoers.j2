@@ -1,0 +1,7 @@
+Cmnd_Alias GITEA_CMDS = /usr/bin/systemctl stop gitea.service, \
+                        /usr/bin/systemctl start gitea.service
+
+# 备份脚本（{{ gitea_backup_script }}）以 git 用户运行，停/启 Gitea
+# 走 sudo 白名单；只放行这两条命令，NOPASSWD 保证 systemd oneshot 下
+# 无 tty 也能执行
+{{ gitea_user }} ALL=(root) NOPASSWD: GITEA_CMDS

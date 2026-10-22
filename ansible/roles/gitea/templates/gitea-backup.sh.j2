@@ -1,0 +1,105 @@
+#!/bin/bash
+# Gitea 每日备份（由 gitea role 的 templates/gitea-backup.sh.j2 渲染
+# 部署，勿直接修改）：停 Gitea → pg_dump + gitea dump → SQL 追加进
+# zip → 立即重启 Gitea → rclone 把本地积压的 zip 全部上传 WebDAV，
+# 成功才删本地文件。由 gitea-backup.service 以 git 用户调用。
+
+# 收尾（重启 Gitea、清理未完成的产物）在 EXIT trap 里，失败路径也会
+# 执行；上传任一文件失败最终以非 0 退出，让 systemd 标记失败
+set -euo pipefail
+
+# 路径与主机名常量（部署时由 Jinja2 渲染）
+GITEA="{{ gitea_binary }}"
+CONF="{{ gitea_conf_dir }}/app.ini"
+DUMP_DIR="{{ gitea_backup_dir }}"
+HOST="{{ inventory_hostname }}"
+
+# 凭据（git 用户 0600，明文级别与 app.ini 的数据库密码相同）
+source "{{ gitea_backup_env_file }}"
+
+# pg_dump 经 TCP 用密码认证，参数走标准 PG* 环境变量
+export PGHOST=127.0.0.1
+export PGPORT=5432
+export PGUSER="$GITEA_DB_USER"
+export PGPASSWORD="$GITEA_DB_PASSWORD"
+export PGDATABASE="$GITEA_DB_NAME"
+
+# 以环境变量临时定义名为 dav 的 webdav remote（家里是 hacdias/webdav，
+# vendor=other），不落任何 rclone 配置文件；rclone 要求 pass 为 obscure
+# 形式，运行时经 stdin 生成——用 - 传密码，密码以 - 开头也不会被当成
+# 命令行选项
+export RCLONE_CONFIG_DAV_TYPE=webdav
+export RCLONE_CONFIG_DAV_URL="$GITEA_WEBDAV_URL"
+export RCLONE_CONFIG_DAV_VENDOR=other
+export RCLONE_CONFIG_DAV_USER="$GITEA_WEBDAV_USER"
+export RCLONE_CONFIG_DAV_PASS="$(printf '%s\n' "$GITEA_WEBDAV_PASSWORD" | rclone obscure -)"
+
+# 文件名带主机名与时间戳（可读性格式）：两台 VPS 不冲突；gitea dump
+# 要求目标文件不存在，已存在会直接报错退出，秒级时间戳保证每次都不同
+STAMP="$(date +%Y-%m-%d-%H:%M:%S)"
+NAME="gitea-dump-$HOST-$STAMP.zip"
+DUMP="$DUMP_DIR/$NAME"
+# SQL 只是打进 zip 前的中转产物，不带时间戳
+SQL="$DUMP_DIR/gitea-db.pg_dump.sql"
+
+# EXIT trap：Gitea 停着就拉起来；DUMP_READY=0 说明本轮 zip 未完整
+# 生成，清掉（完整生成的 zip 留在目录里，由上传循环处理，失败则留作
+# 积压下次补传，绝不能在这里删）
+DUMP_READY=0
+GITEA_STOPPED=0
+cleanup() {
+    if [ "$GITEA_STOPPED" -eq 1 ]; then
+        sudo /usr/bin/systemctl start gitea.service
+    fi
+    if [ "$DUMP_READY" -eq 0 ]; then
+        rm -f -- "$DUMP"
+    fi
+    rm -f -- "$SQL"
+}
+trap cleanup EXIT
+# systemd 超时先发 SIGTERM：转成退出以触发上面的 EXIT 清理
+trap 'exit 143' TERM
+
+# 停 Gitea（sudoers 白名单放行的两条命令之一）；成功才置标志，保证
+# EXIT trap 一定会把它启动回来。停服期间 web 与 git over SSH 不可用
+sudo /usr/bin/systemctl stop gitea.service
+GITEA_STOPPED=1
+
+# tempdir 用备份目录而非默认 /tmp：数据库导出的中间文件与 dump 同盘，
+# 避免小盘 VPS 的 /tmp 放不下；目录由 ansible 预先创建
+# --skip-log：日志无恢复价值；app.ini 会被自动打入包内（含全部密钥）。
+# Gitea 已停止，dump 与库内容严格一致
+"$GITEA" dump --config "$CONF" --type zip --file "$DUMP" \
+    --tempdir "$DUMP_DIR" --skip-log
+
+# pg_dump 在线导出（MVCC 快照，无需停 PostgreSQL；此处 Gitea 已停止，
+# 无新写入，快照即停机时刻的库内容），plain SQL 格式便于任意版本
+# psql 导入
+pg_dump --no-owner --no-privileges --file "$SQL"
+
+# SQL 追加进 dump 包根目录（zip 只能追加已有包；cd 后相对路径即包内
+# 根路径），然后删独立 SQL 文件、标记 zip 完整——到这里停机窗口结束
+( cd "$DUMP_DIR" && zip --quiet "$NAME" "$(basename "$SQL")" )
+DUMP_READY=1
+rm -f -- "$SQL"
+
+sudo /usr/bin/systemctl start gitea.service
+GITEA_STOPPED=0
+echo "gitea-backup: dump done, service back up, uploading"
+
+# 上传循环：目录里所有 zip（本次生成的 + 上次失败留下的积压）逐个传，
+# 成功即删本地；失败保留该文件继续下一个（尽量多传），最终以非 0 退
+# 出让 systemd 标记失败，次日 timer 会连积压一起补传
+FAILED=0
+for FILE in "$DUMP_DIR"/*.zip; do
+    [ -f "$FILE" ] || continue
+    FNAME="$(basename "$FILE")"
+    if rclone copyto --retries 5 "$FILE" "dav:$FNAME"; then
+        rm -f -- "$FILE"
+        echo "gitea-backup: uploaded dav:$FNAME"
+    else
+        echo "gitea-backup: upload failed, keeping $FNAME for next run" >&2
+        FAILED=1
+    fi
+done
+[ "$FAILED" -eq 0 ]

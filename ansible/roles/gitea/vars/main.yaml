@@ -15,3 +15,11 @@ gitea_home: /home/git
 # Gitea 工作目录（app.ini 的 WORK_PATH）
 gitea_work_path: /var/lib/gitea
 gitea_conf_dir: /etc/gitea
+
+# 备份相关路径，全部放 git 用户 home（见 tasks/backup.yaml 与
+# templates/gitea-backup.*.j2）：dump 先落到本地 backup 目录，上传
+# 成功才删、失败留作积压下次补传；WebDAV 与数据库凭据都放 env 文件
+# 由脚本 source，不渲染进脚本和 unit，明文密码只在一处
+gitea_backup_dir: "{{ gitea_home }}/backup"
+gitea_backup_env_file: "{{ gitea_home }}/gitea-backup.env"
+gitea_backup_script: "{{ gitea_home }}/gitea-backup"

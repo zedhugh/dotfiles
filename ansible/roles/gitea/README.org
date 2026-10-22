@@ -5,9 +5,10 @@
 =/etc/gitea/app.ini= ，由本 role 的 =templates/app.ini.j2= 渲染。
 
 完整的部署还需要 PostgreSQL 数据库与 Caddy 反代，由 playbook
-（=../../playbooks/gitea.yaml= ）组合：postgresql / gitea / caddy
+（=../../playbooks/service.yaml= ）组合：postgresql / gitea / caddy
 三个 role 依次完成建库与服务部署，最后由 play 级任务把 gitea 站点
-接入 Caddy——所有服务启动之后才配置反代。
+接入 Caddy——所有服务启动之后才配置反代。role 还附带每日备份并
+上传 WebDAV 存档，见下文「备份」。
 
 * 目录结构
 
@@ -19,6 +20,17 @@
   =data= （=APP_DATA_PATH= ，仓库、附件等数据）、=log= ，属主为
   =git= 用户。
 - =/etc/systemd/system/gitea.service= ：systemd unit。
+- =/home/git/gitea-backup= ：每日备份脚本（=templates/gitea-backup.sh.j2=
+  渲染），由 =gitea-backup.service= 以 git 用户调用。
+- =/home/git/gitea-backup.env= ：备份凭据（git 0600），由脚本
+  source（=templates/gitea-backup.env.j2= 渲染）。
+- =/home/git/backup= ：dump 落盘目录（git 0700），兼作 dump 的
+  tempdir 与上传失败时的积压队列，上传成功即清空。
+- =/etc/sudoers.d/gitea-backup= ：放行 git 用户免密执行 systemctl
+  stop/start gitea 两条命令，供备份脚本停启用服务。
+- =/etc/systemd/system/gitea-backup.service= 与 =.timer= ：oneshot
+  备份服务与每日定时器；unit 变更只触发 daemon-reload，不影响
+  Gitea 主服务。
 - =git= 系统用户：运行 Gitea 的用户（=RUN_USER= ），同时是 git
   over SSH 的登录用户；home 为 =/home/git= （官方安装教程的默认
   值），与 Gitea 工作目录（=WORK_PATH= ）是两个路径。
@@ -32,6 +44,8 @@
 - =gitea_lfs_jwt_secret=
 - =gitea_oauth2_jwt_secret=
 - =gitea_db_name= 、=gitea_db_owner= 、=gitea_db_owner_password=
+- =gitea_webdav_url= 、=gitea_webdav_user= 、=gitea_webdav_password=
+  （备份上传的 WebDAV 端点与凭据，见「备份」）
 
 默认变量（有默认值，见 =defaults/main.yaml= ，可覆盖，此处不列默认
 值）：
@@ -50,6 +64,52 @@
 修改 =vars/main.yaml= 中的 =gitea_version= ，重跑 playbook 即可：
 sha256 从下载地址旁的 =.sha256= 文件自动获取，二进制变化会触发服务
 重启。跨大版本升级先读官方 release notes 确认无破坏性变更。
+
+* 备份
+
+role 附带每日备份（=tasks/backup.yaml= 部署），=gitea-backup.timer=
+每天 04:00 触发（OnCalendar 按系统时区解释，主机时区为
+Asia/Shanghai；=RandomizedDelaySec= 错开两台 VPS，=Persistent= 在
+关机错过触发点时补跑）。流程：
+
+1. sudo 停 Gitea，停服窗口开始，web 与 git over SSH 均不可用；
+2. =pg_dump= 导出数据库（MVCC 快照在线导出，无需停 PostgreSQL；
+   此时 Gitea 已停、无新写入，快照即停机时刻内容）；
+3. =gitea dump= 打包全量数据（数据库 xorm 导出、仓库、LFS、附件、
+   app.ini）为 zip；
+4. pg_dump 的 SQL（=gitea-db.pg_dump.sql= ）追加进 zip 根目录，zip
+   即完整；
+5. 立即重启 Gitea——停机窗口只覆盖 dump 阶段；
+6. rclone 上传 =backup= 目录下所有 zip（含上次上传失败留下的积压）
+   到家里机器 WebDAV（=dav.<域名>= ，Caddy 反代经 frp 隧道，落到
+   专用 =git= 用户的目录下，文件名
+   =gitea-dump-<主机名>-<时间戳>.zip= ），
+   成功即删本地，失败保留、退出码非 0 让 systemd 标记失败，次日
+   连同积压一起补传；远端永久保留，不自动清理。
+
+无论哪一步失败，脚本的 EXIT trap 都会把停着的 Gitea 拉起来，并清掉
+本轮未完整生成的 zip/SQL（完整生成的 zip 保留待补传）。
+
+- 备份凭据（WebDAV 与数据库）在 =/home/git/gitea-backup.env= （git
+  0600），由脚本 source。密码不写 rclone.conf：rclone obscure 每次
+  输出都不同（随机 IV），渲染进配置文件会破坏 playbook 幂等；脚本
+  在运行时经 stdin 生成 obscured 密码、以环境变量定义 remote，不落
+  任何 rclone 配置文件。
+- 上传失败会在 =/home/git/backup/= 积压 zip，磁盘占用随失败天数线性
+  增长，journal 有对应失败记录，需偶尔检查清理。
+- 恢复：zip 内 =gitea-db.sql= 是 Gitea xorm 导出，按官方文档
+  https://docs.gitea.com/usage/backup-and-restore 恢复；
+  =gitea-db.pg_dump.sql= 是 pg_dump plain SQL，用 psql 导入即可。
+  建议做过恢复演练后再依赖此备份。
+
+手动触发与排查：
+
+#+begin_src shell
+systemctl start gitea-backup.service   # 手动跑一次
+journalctl -u gitea-backup.service     # 看日志（dump 与上传都在这）
+systemctl list-timers gitea-backup*    # 看下次触发时间
+ls /home/git/backup/                   # 看本地积压
+#+end_src
 
 * 注意
 

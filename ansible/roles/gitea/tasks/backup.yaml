@@ -1,0 +1,86 @@
+---
+# 每日备份：停 Gitea 后 pg_dump 导出数据库 + gitea dump 打包（SQL 追加
+# 进同一个 zip），随即重启 Gitea；再经 rclone 把本地积压的 zip 全部
+# 上传到家里机器 WebDAV（dav.<域名>，Caddy 反代经 frp 隧道），上传
+# 成功才删本地文件，失败留待下次补传；远端永久保留、不自动清理
+
+# 上传用 rclone（Debian apt 包）：webdav 后端自动创建远端目录、自带
+# 重试，失败退出码非 0 能让 oneshot service 判定为失败
+# zip 用于把 pg_dump 的 SQL 追加进 gitea dump 生成的包
+- name: 安装 rclone 与 zip
+  apt:
+    name:
+      - rclone
+      - zip
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+# dump 落盘目录：包内含 app.ini 全部密钥，收紧到 git 用户 0700；同时
+# 兼作 dump 的 --tempdir（tempdir 必须已存在，否则 gitea dump 直接报错）
+# 与上传失败后的积压队列
+- name: 创建本地备份目录
+  file:
+    path: "{{ gitea_backup_dir }}"
+    state: directory
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_user }}"
+    mode: '0700'
+
+# 备份期间停/启 Gitea 需要 root 权限，git 用户走 sudo 白名单：只放行
+# 这两条命令，免密无 tty（sudoers 默认无 requiretty）。脚本保证 stop
+# 成功后无论何种退出路径都会 start 回来
+- name: 放行 git 用户停启 Gitea
+  template:
+    src: gitea-backup.sudoers.j2
+    dest: /etc/sudoers.d/gitea-backup
+    owner: root
+    group: root
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+
+# 凭据交给脚本 source。不用 rclone.conf 存密码：rclone obscure 每次
+# 输出都不同（AES-CTR 随机 IV），渲染进配置文件会破坏 playbook 幂等；
+# 明文密码放这里与 app.ini 的数据库密码同级（git 用户 0600）
+- name: 部署备份凭据文件
+  template:
+    src: gitea-backup.env.j2
+    dest: "{{ gitea_backup_env_file }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_user }}"
+    mode: '0600'
+
+- name: 部署备份脚本
+  template:
+    src: gitea-backup.sh.j2
+    dest: "{{ gitea_backup_script }}"
+    owner: "{{ gitea_user }}"
+    group: "{{ gitea_user }}"
+    mode: '0755'
+
+# 两个 unit 变更只需 daemon-reload（见 handlers），不触发 Gitea 重启
+- name: 部署备份 systemd unit
+  template:
+    src: gitea-backup.service.j2
+    dest: /etc/systemd/system/gitea-backup.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload gitea-backup
+
+- name: 部署备份定时器 unit
+  template:
+    src: gitea-backup.timer.j2
+    dest: /etc/systemd/system/gitea-backup.timer
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload gitea-backup
+
+# 只 enable+start timer，不碰 service：service 是 oneshot，start 即
+# 触发一次完整备份（停服 + dump + 上传），不应在跑 playbook 时发生
+- name: 确保备份定时器已启用并运行
+  systemd:
+    name: gitea-backup.timer
+    enabled: true
+    state: started

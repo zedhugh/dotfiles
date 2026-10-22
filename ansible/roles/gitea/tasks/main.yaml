@@ -1,3 +1,5 @@
 ---
 - import_tasks: install.yaml
 - import_tasks: configure.yaml
+# 备份排最后：git 用户、/etc/gitea 等前置就绪后才部署
+- import_tasks: backup.yaml

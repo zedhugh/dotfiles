@@ -4,6 +4,7 @@ x-data-volume: &data-volume
   target: /data
 
 x-user-dirs: &user-dirs
+  /data/users/git
   /data/users/PT
   /data/users/v2rayNG
   /data/public

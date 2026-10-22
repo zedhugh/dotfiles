@@ -1,0 +1,17 @@
+# 每日备份定时器，触发 gitea-backup.service
+
+[Unit]
+Description=Daily Gitea backup (stop service, dump, WebDAV upload)
+
+[Timer]
+# 按系统时区解释，主机时区由 provision.yaml 设为 Asia/Shanghai，即北京
+# 时间凌晨 4 点。RandomizedDelaySec 错开两台 VPS 的备份窗口，避免同时
+# 停服/同时挤占家里上行（frps vhost 端口还承载 q. 站点流量）
+OnCalendar=*-*-* 04:00:00
+RandomizedDelaySec=15min
+# 关机错过触发点时开机补跑一次；失败的运行不会被补跑
+Persistent=true
+Unit=gitea-backup.service
+
+[Install]
+WantedBy=timers.target

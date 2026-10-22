@@ -11,3 +11,11 @@
     name: gitea
     state: restarted
   listen: restart gitea
+
+# 备份 unit 的变更只 reload 不重启：timer 的触发计划在 reload 后重算，
+# oneshot 服务无常驻进程；不能并入上面的 "restart gitea"，否则改备份
+# unit 也会重启 Gitea 主服务
+- name: daemon-reload gitea-backup
+  systemd:
+    daemon_reload: true
+  listen: reload gitea-backup

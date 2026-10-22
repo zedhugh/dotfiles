@@ -1,0 +1,26 @@
+# 每日备份的 oneshot 服务，由 gitea-backup.timer 触发；刻意不写
+# [Install]：不需要 enable，也不应由 playbook start（start 即触发
+# 一次完整备份）
+
+[Unit]
+Description=Gitea daily backup (stop service, dump, WebDAV upload)
+# 上传走 Caddy 反代到家里 WebDAV，需网络就绪后再执行
+Wants=network-online.target
+After=network-online.target
+# 数据库在本机（见 app.ini 的 [database]），与 gitea.service 一样避开
+# 数据库启动早期；不写对 gitea.service 的依赖，停启由脚本用 sudo 控制
+After=postgresql.service
+
+[Service]
+Type=oneshot
+User={{ gitea_user }}
+Group={{ gitea_user }}
+WorkingDirectory={{ gitea_work_path }}
+Environment=USER={{ gitea_user }} HOME={{ gitea_home }} GITEA_WORK_DIR={{ gitea_work_path }}
+SyslogIdentifier=gitea-backup
+# oneshot 的启动超时默认禁用（systemd >= 236），显式设上限只是兜底：
+# rclone 卡死（如隧道半开）时不至于让 unit 永远停在 activating，且
+# TERM 会触发脚本的清理与 Gitea 重启；覆盖 dump + 上传（可能含积压
+# 多个文件）总时长，仓库很大或家里上行很慢时调大
+TimeoutStartSec=2h
+ExecStart={{ gitea_backup_script }}

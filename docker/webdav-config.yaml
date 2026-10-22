@@ -1,4 +1,4 @@
-address: 0.0.0.0
+address: 127.0.0.1
 port: 46065
 auth: true
 prefix: /
@@ -18,6 +18,11 @@ users:
   - username: zedhugh
     password: "{bcrypt}$2a$10$nP6GQJidzLyhwkkQGQH/KOAQq2KjNW5Fbb.I/XD2OD2oxCxEoXbUO"
     directory: /data
+    permissions: CRUD
+
+  - username: git
+    password: "{bcrypt}$2a$10$bDy3k/zqnXI7kaaVndaAV.U8JdVt/07vGr7Yhnntznz6U30m1ubPe"
+    directory: /data/users/git
     permissions: CRUD
 
   - username: PT
