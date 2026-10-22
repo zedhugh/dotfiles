@@ -1,4 +1,10 @@
 ---
+# 统一部署各服务的 playbook。各 role 按服务名打了 tag，可只重跑部分：
+#   ansible-playbook playbooks/service.yaml --tags gitea         只部署 gitea
+#   ansible-playbook playbooks/service.yaml --tags gitea-backup  只重跑备份部分
+#   ansible-playbook playbooks/service.yaml --tags gitea,caddy   gitea 与反代
+# role 间有依赖（postgresql 建库先于 gitea，caddy 站点引用各服务端口），
+# 全新机器不带 --tags 完整跑，单独跑时自行带上依赖的 tag
 - name: 安装配置服务
   hosts: vps_debian
   become: true
@@ -15,6 +21,7 @@
 
   roles:
     - role: shadowsocks
+      tags: shadowsocks
       vars:
         shadowsocks_mode: "{{ vault_ss_mode }}"
         shadowsocks_server_port: "{{ vault_ss_server_port }}"
@@ -23,6 +30,7 @@
         shadowsocks_method: "{{ vault_ss_method }}"
 
     - role: frps
+      tags: frps
       vars:
         frps_bind_port: "{{ vault_frps_bind_port }}"
         frps_vhost_http_port: "{{ vault_frps_vhost_http_port }}"
@@ -32,6 +40,7 @@
         frps_dashboard_password: "{{ vault_frps_dashboard_password }}"
 
     - role: postgresql
+      tags: postgresql
       vars:
         postgresql_roles:
           - name: "{{ vault_gitea_db_owner }}"
@@ -41,6 +50,7 @@
             owner: "{{ vault_gitea_db_owner }}"
 
     - role: gitea
+      tags: gitea
       vars:
         gitea_db_name: "{{ vault_gitea_db_name }}"
         gitea_db_owner: "{{ vault_gitea_db_owner }}"
@@ -53,6 +63,7 @@
         gitea_webdav_password: "{{ vault_gitea_backup_password }}"
 
     - role: caddy
+      tags: caddy
       vars:
         caddy_sites:
           - name: root

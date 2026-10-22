@@ -2,4 +2,9 @@
 - import_tasks: install.yaml
 - import_tasks: configure.yaml
 # 备份排最后：git 用户、/etc/gitea 等前置就绪后才部署
+# 额外打 gitea-backup tag：--tags gitea-backup 可只重跑备份部分
+# （如改了 vault 里的 WebDAV 密码后更新凭据文件）；import 的 tag 会
+# 附加到文件内全部任务上
 - import_tasks: backup.yaml
+  tags:
+    - gitea-backup
